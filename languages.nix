@@ -45,11 +45,13 @@ let
   javascript = with pkgs-unstable; [
     typescript-language-server
     tailwindcss-language-server
+    vscode-langservers-extracted
     astro-language-server
     pnpm
     nodejs
     deno
     prettierd
+    taplo
     typescript
     biome
     nodePackages."@astrojs/language-server"
