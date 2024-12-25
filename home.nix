@@ -58,6 +58,7 @@
         zathura
         brightnessctl
         gimp
+        onefetch
         imagemagick
         # sound control
         pamixer
