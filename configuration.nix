@@ -23,6 +23,7 @@
     sessionVariables = {
       # faster rustc compile times
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=${pkgs.mold}/bin/mold";
+      GOPATH = "$HOME/.go";
       # https://nixos.wiki/wiki/Playwright
       PLAYWRIGHT_BROWSERS_PATH = pkgs-unstable.playwright-driver.browsers;
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
