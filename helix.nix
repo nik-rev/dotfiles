@@ -82,7 +82,7 @@
         };
       in
       {
-        theme = "catppuccin_mocha";
+        theme = "catppuccin";
         editor = {
           auto-info = false;
           soft-wrap.enable = true;
@@ -113,6 +113,11 @@
           backspace = "goto_word";
         };
       };
+
+    themes.catppuccin = {
+      inherits = "catppuccin_mocha";
+      "variable.other.member" = "teal";
+    };
 
     languages = {
       language-server = {
@@ -180,7 +185,10 @@
               "package.json"
               "astro.config.mjs"
             ];
-            language-servers = [ "astro-ls" ];
+            language-servers = [
+              "astro-ls"
+              "tailwindcss"
+            ];
             formatter = {
               command = lib.getExe pkgs-unstable.nodePackages.prettier;
               args = [
@@ -235,7 +243,7 @@
             name = "markdown";
             formatter = prettier ".md";
             language-servers = [
-              "tailwind"
+              "tailwindcss"
             ];
           }
           {
@@ -266,6 +274,14 @@
           {
             name = "json";
             formatter = prettier ".json";
+          }
+          {
+            name = "toml";
+            formatter.command = lib.getExe pkgs-unstable.taplo;
+            formatter.args = [
+              "format"
+              "-"
+            ];
           }
           {
             name = "html";
