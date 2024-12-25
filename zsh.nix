@@ -12,7 +12,7 @@
     syntaxHighlighting.enable = true;
     defaultKeymap = "emacs";
     localVariables = {
-      PROMPT = "%F{green} ➜ %f";
+      PROMPT = " $ %f";
       RPROMPT = "%F{blue}%~ ";
     };
     initExtra = ''
@@ -57,6 +57,7 @@
       "rd" = "rmdir";
       "r" = "trash";
       "n" = "hx";
+      "n." = "hx .";
       "sn" = "sudo -E hx";
       "e" = "ls --classify --human-readable";
       "g" = "git";
