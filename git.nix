@@ -22,6 +22,7 @@
       "cl" = "clone";
       "ps" = "push";
       "pl" = "pull";
+      "sw" = "switch";
       "re" = "remote";
       "M" = "merge";
       "R" = "rebase";
