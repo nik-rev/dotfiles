@@ -14,7 +14,7 @@
         "XF86MonBrightnessUp" = "exec --no-startup-id brightnessctl set +5%";
         "XF86MonBrightnessDown" = "exec --no-startup-id brightnessctl set 5%-";
         "Mod1+k" = "exec flameshot gui -r | xclip -selection clipboard -t image/png";
-        "Mod1+s" = "exec wezterm-gui";
+        "Mod1+m" = "exec wezterm-gui";
         "Mod1+r" = "exec firefox";
         "Mod1+equals" = "exec --no-startup-id dmenu_run -fn 'JetBrainsMono Nerd Font' -nf '#cdd6f4' -nb '#181825' -sb '#11111b'";
         "Mod1+t" = "kill";
@@ -26,7 +26,6 @@
         "Mod1+4" = "move down";
         "Mod1+1" = "move up";
         "Mod1+8" = "move right";
-        "Mod1+m" = "fullscreen toggle";
         "Mod1+g" = "floating toggle";
         "Mod1+w" = "workspace number 1";
         "Mod1+f" = "workspace number 2";

@@ -14,13 +14,11 @@
     settings =
       let
         keybindings = {
-          tab.r = ":reset-diff-change";
           tab.x = ":write-quit-all";
           x = "select_line_below";
           X = "select_line_above";
           S-left = "jump_backward";
           S-right = "jump_forward";
-          M = "split_selection_on_newline";
           w = "collapse_selection";
           ret = ":write";
           space.e = "file_browser_in_current_buffer_directory";
@@ -32,28 +30,6 @@
           right = "@]";
           "`"."u" = "switch_to_uppercase";
           "`"."l" = "switch_to_lowercase";
-          # delete current line
-          A-d = [
-            "collapse_selection"
-            "extend_to_line_bounds"
-            "yank_to_clipboard"
-            "delete_selection_noyank"
-          ];
-          # change current line
-          A-c = [
-            "collapse_selection"
-            "extend_to_line_bounds"
-            "change_selection"
-          ];
-          # open lazygit
-          C-g = [
-            ":write-all"
-            ":new"
-            ":insert-output lazygit"
-            ":buffer-close!"
-            ":redraw"
-            ":reload-all"
-          ];
           # delete two lines below
           C-j = [
             "extend_to_line_bounds"
@@ -66,6 +42,15 @@
             "extend_line_above"
             "delete_selection"
           ];
+          # open lazygit
+          C-g = [
+            ":write-all"
+            ":new"
+            ":insert-output lazygit"
+            ":buffer-close!"
+            ":redraw"
+            ":reload-all"
+          ];
         };
       in
       {
@@ -75,9 +60,7 @@
           auto-info = false;
           soft-wrap.enable = true;
           line-number = "relative";
-          inline-diagnostics = {
-            cursor-line = "hint";
-          };
+          inline-diagnostics.cursor-line = "hint";
           cursorline = true;
           statusline = {
             left = [ ];
