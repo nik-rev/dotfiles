@@ -66,24 +66,12 @@
             "extend_line_above"
             "delete_selection"
           ];
-          # use clipboard as default
-          d = [
-            "yank_to_clipboard"
-            "delete_selection_noyank"
-          ];
-          R = "replace_selections_with_clipboard";
-          y = "yank_to_clipboard";
-          p = "paste_clipboard_after";
-          P = "paste_clipboard_before";
-          space.R = "replace_with_yanked";
-          space.y = "yank";
-          space.p = "paste_after";
-          space.P = "paste_before";
         };
       in
       {
         theme = "catppuccin";
         editor = {
+          default-yank-register = "+";
           auto-info = false;
           soft-wrap.enable = true;
           line-number = "relative";
