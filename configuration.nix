@@ -28,7 +28,7 @@
       PLAYWRIGHT_BROWSERS_PATH = pkgs-unstable.playwright-driver.browsers;
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
     };
-    # enable completion for system packages
+    # enable completion for system packages in zsh
     pathsToLink = [ "/share/zsh" ];
   };
 
@@ -60,11 +60,11 @@
   security.sudo.wheelNeedsPassword = false;
 
   users = {
-    defaultUserShell = pkgs.zsh;
     users.e = {
       initialPassword = "e";
       isNormalUser = true;
       extraGroups = [ "wheel" ];
+      shell = pkgs.nushell;
     };
   };
 
