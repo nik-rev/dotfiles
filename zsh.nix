@@ -250,22 +250,5 @@
           startx (which i3 | first | get path)
         };
       '';
-      shellAliases = {
-        "md" = "mkdir";
-        "rd" = "rmdir";
-        "r" = "rm --trash";
-        "n" = "hx";
-        "n." = "hx .";
-        "sn" = "sudo -E hx";
-        "e" = "^ls --classify --color=always";
-        "g" = "git";
-        "nrs" = "sudo nixos-rebuild switch";
-        "cat" = "bat --style=plain";
-        "icat" = "wezterm imgcat";
-        "copy" = "xclip -selection clipboard";
-        "icopy" = "xclip -selection clipboard -target image/png";
-        "head" = "bat --style=plain --line-range :10";
-        "zathura" = "nohup zathura";
-      };
     };
 }
