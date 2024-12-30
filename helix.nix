@@ -139,6 +139,14 @@
         };
       };
 
+      grammar = [
+        {
+          name = "tera";
+          source.git = "https://github.com/uncenter/tree-sitter-tera";
+          source.rev = "main";
+        }
+      ];
+
       language =
         let
           prettier = lang: {
@@ -169,6 +177,40 @@
                 "astro"
               ];
             };
+          }
+          {
+            file-types = [ "tera" ];
+            grammar = "tera";
+            injection-regex = "tera";
+            name = "tera";
+            scope = "source.tera";
+            auto-pairs = {
+              "\"" = "\"";
+              "'" = "'";
+              "`" = "`";
+              "(" = ")";
+              "[" = "]";
+              "{" = "}";
+              "%" = "%";
+            };
+            block-comment-tokens = [
+              {
+                start = "{#";
+                end = "#}";
+              }
+              {
+                start = "{#-";
+                end = "-#}";
+              }
+              {
+                start = "{#";
+                end = "-#}";
+              }
+              {
+                start = "{#-";
+                end = "#}";
+              }
+            ];
           }
           {
             name = "cpp";

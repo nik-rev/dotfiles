@@ -58,6 +58,10 @@
         zathura
         brightnessctl
         gimp
+        catppuccin-whiskers
+        just
+        # generates LS_COLORS
+        vivid
         onefetch
         imagemagick
         # sound control
