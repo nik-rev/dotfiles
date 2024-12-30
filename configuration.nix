@@ -27,6 +27,7 @@
       # https://nixos.wiki/wiki/Playwright
       PLAYWRIGHT_BROWSERS_PATH = pkgs-unstable.playwright-driver.browsers;
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
+      EDITOR = "hx";
     };
     # enable completion for system packages in zsh
     pathsToLink = [ "/share/zsh" ];

@@ -52,7 +52,6 @@
         libreoffice
         xclip
         # google-chrome
-        trash-cli
         p7zip
         exercism
         zathura

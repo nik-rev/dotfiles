@@ -232,6 +232,12 @@
             ];
             formatter.command = "clang-format";
           }
+          # TODO: use nufmt to format nushell files when the formatter becomes available
+          # {
+          #   name = "nu";
+          #   formatter.command = "nufmt";
+          #   formatter.args = [ "--stdin" ];
+          # }
           {
             name = "python";
             language-servers = [
