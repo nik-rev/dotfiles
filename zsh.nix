@@ -62,88 +62,169 @@
       $env.config.history.file_format = "sqlite"
       $env.config.history.isolation = false
 
-      # theme
-
-      #$env.config.color_config.hints = $theme.overlay2
-      #$env.config.color_config.empty = $theme.sky
-      #$env.config.color_config.shape_garbage = $theme.red
-      #$env.config.color_config.shape_bool = $theme.peach
-      #$env.config.color_config.shape_int = $theme.peach
-      #$env.config.color_config.shape_float = $theme.peach
-      #$env.config.color_config.shape_range = { fg: $theme.yellow attr: b}
-      #$env.config.color_config.shape_internalcall = { fg: $theme.blue attr: b}
-      #$env.config.color_config.shape_external = { fg: $theme.blue attr: b}
-      #$env.config.color_config.shape_externalarg = $theme.text 
-      #$env.config.color_config.shape_literal = $theme.peach
-      #$env.config.color_config.shape_operator = $theme.sky
-      #$env.config.color_config.shape_signature = { fg: $theme.green attr: b}
-      #$env.config.color_config.shape_string = $theme.text
-      #$env.config.color_config.shape_filepath = $theme.yellow
-      #$env.config.color_config.shape_globpattern = { fg: $theme.green attr: b}
-      #$env.config.color_config.shape_variable = $theme.text
-      #$env.config.color_config.shape_flag = { fg: $theme.yellow attr: b}
-      #$env.config.color_config.shape_custom = {attr: b}
-
       $env.config.color_config = {
-        separator: $theme.surface1
+        # for instance, color of the border of each table
+        separator: { fg: $theme.surface2 attr: b }
         leading_trailing_space_bg: { attr: n }
-        header: green_bold
-        empty: blue
-        bool: light_cyan
-        int: white
-        filesize: cyan
-        duration: white
-        date: purple
-        range: white
-        float: white
-        string: white
-        nothing: white
-        binary: white
-        cell-path: white
-        row_index: green_bold
-        record: white
-        list: white
-        closure: green_bold
-        glob:cyan_bold
-        block: white
+        header: $theme.text
+        empty: { bg: $theme.green fg: $theme.base }
+        bool: $theme.peach
+        int: $theme.peach
+        filesize: $theme.peach
+        duration: $theme.text
+        date: $theme.peach
+        range: $theme.text
+        float: $theme.text
+        string: $theme.text
+        nothing: $theme.text
+        binary: $theme.text
+        cell-path: $theme.text
+        row_index: $theme.subtext1
+        record: $theme.text
+        list: $theme.text
         hints: $theme.surface2
-        search_result: { bg: red fg: white }
-        shape_binary: purple_bold
-        shape_block: $theme.green
-        shape_bool: light_cyan
-        shape_closure: green_bold
-        shape_custom: green
-        shape_datetime: cyan_bold
+        search_result: { bg: $theme.red fg: $theme.base }
+        # in the following code, the closure inside the "list" path `|el|` has this color, as well as the surrounding curly braces
+        # def "str append" [tail: string]: [string -> string, list<string> -> list<string>] {
+        #     let input = $in
+        #     match ($input | describe | str replace --regex '<.*' '\') {
+        #         "string" => { $input ++ $tail },
+        #         "list" => { $input | each {|el| $el ++ $tail} },
+        #         _ => $input
+        #     }
+        # }
+        shape_closure: $theme.teal
         shape_directory: $theme.blue
-        shape_external: cyan
-        shape_externalarg: green_bold
-        shape_external_resolved: light_yellow_bold
-        shape_filepath: cyan
-        shape_flag: blue_bold
-        shape_float: purple_bold
-        shape_glob_interpolation: cyan_bold
-        shape_globpattern: cyan_bold
-        shape_int: purple_bold
-        shape_internalcall: cyan_bold
-        shape_keyword: cyan_bold
-        shape_list: cyan_bold
-        shape_literal: blue
-        shape_match_pattern: green
+        shape_externalarg: $theme.text
+        shape_filepath: $theme.blue
+        shape_flag: $theme.yellow
+        # for instance, inputs to a command like `ls`. So `ls file1 *.txt`, both args are this
+        shape_globpattern: $theme.text
+        # invalid command, for example if `l` is not a command then it will have this color
+        # for unknown reasons, this isn't reserved for actual integers
+        shape_int: $theme.blue
+        # command that is a binary, e.g. `ls`
+        shape_internalcall: $theme.blue
+        # syntax for lists, for example in [1, 2, 3, 4, 5] the square brackets and the comma use this syntax
+        shape_list: $theme.overlay2
+        # whatever is matching, for example we could be autocompleting on a filename
+        # the part of the filename which matches what we have is going to have this style
         shape_matching_brackets: { attr: u }
-        shape_nothing: light_cyan
-        shape_operator: yellow
-        shape_pipe: purple_bold
-        shape_range: yellow_bold
-        shape_record: cyan_bold
-        shape_redirection: purple_bold
-        shape_signature: green_bold
-        shape_string: green
-        shape_string_interpolation: cyan_bold
-        shape_table: blue_bold
-        shape_variable: purple
-        shape_vardecl: purple
-        shape_raw_string: light_purple
+        # `null` and `nothing`
+        shape_nothing: $theme.peach
+        # the `|` symbol to pipe between commands
+        shape_pipe: $theme.sky
+        # for example in { "apples": 543, "bananas": 411, "oranges": 0 }, the commas, curly braces and colons use this highlight
+        shape_record: $theme.overlay2
+        # for example: 'hello world'
+        shape_string: $theme.green
+        # symbols for the interpolated string, for example in $"greetings, ($name)" the following characters use this: $, first " and the last "
+        shape_string_interpolation: $theme.flamingo
+        # for example: r#'hello world'
+        shape_raw_string: $theme.green
+        # invalid syntax
         shape_garbage: $theme.red
+        # In the following code, `else` uses this highlight
+        # [black red yellow green purple blue] | each {|c|
+        #   if ($c == "black") {
+        #    "classy"
+        #   } else if ($c in ["red", "green", "blue"]) {
+        #     "fundamental"
+        #   } else if ($c in ['yellow', "purple"]) {
+        #     "vibrant"
+        #   } else {
+        #     "innovative"
+        #   }
+        # }
+        shape_keyword: $theme.mauve
+        # In the following code, the indentation uses this highlight
+        # as well as the first `if`, the parentheses around the condition, and the curly braces inside of each of the conditions
+        # [black red yellow green purple blue] | each {|c|
+        #   if ($c == "black") {
+        #    "classy"
+        #   } else if ($c in ["red", "green", "blue"]) {
+        #     "fundamental"
+        #   } else if ($c in ['yellow', "purple"]) {
+        #     "vibrant"
+        #   } else {
+        #     "innovative"
+        #   }
+        # }
+        shape_block: $theme.blue
+        # in the following code, all the possibilities are match items
+        # [black red yellow green purple blue indigo] | each {|c|
+        #   match $c {
+        #     "black" => "classy"
+        #     "red" | "green" | "blue" => "fundamental"
+        #     "yellow" | "purple" => "vibrant"
+        #     _ => "innovative"
+        #   }
+        # }
+        shape_match_pattern: $theme.green
+        # In the following code, `in` and `==` use this highlight
+        # [black red yellow green purple blue] | each {|c|
+        #   if ($c == "black") {
+        #    "classy"
+        #   } else if ($c in ["red", "green", "blue"]) {
+        #     "fundamental"
+        #   } else if ($c in ['yellow', "purple"]) {
+        #     "vibrant"
+        #   } else {
+        #     "innovative"
+        #   }
+        # }
+        shape_operator: $theme.sky
+        # simply any sort of command even if its invalid. We can't color it a color like red since aliases don't get a special color
+        shape_table: $theme.lavender
+        # a variable like $c for example
+        shape_variable: { fg: $theme.peach attr: i }
+        # true and false
+        shape_bool: $theme.peach
+        # in the following code, highlight is applied to [tail: string]: [string -> string, list<string> -> list<string>]
+        # def "str append" [tail: string]: [string -> string, list<string> -> list<string>] {
+        #     let input = $in
+        #     match ($input | describe | str replace --regex '<.*' '\') {
+        #         "string" => { $input ++ $tail },
+        #         "list" => { $input | each {|el| $el ++ $tail} },
+        #         _ => $input
+        #     }
+        # }
+        shape_signature: $theme.teal
+        # in the following snippet, `fish_completer` declaration gets this highlight
+        # let fish_completer = {|spans|
+        #     fish --command $'complete "--do-complete=($spans | str join " ")"'
+        #     | from tsv --flexible --noheaders --no-infer
+        #     | rename value description
+        # }
+        shape_vardecl: { fg: $theme.peach attr: i }
+        # commands which are not a part of nushell, or maybe they're not command at all
+        # e.g. `l` is not a command, but it gets this color
+        shape_external: $theme.blue
+        # a range like 1..5
+        shape_range: $theme.sky
+        # in the following snippet, `out>` and `err>` are redirection
+        # cat unknown.txt out> out.log err> err.log
+        shape_redirection: { fg: $theme.text attr: b }
+        # e.g. 1.41
+        shape_float: $theme.peach
+        # for example
+        # 0x[ffffff]
+        # 0o[12374]
+        # 0b[1010110101001]
+        shape_binary: $theme.peach
+        # for example
+        # 2022-02-02
+        # 2022-02-02T14:30:00+05:00
+        shape_datetime: $theme.peach
+        
+        # An opaque data type that is only used internally in Nushell by built-in commands or plugins.
+        # Below cannot appear in the terminal
+        # shape_custom: "#ff0000"
+        # glob: "#ff0000"
+        # shape_external_resolved: "#ff0000"
+        # shape_literal: "#ff0000"
+        # shape_glob_interpolation: "#ff0000"
+        # block: "#ff0000"
       }
     '';
     extraLogin = ''
