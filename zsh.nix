@@ -28,6 +28,53 @@
           ^ls --classify --color=always
         }
 
+        # TODO: turn these all into aliases once we have shape_alias
+        def --env --wrapped md [ ...args: string ] {
+          mkdir ...$args
+        }
+        def --env --wrapped rd [ ...args: string ] {
+          rmdir ...$args
+        }
+        def --env --wrapped r [ ...args: string ] {
+          rm --trash ...$args
+        }
+        def --env --wrapped n [ ...args: string ] {
+          hx ...$args
+        }
+        def --env --wrapped n. [] {
+          hx .
+        }
+        def --env --wrapped sn [ ...args: string ] {
+          sudo -E hx ...$args
+        }
+        def --env --wrapped e [ ...args: string ] {
+          ^ls --classify --color=always ...$args
+        }
+        def --env --wrapped g [ ...args: string ] {
+          git ...$args
+        }
+        def --env --wrapped nrs [] {
+          sudo nixos-rebuild switch
+        }
+        def --env --wrapped cat [ ...args: string ] {
+          bat --style=plain ...$args
+        }
+        def --env --wrapped icat [ ...args: string ] {
+          wezterm imgcat ...$args
+        }
+        def --env --wrapped copy [ ...args: string ] {
+          xclip -selection clipboard ...$args
+        }
+        def --env --wrapped icopy [ ...args: string ] {
+          xclip -selection clipboard -target image/png ...$args
+        }
+        def --env --wrapped head [ ...args: string ] {
+          bat --style=plain --line-range :10 ...$args
+        }
+        def --env --wrapped zathura [ ...args: string ] {
+          nohup zathura ...$args
+        }
+
         def --env o [] {
           cd ..
           ^ls --classify --color=always
@@ -109,21 +156,21 @@
           bool: $theme.peach
           int: $theme.peach
           filesize: {|fsize|
-              if $fsize < 1kb {
-                  $theme.teal
-              } else if $fsize < 10kb {
-                  $theme.green
-              } else if $fsize < 100kb {
-                  $theme.yellow
-              } else if $fsize < 10mb {
-                  $theme.peach
-              } else if $fsize < 100mb {
-                  $theme.maroon
-              } else if $fsize < 1gb {
-                  $theme.red
-              } else {
-        		  $theme.mauve
-        	  }
+            if $fsize < 1kb {
+              $theme.teal
+            } else if $fsize < 10kb {
+              $theme.green
+            } else if $fsize < 100kb {
+              $theme.yellow
+            } else if $fsize < 10mb {
+              $theme.peach
+            } else if $fsize < 100mb {
+              $theme.maroon
+            } else if $fsize < 1gb {
+              $theme.red
+            } else {
+        	  $theme.mauve
+        	}
           }
           duration: $theme.text
           date: {|| (date now) - $in |
@@ -163,7 +210,13 @@
           shape_flag: { fg: $theme.maroon attr: i }
           shape_globpattern: $theme.text
           shape_int: $theme.peach
-          shape_internalcall: $theme.blue
+          shape_internalcall: {|cmd|
+            if $cmd == "if" {
+              $theme.mauve
+            } else {
+              $theme.green
+            }
+          }
           shape_list: $theme.overlay2
           shape_matching_brackets: { attr: u }
           shape_nothing: $theme.peach
@@ -182,19 +235,20 @@
           shape_bool: $theme.peach
           shape_signature: $theme.teal
           shape_vardecl: { fg: $theme.peach attr: i }
-          shape_external: $theme.blue
+          shape_external: $theme.red
           shape_range: $theme.sky
           shape_redirection: { fg: $theme.text attr: b }
           shape_float: $theme.peach
           shape_binary: $theme.peach
           shape_datetime: $theme.peach
+          shape_external_resolved: $theme.green
           shape_custom: { fg: "#ff0000" bg: "#ff0000" }
           glob: { fg: "#00ff00" bg: "#00ff00" }
-          shape_external_resolved: { fg: "#0000ff" bg: "#0000ff" }
           shape_literal: { fg: "#ffff00" bg: "#ffff00" }
           shape_glob_interpolation: { fg: "#ff00ff" bg: "#ff00ff" }
           block: { fg: "#00ffff" bg: "#00ffff" }
         }
+        $env.config.highlight_resolved_externals = true
       '';
       extraLogin = ''
         # auto start i3 when logging in
