@@ -41,7 +41,7 @@
         def --env --wrapped n [ ...args: string ] {
           hx ...$args
         }
-        def --env --wrapped n. [] {
+        def --env no [] {
           hx .
         }
         def --env --wrapped sn [ ...args: string ] {
@@ -53,7 +53,7 @@
         def --env --wrapped g [ ...args: string ] {
           git ...$args
         }
-        def --env --wrapped nrs [] {
+        def --env nrs [] {
           sudo nixos-rebuild switch
         }
         def --env --wrapped cat [ ...args: string ] {
