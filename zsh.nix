@@ -52,6 +52,8 @@
         crust: "#11111b"
       }
 
+      $env.config.buffer_editor = "hx"
+
       $env.config.color_config = {
         separator: { fg: $theme.surface2 attr: b }
         leading_trailing_space_bg: { attr: n }
