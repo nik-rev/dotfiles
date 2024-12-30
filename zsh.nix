@@ -210,13 +210,7 @@
           shape_flag: { fg: $theme.maroon attr: i }
           shape_globpattern: $theme.text
           shape_int: $theme.peach
-          shape_internalcall: {|cmd|
-            if $cmd == "if" {
-              $theme.mauve
-            } else {
-              $theme.green
-            }
-          }
+          shape_internalcall: $theme.green
           shape_list: $theme.overlay2
           shape_matching_brackets: { attr: u }
           shape_nothing: $theme.peach
