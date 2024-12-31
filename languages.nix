@@ -32,6 +32,12 @@ let
     cargo
     clippy
     rustfmt
+
+    # some crates require openssl
+    # see also https://github.com/sfackler/rust-openssl/issues/1663
+    libiconv
+    openssl
+    pkg-config
   ];
   nix = with pkgs-unstable; [
     nil

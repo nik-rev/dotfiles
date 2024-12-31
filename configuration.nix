@@ -28,6 +28,10 @@
       PLAYWRIGHT_BROWSERS_PATH = pkgs-unstable.playwright-driver.browsers;
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
       EDITOR = "hx";
+
+      # required for openssl
+      # see also https://github.com/sfackler/rust-openssl/issues/1663
+      PKG_CONFIG_PATH = "${pkgs-unstable.openssl.dev}/lib/pkgconfig";
     };
     # enable completion for system packages in zsh
     pathsToLink = [ "/share/zsh" ];
