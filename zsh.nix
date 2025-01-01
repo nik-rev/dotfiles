@@ -23,31 +23,31 @@
         source /home/e/.cache/zoxide/init.nu
 
         # pass all args to zoxide then list contents of the new directory
-        def --env --wrapped t [ ...args: string ] {
+        def --env --wrapped t [ ...args: path ] {
           z ...$args
           ^ls --classify --color=always
         }
 
         # TODO: turn these all into aliases once we have shape_alias
-        def --env --wrapped md [ ...args: string ] {
+        def --env --wrapped md [ ...args: path ] {
           mkdir ...$args
         }
-        def --env --wrapped rd [ ...args: string ] {
+        def --env --wrapped rd [ ...args: path ] {
           rmdir ...$args
         }
-        def --env --wrapped r [ ...args: string ] {
+        def --env --wrapped r [ ...args: path ] {
           rm --trash ...$args
         }
-        def --env --wrapped n [ ...args: string ] {
+        def --env --wrapped n [ ...args: path ] {
           hx ...$args
         }
         def --env no [] {
           hx .
         }
-        def --env --wrapped sn [ ...args: string ] {
+        def --env --wrapped sn [ ...args: path ] {
           sudo -E hx ...$args
         }
-        def --env --wrapped e [ ...args: string ] {
+        def --env --wrapped e [ ...args: path ] {
           ^ls --classify --color=always ...$args
         }
         def --env --wrapped g [ ...args: string ] {
@@ -56,10 +56,10 @@
         def --env nrs [] {
           sudo nixos-rebuild switch
         }
-        def --env --wrapped cat [ ...args: string ] {
+        def --env --wrapped cat [ ...args: path ] {
           bat --style=plain ...$args
         }
-        def --env --wrapped icat [ ...args: string ] {
+        def --env --wrapped icat [ ...args: path ] {
           wezterm imgcat ...$args
         }
         def --env --wrapped copy [ ...args: string ] {
@@ -68,10 +68,10 @@
         def --env --wrapped icopy [ ...args: string ] {
           xclip -selection clipboard -target image/png ...$args
         }
-        def --env --wrapped head [ ...args: string ] {
+        def --env --wrapped head [ ...args: path ] {
           bat --style=plain --line-range :10 ...$args
         }
-        def --env --wrapped zathura [ ...args: string ] {
+        def --env --wrapped zathura [ ...args: path ] {
           nohup zathura ...$args
         }
 
