@@ -15,9 +15,6 @@
     };
 
     helix.url = "github:NikitaRevenco/helix/patchy";
-    ghostty.url = "github:ghostty-org/ghostty";
-    # wezterm.url = "github:wez/wezterm?dir=nix";
-    # wezterm.inputs.nixpkgs.follows = "nixpkgs";
     patchy.url = "github:NikitaRevenco/patchy/main";
     playwright.url = "github:pietdevries94/playwright-web-flake/1.47.0";
   };
