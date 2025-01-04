@@ -14,7 +14,8 @@
         "XF86MonBrightnessUp" = "exec --no-startup-id brightnessctl set +5%";
         "XF86MonBrightnessDown" = "exec --no-startup-id brightnessctl set 5%-";
         "Mod1+k" = "exec flameshot gui -r | xclip -selection clipboard -t image/png";
-        "Mod1+m" = "exec wezterm-gui";
+        # "Mod1+m" = "exec wezterm-gui";
+        "Mod1+m" = "exec ghostty";
         "Mod1+r" = "exec firefox";
         "Mod1+equals" = "exec --no-startup-id dmenu_run -fn 'JetBrainsMono Nerd Font' -nf '#cdd6f4' -nb '#181825' -sb '#11111b'";
         "Mod1+t" = "kill";

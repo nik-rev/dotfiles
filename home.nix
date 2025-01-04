@@ -2,7 +2,7 @@
   pkgs,
   config,
   pkgs-unstable,
-  pkgs-old,
+  # pkgs-old,
   inputs,
   ...
 }:
@@ -18,18 +18,20 @@
     ./languages.nix
   ];
 
-  xdg.configFile."wezterm/wezterm.lua".source = ./wezterm.lua;
+  # xdg.configFile."wezterm/wezterm.lua".source = ./wezterm.lua;
+  xdg.configFile."ghostty/config".source = ./ghostty;
   xdg.userDirs.download = "${config.home.homeDirectory}/t";
   xsession.windowManager.i3.enable = true;
   services.flameshot.enable = true;
   programs = {
     yazi.enable = true;
     zoxide.enable = true;
-    wezterm = {
-      enable = true;
-      # currently, rendering is broken in the new wezterm versions https://github.com/NixOS/nixpkgs/issues/336069
-      package = pkgs-old.wezterm;
-    };
+    # wezterm = {
+    #   enable = true;
+    # currently, rendering is broken in the new wezterm versions https://github.com/NixOS/nixpkgs/issues/336069
+    # package = pkgs-old.wezterm;
+    #   package = inputs.wezterm.packages.${pkgs.system}.default;
+    # };
     ripgrep.enable = true;
     fzf.enable = true;
     fd.enable = true;
@@ -78,6 +80,7 @@
         jq
         # playwright-driver
         dconf
+        inputs.ghostty.packages.${pkgs.system}.default
         asciinema
         # interactive search and replace
         scooter
