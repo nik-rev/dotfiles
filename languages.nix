@@ -15,6 +15,7 @@ let
   misc = with pkgs-unstable; [
     nginx-language-server
     nginx
+    gnumake
   ];
   elixir = with pkgs-unstable; [
     elixir_1_16
@@ -27,11 +28,7 @@ let
     pyright
   ];
   rust = with pkgs-unstable; [
-    rustc
-    rust-analyzer
-    cargo
-    clippy
-    rustfmt
+    rustup
 
     # some crates require openssl
     # see also https://github.com/sfackler/rust-openssl/issues/1663

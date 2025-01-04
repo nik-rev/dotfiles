@@ -3,6 +3,7 @@
   config,
   pkgs-unstable,
   pkgs-old,
+  inputs,
   ...
 }:
 {
@@ -55,6 +56,7 @@
         p7zip
         exercism
         zathura
+        inputs.patchy.packages.${pkgs.system}.default
         brightnessctl
         gimp
         catppuccin-whiskers
