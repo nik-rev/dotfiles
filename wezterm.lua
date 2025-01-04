@@ -10,6 +10,8 @@ config.automatically_reload_config = false
 config.swallow_mouse_click_on_window_focus = true
 config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 
+config.use_fancy_tab_bar = false
+
 config.adjust_window_size_when_changing_font_size = false
 
 config.keys = {

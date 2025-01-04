@@ -1,20 +1,23 @@
 {
   pkgs,
-  lib,
-  config,
+  # lib,
+  # inputs,
   ...
 }:
-let
-  extensions = with config.nur.repos.rycee.firefox-addons; [
-    # https://github.com/TLATER/dotfiles/blob/b39af91fbd13d338559a05d69f56c5a97f8c905d/home-config/config/graphical-applications/firefox.nix
-    react-devtools
-    ublock-origin
-    clearurls
-    stylus
-    proton-pass
-    sponsorblock
-  ];
-in
+# let
+#   extensions = builtins.trace inputs.nur.modules.homeManager.default.imports (
+#     with inputs.nur.modules.homeManager.default.imports.repos.rycee.firefox-addons;
+#     [
+#       # https://github.com/TLATER/dotfiles/blob/b39af91fbd13d338559a05d69f56c5a97f8c905d/home-config/config/graphical-applications/firefox.nix
+#       react-devtools
+#       ublock-origin
+#       clearurls
+#       stylus
+#       proton-pass
+#       sponsorblock
+#     ]
+#   );
+# in
 {
   programs.firefox = {
     enable = true;
@@ -24,16 +27,16 @@ in
       DisablePocker = true;
       DisableFirefoxAccounts = true;
       PromptForDownloadLocation = true;
-      ExtensionSettings = builtins.listToAttrs (
-        builtins.map (
-          e:
-          lib.nameValuePair e.addonId {
-            installation_mode = "force_installed";
-            install_url = "file://${e.src}";
-            updates_disabled = true;
-          }
-        ) extensions
-      );
+      # ExtensionSettings = builtins.listToAttrs (
+      #   builtins.map (
+      #     e:
+      #     lib.nameValuePair e.addonId {
+      #       installation_mode = "force_installed";
+      #       install_url = "file://${e.src}";
+      #       updates_disabled = true;
+      #     }
+      #   ) extensions
+      # );
     };
     profiles.nikita = {
       search.force = true;

@@ -17,10 +17,10 @@ let
     nginx
     gnumake
   ];
-  elixir = with pkgs-unstable; [
-    elixir_1_16
-    elixir-ls
-  ];
+  # elixir = with pkgs-unstable; [
+  #   elixir_1_16
+  #   elixir-ls
+  # ];
   python = with pkgs-unstable; [
     python3
     pipx
@@ -77,8 +77,7 @@ let
   ];
 in
 {
-  home.packages =
-    haskell_ ++ rust ++ nix ++ lua ++ c ++ shell ++ javascript ++ go ++ elixir ++ python ++ misc;
+  home.packages = haskell_ ++ rust ++ nix ++ lua ++ c ++ shell ++ javascript ++ go ++ python ++ misc;
 
   # disable update check for pnpm
   xdg.configFile."pnpm/rc".source =

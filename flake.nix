@@ -9,6 +9,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.05";
     nur.url = "github:nix-community/NUR";
+    nur.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -58,7 +59,7 @@
         inherit system specialArgs;
         modules = [
           ./configuration.nix
-          nur.nixosModules.nur
+          # nur.modules.nixos.default
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -68,7 +69,7 @@
             home-manager.users.e = {
               imports = [
                 ./home.nix
-                inputs.nur.hmModules.nur
+                # inputs.nur.modules.homeManager.default
               ];
             };
           }
