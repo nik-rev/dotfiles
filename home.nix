@@ -28,7 +28,7 @@
     wezterm = {
       enable = true;
       # currently, rendering is broken in the new wezterm versions https://github.com/NixOS/nixpkgs/issues/336069
-      package = pkgs-old.wezterm;
+      package = inputs.wezterm.packages.${pkgs.system}.default;
     };
     ripgrep.enable = true;
     fzf.enable = true;

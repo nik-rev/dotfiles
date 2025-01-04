@@ -16,6 +16,10 @@
 
     helix.url = "github:NikitaRevenco/helix/patchy";
     patchy.url = "github:NikitaRevenco/patchy/main";
+    wezterm = {
+      url = "github:wez/wezterm?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     playwright.url = "github:pietdevries94/playwright-web-flake/1.47.0";
   };
 
