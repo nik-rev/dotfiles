@@ -72,16 +72,16 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1734534547,
-        "narHash": "sha256-r0Qv3oEtA6wbJYYmN+NPgG1S32+9u9JyO6Re+byxdcQ=",
+        "lastModified": 1735843676,
+        "narHash": "sha256-GxKDZsU0uLfcKzLYgahju+Bt8qlOXxQN0oc3zDGljkU=",
         "owner": "NikitaRevenco",
         "repo": "helix",
-        "rev": "14e9ff6289049c08558033a7542980dc6396334f",
+        "rev": "e007c13c5656cb09d2c90045b5beb35da9be072a",
         "type": "github"
       },
       "original": {
         "owner": "NikitaRevenco",
-        "ref": "driver",
+        "ref": "patchy",
         "repo": "helix",
         "type": "github"
       }
@@ -173,6 +173,22 @@
     },
     "nixpkgs_3": {
       "locked": {
+        "lastModified": 1735471104,
+        "narHash": "sha256-0q9NGQySwDQc7RhAV2ukfnu7Gxa5/ybJ2ANT8DQrQrs=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "88195a94f390381c6afcdaa933c2f6ff93959cb4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
         "lastModified": 1691371061,
         "narHash": "sha256-BxPbPVlBIoneaXIBiHd0LVzA+L4nmvFCNBU6TmQAiMM=",
         "owner": "NixOS",
@@ -200,10 +216,29 @@
         "type": "github"
       }
     },
+    "patchy": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1735790675,
+        "narHash": "sha256-K4GMXRQcjm03yPxX1CsexD+HtAt1lTgIlMeQpdcDA/0=",
+        "owner": "NikitaRevenco",
+        "repo": "patchy",
+        "rev": "43a30cc97cd62606e806e43ffa2ae74c6798c3b0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NikitaRevenco",
+        "ref": "main",
+        "repo": "patchy",
+        "type": "github"
+      }
+    },
     "playwright": {
       "inputs": {
         "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1725582087,
@@ -229,6 +264,7 @@
         "nixpkgs-old": "nixpkgs-old",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
+        "patchy": "patchy",
         "playwright": "playwright"
       }
     },

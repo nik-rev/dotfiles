@@ -14,7 +14,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    helix.url = "github:NikitaRevenco/helix/driver";
+    helix.url = "github:NikitaRevenco/helix/patchy";
+    patchy.url = "github:NikitaRevenco/patchy/main";
     playwright.url = "github:pietdevries94/playwright-web-flake/1.47.0";
   };
 
