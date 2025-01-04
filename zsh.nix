@@ -8,6 +8,7 @@
   # zoxide is sourced AFTER extraConfig, which is problematic since my `t` alias does not work
   # So I source it myself and disable the default source to not source the same file twice
   programs.zoxide.enableNushellIntegration = false;
+  programs.carapace.enable = true;
   programs.nushell =
     let
       vivid = lib.getExe pkgs.vivid;
@@ -23,7 +24,7 @@
         source /home/e/.cache/zoxide/init.nu
 
         # pass all args to zoxide then list contents of the new directory
-        def --env --wrapped t [ ...args: path ] {
+        def --env --wrapped t [ ...args: string ] {
           z ...$args
           ^ls --classify --color=always
         }
@@ -168,7 +169,7 @@
           record: $theme.text
           list: $theme.text
           hints: $scheme.virtual_text
-          search_result: { fg: $theme.base bg: $theme.blue }
+          search_result: { fg: $theme.base bg: $theme.yellow }
           shape_closure: $theme.teal
           closure: $theme.teal
           shape_flag: { fg: $theme.maroon attr: i }
@@ -244,14 +245,14 @@
           custom: $theme.pink
           background: $theme.base
           foreground: $theme.text
-          cursor: { bg: $theme.text fg: $theme.base }
+          cursor: { bg: $theme.rosewater fg: $theme.base }
           shape_range: $scheme.operator
           range: $scheme.operator
           shape_pipe: $scheme.operator
           shape_operator: $scheme.operator
           shape_redirection: $scheme.operator
           glob: $scheme.filepath
-          shape_directory: { fg: $scheme.filepath attr: b }
+          shape_directory: $scheme.filepath
           shape_filepath: $scheme.filepath
           shape_glob_interpolation: $scheme.filepath
           shape_globpattern: $scheme.filepath
