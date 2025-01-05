@@ -8,9 +8,13 @@ Why I'm using Nix:
 - Easy to build software from source with flakes
 - Using a programming language for configuration is really powerful
 
-## Installation Instructions
+## Installation
 
-If you aren't, connect to wifi by following these steps from the installation media:
+<details>
+
+<summary>
+WiFi Connection
+</summary>
 
 Find out SSID and INTERFACE with:
 
@@ -25,7 +29,7 @@ wpa_passphrase SSID PASSWORD > /etc/wpa_supplicant.conf
 wpa_supplicant -B -i INTERFACE -c /etc/wpa_supplicant.conf
 ```
 
-## Partitioning
+</details>
 
 Partition drives:
 
@@ -57,8 +61,6 @@ mkfs.fat /dev/disk/by-partlabel/boot
 mkfs.ext4 -L root /dev/vg/root
 mkswap -L swap /dev/vg/swap
 ```
-
-## Main Installation
 
 Install nixOS
 
