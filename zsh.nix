@@ -25,19 +25,12 @@
       );
       ls-command = "^ls --classify --color=always";
       dir-changes = builtins.concatStringsSep "\n" (
-        map (
-          count:
-          let
-            a = lib.concatStrings (lib.replicate count "o");
-            b = builtins.concatStringsSep "/" (lib.replicate count "..");
-          in
-          ''
-            def --env ${a} [] {
-              cd ${b}
-              ${ls-command}
-            }
-          ''
-        ) (lib.range 1 5)
+        map (count: ''
+          def --env ${lib.concatStrings (lib.replicate count "o")} [] {
+            cd ${builtins.concatStringsSep "/" (lib.replicate count "..")}
+            ${ls-command}
+          }
+        '') (lib.range 1 5)
       );
     in
     {
@@ -64,6 +57,9 @@
           z ...$args
           ^ls --classify --color=always
         }
+
+        $env.path = ($env.path | append $"($env.home)/.cache/npm/global/bin")
+        $env.path = ($env.path | append $"($env.home)/.cargo/bin")
 
         $env.PROMPT_COMMAND_RIGHT = {||
           let dir = match (do -i { $env.PWD | path relative-to $nu.home-path }) {

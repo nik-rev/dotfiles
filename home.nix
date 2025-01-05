@@ -38,8 +38,8 @@
   };
   home = {
     sessionPath = [
-      "$HOME/.cache/npm/global/bin"
-      "$HOME/.cargo/bin"
+      # "$HOME/.cache/npm/global/bin"
+      # "$HOME/.cargo/bin"
     ];
     pointerCursor = {
       package = pkgs.bibata-cursors;

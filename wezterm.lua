@@ -21,9 +21,6 @@ config.keys = {
 	{ key = "n", mods = "CTRL", action = wezterm.action.ActivateTabRelative(1) },
 	{ key = "p", mods = "CTRL", action = wezterm.action.ActivateTabRelative(-1) },
 	{ key = "x", mods = "CTRL", action = wezterm.action.CloseCurrentTab({ confirm = true }) },
-	-- TODO: restore these once i figure out https://github.com/wez/wezterm/discussions/6550
-	-- { key = "u", mods = "CTRL", action = wezterm.action.ScrollByPage(-1) },
-	-- { key = "d", mods = "CTRL", action = wezterm.action.ScrollByPage(1) },
 	{ key = "=", mods = "CTRL", action = wezterm.action.ResetFontSize },
 	{ key = "LeftArrow", mods = "OPT", action = wezterm.action({ SendString = "\x1bb" }) },
 	{ key = "RightArrow", mods = "OPT", action = wezterm.action({ SendString = "\x1bf" }) },
