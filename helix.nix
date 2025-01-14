@@ -21,27 +21,15 @@
           S-right = "jump_forward";
           w = "collapse_selection";
           ret = ":write";
-          space.e = "file_browser_in_current_buffer_directory";
-          space.E = "file_browser";
-          D = "copy_selection_on_prev_line";
+          A-c = "copy_selection_on_prev_line";
+          A-d = "@:e <C-r>%<C-w>";
           up = "select_textobject_inner";
           down = "select_textobject_around";
           left = "@[";
           right = "@]";
+          C-j = "join_selections_space";
           "`"."u" = "switch_to_uppercase";
           "`"."l" = "switch_to_lowercase";
-          # delete two lines below
-          C-j = [
-            "extend_to_line_bounds"
-            "extend_line_below"
-            "delete_selection"
-          ];
-          # delete two lines above
-          C-k = [
-            "extend_to_line_bounds"
-            "extend_line_above"
-            "delete_selection"
-          ];
           # open lazygit
           C-g = [
             ":write-all"
@@ -50,6 +38,15 @@
             ":buffer-close!"
             ":redraw"
             ":reload-all"
+          ];
+          # newline without comment
+          g.O = [
+            "open_above"
+            "delete_word_backward"
+          ];
+          g.o = [
+            "open_below"
+            "delete_word_backward"
           ];
         };
       in
@@ -82,12 +79,53 @@
         };
         keys.normal = keybindings // {
           backspace = "goto_word";
+          _ = "@vgs";
+          "$" = "@vge";
         };
+        # newline without comment
+        keys.insert.A-ret = [
+          "insert_newline"
+          "delete_word_backward"
+        ];
       };
 
     themes.catppuccin = {
       inherits = "catppuccin_mocha";
       "variable.other.member" = "teal";
+      "function.macro" = "rosewater";
+
+      "ui.cursor.primary.normal" = {
+        fg = "base";
+        bg = "rosewater";
+      };
+
+      "ui.cursor.normal" = {
+        fg = "base";
+        bg = "#b5a6a8";
+      };
+
+      # https://github.com/catppuccin/helix/pull/61
+      "function.builtin" = "peach";
+
+      # https://github.com/catppuccin/helix/pull/58
+      "markup.heading.1" = "red";
+      "markup.heading.2" = "peach";
+      "markup.heading.3" = "yellow";
+      "markup.heading.4" = "green";
+      "markup.heading.5" = "blue";
+      "markup.heading.6" = "mauve";
+      "markup.list" = "teal";
+      "markup.bold" = {
+        fg = "red";
+        modifiers = [ "bold" ];
+      };
+      "markup.italic" = {
+        fg = "red";
+        modifiers = [ "italic" ];
+      };
+      "markup.link.text" = "lavender";
+      "markup.raw" = "green";
+      "markup.quote" = "pink";
     };
 
     languages = {
