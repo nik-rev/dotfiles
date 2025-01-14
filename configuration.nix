@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   pkgs-unstable,
   inputs,
   ...
@@ -28,6 +29,10 @@
       PLAYWRIGHT_BROWSERS_PATH = pkgs-unstable.playwright-driver.browsers;
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
       EDITOR = "hx";
+
+      # required to build some rust packages such as nushell
+      # otherwise rust is unable to find these
+      LD_LIBRARY_PATH = lib.makeLibraryPath [ pkgs-unstable.openssl ];
 
       # required for openssl
       # see also https://github.com/sfackler/rust-openssl/issues/1663
