@@ -145,11 +145,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1735977175,
-        "narHash": "sha256-JIjwNkmbCTqtlE4XbyPUfGftAZlP+SbhLzXNRk+LFc4=",
+        "lastModified": 1736256418,
+        "narHash": "sha256-dgWpyN7EOtIUGfJQDQMYO+CaHfnHO6RTM87SbCIY+iE=",
         "owner": "NikitaRevenco",
         "repo": "helix",
-        "rev": "365b996c9076690787b207cd10bc723004a48645",
+        "rev": "979ca919c709af5454fbad9007a3449fbc55420c",
         "type": "github"
       },
       "original": {
@@ -263,11 +263,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1735834308,
-        "narHash": "sha256-dklw3AXr3OGO4/XT1Tu3Xz9n/we8GctZZ75ZWVqAVhk=",
+        "lastModified": 1736344531,
+        "narHash": "sha256-8YVQ9ZbSfuUk2bUf2KRj60NRraLPKPS0Q4QFTbc+c2c=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "6df24922a1400241dae323af55f30e4318a6ca65",
+        "rev": "bffc22eb12172e6db3c5dde9e3e5628f8e3e7912",
         "type": "github"
       },
       "original": {
@@ -318,11 +318,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1735866454,
-        "narHash": "sha256-v3wRiMLDWamHE/KS8irGa/e+VVWdIT+D47V5d/tr31o=",
+        "lastModified": 1736415161,
+        "narHash": "sha256-KmrfPqs0pPonFaMDmETa1LRGnMm4OX3RMmGCDEoenm4=",
         "owner": "NikitaRevenco",
         "repo": "patchy",
-        "rev": "24508ddf603c22b63aa657f9eaa9ad68740fdb72",
+        "rev": "2f082ecda9d35ab7d168626274fcb0108ece0bb8",
         "type": "github"
       },
       "original": {
