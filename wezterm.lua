@@ -26,6 +26,16 @@ config.keys = {
 	{ key = "RightArrow", mods = "OPT", action = wezterm.action({ SendString = "\x1bf" }) },
 	{ key = "\\", mods = "CTRL", action = wezterm.action.ActivateCopyMode },
 	{ key = "Backspace", mods = "CTRL", action = wezterm.action.SendKey({ mods = "CTRL", key = "w" }) },
+	{
+		key = "Enter",
+		mods = "ALT",
+		action = wezterm.action.DisableDefaultAssignment,
+	},
+	{
+		key = "Enter",
+		mods = "SHIFT",
+		action = wezterm.action.DisableDefaultAssignment,
+	},
 }
 
 config.tab_bar_at_bottom = true
