@@ -35,6 +35,9 @@ let
     libiconv
     openssl
     pkg-config
+
+    # ssg
+    zola
   ];
   nix = with pkgs-unstable; [
     nil
@@ -65,7 +68,7 @@ let
     # npm config set prefix "${HOME}/.cache/npm/global"
     # mkdir -p "${HOME}/.cache/npm/global"
     # after this we can run npm install -g <pkg>
-    # 
+    #
     # Installed packages this way:
     # @mdx-js/language-server
     # prettier-plugin-astro
