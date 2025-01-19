@@ -1,23 +1,20 @@
 {
-  pkgs,
-  # lib,
+  pkgs-nur,
+  lib,
   # inputs,
   ...
 }:
-# let
-#   extensions = builtins.trace inputs.nur.modules.homeManager.default.imports (
-#     with inputs.nur.modules.homeManager.default.imports.repos.rycee.firefox-addons;
-#     [
-#       # https://github.com/TLATER/dotfiles/blob/b39af91fbd13d338559a05d69f56c5a97f8c905d/home-config/config/graphical-applications/firefox.nix
-#       react-devtools
-#       ublock-origin
-#       clearurls
-#       stylus
-#       proton-pass
-#       sponsorblock
-#     ]
-#   );
-# in
+let
+  # more extensions are found at https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
+  extensions = with pkgs-nur.nur.repos.rycee.firefox-addons; [
+    react-devtools
+    ublock-origin
+    clearurls
+    stylus
+    proton-pass
+    sponsorblock
+  ];
+in
 {
   programs.firefox = {
     enable = true;
@@ -27,18 +24,19 @@
       DisablePocker = true;
       DisableFirefoxAccounts = true;
       PromptForDownloadLocation = true;
-      # ExtensionSettings = builtins.listToAttrs (
-      #   builtins.map (
-      #     e:
-      #     lib.nameValuePair e.addonId {
-      #       installation_mode = "force_installed";
-      #       install_url = "file://${e.src}";
-      #       updates_disabled = true;
-      #     }
-      #   ) extensions
-      # );
+      ExtensionSettings = builtins.listToAttrs (
+        builtins.map (
+          extension:
+          lib.nameValuePair extension.addonId {
+            installation_mode = "force_installed";
+            install_url = "file://${extension.src}";
+            updates_disabled = true;
+          }
+        ) extensions
+      );
     };
     profiles.nikita = {
+      inherit extensions;
       search.force = true;
       search.engines = {
         "GitHub Code" = {
@@ -54,8 +52,7 @@
           definedAliases = [ "@np" ];
         };
       };
-      # extensions = extensions;
-      # all settings: https://kb.mozillazine.org/About:config_entries
+      # more settings: https://kb.mozillazine.org/About:config_entries
       settings = {
         "browser.display.background_color.dark" = "#1e1e2e";
         "app.update.auto" = false;

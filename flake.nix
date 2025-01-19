@@ -45,13 +45,12 @@
         config.allowUnfree = true;
         overlays = [ overlay ];
       };
-      pkgs-old = import nixpkgs-unstable {
+      pkgs-nur = import nixpkgs-unstable {
         inherit system;
-        config.allowUnfree = true;
-        overlays = [ overlay ];
+        overlays = [ nur.overlays.default ];
       };
       specialArgs = {
-        inherit pkgs-unstable inputs pkgs-old;
+        inherit pkgs-unstable inputs pkgs-nur;
       };
     in
     {
