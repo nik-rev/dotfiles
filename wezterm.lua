@@ -5,7 +5,7 @@ config.color_scheme = "Catppuccin Mocha"
 config.font_size = 19
 config.font = wezterm.font("JetBrainsMono NF")
 config.window_close_confirmation = "NeverPrompt"
-config.window_decorations = "RESIZE"
+config.window_decorations = "NONE"
 config.automatically_reload_config = false
 config.swallow_mouse_click_on_window_focus = true
 config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }

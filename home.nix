@@ -12,13 +12,13 @@
     ./git.nix
     ./lazygit.nix
     ./zsh.nix
-    ./i3.nix
+    # ./i3.nix
     ./languages.nix
   ];
 
   xdg.configFile."wezterm/wezterm.lua".source = ./wezterm.lua;
+  xdg.configFile."sway/config".source = ./sway.conf;
   xdg.userDirs.download = "${config.home.homeDirectory}/t";
-  xsession.windowManager.i3.enable = true;
   services.flameshot.enable = true;
   programs = {
     yazi.enable = true;
@@ -75,6 +75,7 @@
         playwright-test
         doggo
         jq
+        slurp
         # playwright-driver
         dconf
         hugo
