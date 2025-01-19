@@ -28,8 +28,6 @@
           left = "@[";
           right = "@]";
           C-j = "join_selections_space";
-          "`"."u" = "switch_to_uppercase";
-          "`"."l" = "switch_to_lowercase";
           # open lazygit
           C-g = [
             ":write-all"
@@ -130,6 +128,26 @@
 
     languages = {
       language-server = {
+        texlab.config.texlab = {
+          build = {
+            executable = "pdflatex";
+            args = [
+              "-synctex=1"
+              "-interaction=nonstopmode"
+              "-output-directory=build"
+              "%f"
+            ];
+            onSave = true;
+            forwardSearchAfter = true;
+          };
+          forwardSearch.executable = "zathura";
+          forwardSearch.args = [
+            "--synctex-forward"
+            "%l:1:%f"
+            "%p"
+          ];
+          chktex.onEdit = true;
+        };
         rust-analyzer.config.check.command = "clippy";
         nginx = {
           command = "nginx-language-server";
@@ -261,6 +279,13 @@
               "hxx"
             ];
             formatter.command = "clang-format";
+          }
+          {
+            name = "typst";
+            formatter.command = "typstyle";
+          }
+          {
+            name = "latex";
           }
           {
             name = "c";

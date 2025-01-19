@@ -49,28 +49,9 @@
           urls = [ { template = "https://github.com/search?q={searchTerms}&type=issues"; } ];
           definedAliases = [ "@gi" ];
         };
-        "NPM" = {
-          urls = [ { template = "https://www.npmjs.com/search?q={searchTerms}"; } ];
-          definedAliases = [ "@npm" ];
-        };
-        "Pkg Size" = {
-          urls = [ { template = "https://pkg-size.dev/{searchTerms}"; } ];
-          definedAliases = [ "@pkg" ];
-        };
-        "Home Manager NixOs" = {
-          urls = [
-            {
-              template = "https://home-manager-options.extranix.com/";
-              params = [
-                {
-                  name = "query";
-                  value = "{searchTerms}";
-                }
-              ];
-            }
-          ];
-          icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-          definedAliases = [ "@hm" ];
+        "Nix Packages" = {
+          urls = [ { template = "https://search.nixos.org/packages?query={searchTerms}"; } ];
+          definedAliases = [ "@np" ];
         };
       };
       # extensions = extensions;

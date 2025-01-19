@@ -45,6 +45,7 @@
   fonts = {
     packages = with pkgs; [
       noto-fonts
+      texlivePackages.xcharter
       noto-fonts-cjk-sans
       noto-fonts-emoji
       (nerdfonts.override {

@@ -8,6 +8,11 @@ let
     hpack
     ghc
   ];
+  typst_ = with pkgs-unstable; [
+    typst
+    typstyle
+    tinymist
+  ];
   go = with pkgs-unstable; [
     gopls
     gofumpt
@@ -80,7 +85,8 @@ let
   ];
 in
 {
-  home.packages = haskell_ ++ rust ++ nix ++ lua ++ c ++ shell ++ javascript ++ go ++ python ++ misc;
+  home.packages =
+    haskell_ ++ rust ++ nix ++ lua ++ c ++ shell ++ javascript ++ go ++ python ++ misc ++ typst_;
 
   # disable update check for pnpm
   xdg.configFile."pnpm/rc".source =

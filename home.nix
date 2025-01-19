@@ -78,6 +78,8 @@
         jq
         # playwright-driver
         dconf
+        hugo
+        gh
         asciinema
         # interactive search and replace
         scooter
