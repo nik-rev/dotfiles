@@ -1,7 +1,6 @@
 {
   pkgs-nur,
   lib,
-  # inputs,
   ...
 }:
 let

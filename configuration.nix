@@ -24,6 +24,7 @@
     sessionVariables = {
       # faster rustc compile times
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=${pkgs.mold}/bin/mold";
+      # it puts into $HOME/go by default
       GOPATH = "$HOME/.go";
       # https://nixos.wiki/wiki/Playwright
       PLAYWRIGHT_BROWSERS_PATH = pkgs-unstable.playwright-driver.browsers;
@@ -38,14 +39,11 @@
       # see also https://github.com/sfackler/rust-openssl/issues/1663
       PKG_CONFIG_PATH = "${pkgs-unstable.openssl.dev}/lib/pkgconfig";
     };
-    # enable completion for system packages in zsh
-    pathsToLink = [ "/share/zsh" ];
   };
 
   fonts = {
     packages = with pkgs; [
       noto-fonts
-      texlivePackages.xcharter
       noto-fonts-cjk-sans
       noto-fonts-emoji
       (nerdfonts.override {
@@ -53,6 +51,7 @@
           "JetBrainsMono"
         ];
       })
+      texlivePackages.xcharter
     ];
     fontconfig = {
       enable = true;
@@ -72,13 +71,11 @@
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration: https://wiki.nixos.org/wiki/Sway
   security.polkit.enable = true;
 
-  users = {
-    users.e = {
-      initialPassword = "e";
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      shell = pkgs.nushell;
-    };
+  users.users.e = {
+    initialPassword = "e";
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    shell = pkgs.nushell;
   };
 
   # required to be able to set zsh as default shell for users
@@ -98,9 +95,7 @@
   };
 
   services = {
-
     libinput.enable = true;
-
     openssh = {
       enable = true;
       settings = {
@@ -108,7 +103,6 @@
         PasswordAuthentication = false;
       };
     };
-
   };
 
   fileSystems."/".options = [
@@ -121,7 +115,6 @@
     kernelParams = [
       "intel_pstate=no_hwp"
       "quiet"
-      "splash"
     ];
     loader.efi.canTouchEfiVariables = true;
     loader.grub = {
