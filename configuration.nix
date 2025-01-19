@@ -83,11 +83,6 @@
 
   # required to be able to set zsh as default shell for users
   programs.zsh.enable = true;
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.base = true;
-    wrapperFeatures.gtk = true;
-  };
 
   services.pipewire = {
     enable = true;
@@ -96,12 +91,6 @@
     pulse.enable = true;
   };
 
-  # hardware.pulseaudio = {
-  #   enable = true;
-  #   support32Bit = true;
-  #   tcp.enable = true;
-  # };
-
   networking = {
     hostName = "nixos";
     firewall.enable = true;
@@ -109,16 +98,6 @@
   };
 
   services = {
-    xserver = {
-      enable = true;
-      displayManager.startx.enable = true;
-      windowManager.i3 = {
-        enable = true;
-      };
-      autoRepeatDelay = 200;
-      autoRepeatInterval = 25;
-      xkb.layout = "us";
-    };
 
     libinput.enable = true;
 

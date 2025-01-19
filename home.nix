@@ -11,15 +11,13 @@
     ./firefox.nix
     ./git.nix
     ./lazygit.nix
-    ./zsh.nix
-    # ./i3.nix
+    ./nu.nix
+    ./sway.nix
     ./languages.nix
   ];
 
   xdg.configFile."wezterm/wezterm.lua".source = ./wezterm.lua;
-  xdg.configFile."sway/config".source = ./sway.conf;
   xdg.userDirs.download = "${config.home.homeDirectory}/t";
-  services.flameshot.enable = true;
   programs = {
     yazi.enable = true;
     zoxide.enable = true;
@@ -72,10 +70,10 @@
       ++ (with pkgs-unstable; [
         # for recordings
         gnome-terminal
+        wl-clipboard
         playwright-test
         doggo
         jq
-        slurp
         # playwright-driver
         dconf
         hugo
@@ -85,6 +83,10 @@
         scooter
         # benchmarking tool
         hyperfine
+        # take screenshots
+        slurp
+        # copy slurp screenshots to clipboard
+        grim
       ]);
     stateVersion = "24.11";
   };
