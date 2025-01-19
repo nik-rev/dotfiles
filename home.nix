@@ -2,14 +2,12 @@
   pkgs,
   config,
   pkgs-unstable,
-  pkgs-old,
   inputs,
   ...
 }:
 {
   imports = [
     ./helix.nix
-    ./bat.nix
     ./firefox.nix
     ./git.nix
     ./lazygit.nix
@@ -48,6 +46,7 @@
     packages =
       with pkgs;
       [
+        bat
         sof-firmware
         ripgrep
         libreoffice
