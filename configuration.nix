@@ -10,6 +10,9 @@
     inputs.hardware-configuration.outPath
   ];
 
+  # Required for sway to start
+  hardware.graphics.enable = true;
+
   nixpkgs.config.allowUnfree = true;
 
   nix.settings.experimental-features = [
@@ -38,6 +41,9 @@
       # required for openssl
       # see also https://github.com/sfackler/rust-openssl/issues/1663
       PKG_CONFIG_PATH = "${pkgs-unstable.openssl.dev}/lib/pkgconfig";
+
+      # telemetry
+      DOTNET_CLI_TELEMETRY_OPTOUT = "1";
     };
   };
 
@@ -87,6 +93,31 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
+
+  services.udev.extraRules = ''
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"
+  '';
+
+  # services.postgresql = {
+  #   enable = true;
+  #   ensureDatabases = [ "mydatabase" ];
+  #   enableTCPIP = true;
+  #   port = 5432;
+  #   authentication = pkgs.lib.mkOverride 10 ''
+  #     #...
+  #     #type database DBuser origin-address auth-method
+  #     local all       all     trust
+  #     # ipv4
+  #     host  all      all     127.0.0.1/32   trust
+  #     # ipv6
+  #     host all       all     ::1/128        trust
+  #   '';
+  #   initialScript = pkgs.writeText "backend-initScript" ''
+  #     CREATE ROLE nixcloud WITH LOGIN PASSWORD 'nixcloud' CREATEDB;
+  #     CREATE DATABASE nixcloud;
+  #     GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
+  #   '';
+  # };
 
   networking = {
     hostName = "nixos";

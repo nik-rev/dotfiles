@@ -14,6 +14,15 @@ let
     hpack
     ghc
   ];
+  csharp = with pkgs-unstable; [
+    # dotnet-sdk_9
+    dotnet-sdk
+    dotnet-ef
+    # lang server
+    omnisharp-roslyn
+    # formatter
+    csharpier
+  ];
   typst_ = with pkgs-unstable; [
     typst
     typstyle
@@ -86,6 +95,7 @@ let
   ];
   c = with pkgs-unstable; [
     clang
+    cmake
     clang-tools
     mold
   ];
@@ -177,12 +187,19 @@ in
         slurp
         # copy slurp screenshots to clipboard
         grim
+        mesa
+        tree
+
+        postgresql
+        vial
+        pgcli
       ])
       ++ haskell_
       ++ rust
       ++ nix
       ++ lua
       ++ c
+      ++ csharp
       ++ shell
       ++ javascript
       ++ go

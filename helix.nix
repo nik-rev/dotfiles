@@ -15,7 +15,10 @@
       let
         keybindings = {
           tab.x = ":write-quit-all";
+          space.i = ":toggle lsp.display-inlay-hints";
           x = "select_line_below";
+          H = "@F)mi(";
+          L = "@f(mi(";
           X = "select_line_above";
           S-left = "jump_backward";
           S-right = "jump_forward";
@@ -102,8 +105,18 @@
         bg = "#b5a6a8";
       };
 
-      # https://github.com/catppuccin/helix/pull/61
-      "function.builtin" = "peach";
+      # https://github.com/catppuccin/helix
+      "ui.virtual.inlay-hint" = {
+        fg = "surface2";
+        bg = "mantle";
+      };
+      "ui.virtual.inlay-hint.parameter" = "subtext0";
+      "ui.virtual.inlay-hint.type" = "subtext1";
+
+      "function.builtin" = {
+        fg = "blue";
+        modifiers = [ "bold" ];
+      };
 
       # https://github.com/catppuccin/helix/pull/58
       "markup.heading.1" = "red";
@@ -148,19 +161,24 @@
           ];
           chktex.onEdit = true;
         };
-        rust-analyzer.config.check.command = "clippy";
+        rust-analyzer.config = {
+          check.command = "clippy";
+          # makes it work when in an integration-test
+          # cargo.features = "all";
+        };
         nginx = {
           command = "nginx-language-server";
           filetypes = [ "nginx" ];
           required-root-patterns = [ "nginx.conf" ];
         };
-        eslint = {
-          args = [ "--stdio" ];
-          command = "vscode-eslint-language-server";
-          config.validate = "on";
-        };
+        # eslint = {
+        #   args = [ "--stdio" ];
+        #   command = "vscode-eslint-language-server";
+        #   config.validate = "on";
+        # };
         typescript-language-server = {
           required-root-patterns = [ "package.json" ];
+          args = [ "--stdio" ];
         };
         deno = {
           command = "deno";
@@ -313,8 +331,8 @@
             formatter = prettier ".ts";
             language-servers = [
               "typescript-language-server"
-              "eslint"
-              "deno"
+              # "eslint"
+              # "deno"
             ];
           }
           {
@@ -342,7 +360,7 @@
             language-servers = [
               "tailwindcss"
               "typescript-language-server"
-              "eslint"
+              # "eslint"
             ];
             block-comment-tokens = [
               "{/*"
@@ -368,6 +386,10 @@
           {
             name = "html";
             formatter = prettier ".html";
+          }
+          {
+            name = "c-sharp";
+            formatter.command = lib.getExe pkgs-unstable.csharpier;
           }
           {
             name = "javascript";
