@@ -223,9 +223,18 @@
 
       language =
         let
-          prettier = lang: {
+          prettierd = lang: {
             command = lib.getExe pkgs-unstable.prettierd;
             args = [ lang ];
+          };
+          prettier = plugin: parser: {
+            command = lib.getExe pkgs-unstable.nodePackages.prettier;
+            args = [
+              "--plugin"
+              plugin
+              "--parser"
+              parser
+            ];
           };
         in
         map (language: language // { auto-format = true; }) ([
@@ -242,15 +251,15 @@
               "astro-ls"
               "tailwindcss"
             ];
-            formatter = {
-              command = lib.getExe pkgs-unstable.nodePackages.prettier;
-              args = [
-                "--plugin"
-                "prettier-plugin-astro"
-                "--parser"
-                "astro"
-              ];
-            };
+            formatter = prettier "prettier-plugin-astro" "astro";
+          }
+          {
+            name = "svelte";
+            language-servers = [
+              "svelteserver"
+              "tailwindcss"
+            ];
+            formatter = prettier "prettier-plugin-svelte" "svelte";
           }
           {
             file-types = [ "tera" ];
@@ -328,35 +337,35 @@
           }
           {
             name = "typescript";
-            formatter = prettier ".ts";
+            formatter = prettierd ".ts";
             language-servers = [
               "typescript-language-server"
-              # "eslint"
-              # "deno"
+              "eslint"
+              "deno"
             ];
           }
           {
             name = "yaml";
-            formatter = prettier ".yaml";
+            formatter = prettierd ".yaml";
           }
           {
             name = "markdown";
-            formatter = prettier ".md";
+            formatter = prettierd ".md";
             language-servers = [
               "tailwindcss"
             ];
           }
           {
             name = "scss";
-            formatter = prettier ".scss";
+            formatter = prettierd ".scss";
           }
           {
             name = "css";
-            formatter = prettier ".css";
+            formatter = prettierd ".css";
           }
           {
             name = "tsx";
-            formatter = prettier ".tsx";
+            formatter = prettierd ".tsx";
             language-servers = [
               "tailwindcss"
               "typescript-language-server"
@@ -369,11 +378,11 @@
           }
           {
             name = "jsx";
-            formatter = prettier ".jsx";
+            formatter = prettierd ".jsx";
           }
           {
             name = "json";
-            formatter = prettier ".json";
+            formatter = prettierd ".json";
           }
           {
             name = "toml";
@@ -385,7 +394,7 @@
           }
           {
             name = "html";
-            formatter = prettier ".html";
+            formatter = prettierd ".html";
           }
           {
             name = "c-sharp";
@@ -393,7 +402,7 @@
           }
           {
             name = "javascript";
-            formatter = prettier ".js";
+            formatter = prettierd ".js";
           }
           {
             name = "nix";

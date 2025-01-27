@@ -47,18 +47,39 @@ let
     ruff
     pyright
   ];
-  rust = with pkgs-unstable; [
-    rustup
+  rust =
+    with pkgs-unstable;
+    [
+      rustup
 
-    # some crates require openssl
-    # see also https://github.com/sfackler/rust-openssl/issues/1663
-    libiconv
-    openssl
-    pkg-config
+      # some crates require openssl
+      # see also https://github.com/sfackler/rust-openssl/issues/1663
+      libiconv
+      openssl
+      pkg-config
 
-    # ssg
-    zola
-  ];
+      # frameworks
+      zola
+      # dioxus-cli
+
+    ]
+    ++ (with pkgs; [
+
+      # tauri and dioxus: https://tauri.app/start/prerequisites/#linux
+      cargo-tauri
+      gobject-introspection
+      at-spi2-atk
+      atkmm
+      cairo
+      glib
+      gtk3
+      harfbuzz
+      librsvg
+      libsoup_3
+      pango
+      webkitgtk_4_1
+
+    ]);
   nix = with pkgs-unstable; [
     nil
     nixfmt-rfc-style
@@ -71,6 +92,7 @@ let
   javascript = with pkgs-unstable; [
     typescript-language-server
     tailwindcss-language-server
+    svelte-language-server
     vscode-langservers-extracted
     astro-language-server
     pnpm
@@ -92,6 +114,7 @@ let
     # Installed packages this way:
     # @mdx-js/language-server
     # prettier-plugin-astro
+    # prettier-plugin-svelte
   ];
   c = with pkgs-unstable; [
     clang
@@ -193,6 +216,7 @@ in
         postgresql
         vial
         pgcli
+        nixpkgs-review
       ])
       ++ haskell_
       ++ rust
