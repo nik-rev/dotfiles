@@ -68,6 +68,7 @@
               "file-name"
               "diagnostics"
             ];
+            merge-with-commandline = true;
           };
           indent-guides = {
             character = "╎";
@@ -94,6 +95,10 @@
       inherits = "catppuccin_mocha";
       "variable.other.member" = "teal";
       "function.macro" = "rosewater";
+
+      # "type.builtin" = "teal";
+
+      # "type.enum.variant.builtin" = "sapphire";
 
       "ui.cursor.primary.normal" = {
         fg = "base";
@@ -163,8 +168,8 @@
         };
         rust-analyzer.config = {
           check.command = "clippy";
-          # makes it work when in an integration-test
-          # cargo.features = "all";
+          # makes it work when in an integration_test
+          # cargo.features = [ "integration_test" ];
         };
         nginx = {
           command = "nginx-language-server";
@@ -213,14 +218,6 @@
         };
       };
 
-      grammar = [
-        {
-          name = "tera";
-          source.git = "https://github.com/uncenter/tree-sitter-tera";
-          source.rev = "main";
-        }
-      ];
-
       language =
         let
           prettierd = lang: {
@@ -260,40 +257,6 @@
               "tailwindcss"
             ];
             formatter = prettier "prettier-plugin-svelte" "svelte";
-          }
-          {
-            file-types = [ "tera" ];
-            grammar = "tera";
-            injection-regex = "tera";
-            name = "tera";
-            scope = "source.tera";
-            auto-pairs = {
-              "\"" = "\"";
-              "'" = "'";
-              "`" = "`";
-              "(" = ")";
-              "[" = "]";
-              "{" = "}";
-              "%" = "%";
-            };
-            block-comment-tokens = [
-              {
-                start = "{#";
-                end = "#}";
-              }
-              {
-                start = "{#-";
-                end = "-#}";
-              }
-              {
-                start = "{#";
-                end = "-#}";
-              }
-              {
-                start = "{#-";
-                end = "#}";
-              }
-            ];
           }
           {
             name = "cpp";
@@ -351,6 +314,14 @@
           {
             name = "markdown";
             formatter = prettierd ".md";
+            comment-tokens = [
+              "-"
+              "+"
+              "*"
+              "1."
+              ">"
+              "- [ ]"
+            ];
             language-servers = [
               "tailwindcss"
             ];

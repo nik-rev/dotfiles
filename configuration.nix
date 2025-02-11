@@ -25,7 +25,7 @@
       git
     ];
     sessionVariables = {
-      # faster rustc compile times
+      # faster rustc linker times
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=${pkgs.mold}/bin/mold";
       # it puts into $HOME/go by default
       GOPATH = "$HOME/.go";
@@ -86,6 +86,8 @@
 
   # required to be able to set zsh as default shell for users
   programs.zsh.enable = true;
+  # allows running executables (useful for c++ libraries) https://github.com/nix-community/nix-ld
+  programs.nix-ld.enable = true;
 
   services.pipewire = {
     enable = true;

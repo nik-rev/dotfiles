@@ -119,8 +119,16 @@ let
   c = with pkgs-unstable; [
     clang
     cmake
+    # llvm
+    # llvmPackages_19.libllvm
     clang-tools
     mold
+    # package manager
+    vcpkg
+    # for c sharp language server in order to discover the header files
+    bear
+    ninja
+    # conan
   ];
 in
 {
@@ -176,7 +184,7 @@ in
         p7zip
         exercism
         zathura
-        inputs.patchy.packages.${pkgs.system}.default
+        # inputs.patchy.packages.${pkgs.system}.default
         brightnessctl
         gimp
         catppuccin-whiskers
@@ -197,6 +205,8 @@ in
         playwright-test
         doggo
         jq
+        zip
+        unzip
         # playwright-driver
         dconf
         hugo
@@ -213,6 +223,9 @@ in
         mesa
         tree
 
+        # when using standard nix-shell all my configurations are lost
+        # with this tool, that isn't the case anymore
+        direnv
         postgresql
         vial
         pgcli
