@@ -105,6 +105,11 @@
         bg = "rosewater";
       };
 
+      "ui.cursor.primary.select" = {
+        fg = "base";
+        bg = "lavender";
+      };
+
       "ui.cursor.normal" = {
         fg = "base";
         bg = "#b5a6a8";
