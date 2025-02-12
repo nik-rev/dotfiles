@@ -97,44 +97,41 @@
 
     themes.catppuccin = {
       inherits = "catppuccin_mocha";
+      # custom improvements
       "variable.other.member" = "teal";
       "function.macro" = "rosewater";
 
+      # these changes are synced from the main catppuccin
+      # repository. Once the catppuccin theme is updated for Helix
+      # upstream, remove this code
       "ui.cursor.primary.normal" = {
         fg = "base";
         bg = "rosewater";
       };
-
       "ui.cursor.primary.select" = {
         fg = "base";
         bg = "lavender";
       };
-
       "ui.cursor.normal" = {
         fg = "base";
         bg = "#b5a6a8";
       };
-
-      # https://github.com/catppuccin/helix
       "ui.virtual.inlay-hint" = {
         fg = "surface2";
         bg = "mantle";
       };
       "ui.virtual.inlay-hint.parameter" = "subtext0";
       "ui.virtual.inlay-hint.type" = "subtext1";
-
       "function.builtin" = {
         fg = "blue";
         modifiers = [ "bold" ];
       };
-
-      # https://github.com/catppuccin/helix/pull/58
       "markup.heading.1" = "red";
       "markup.heading.2" = "peach";
       "markup.heading.3" = "yellow";
       "markup.heading.4" = "green";
-      "markup.heading.5" = "blue";
-      "markup.heading.6" = "mauve";
+      "markup.heading.5" = "sapphire";
+      "markup.heading.6" = "lavender";
       "markup.list" = "teal";
       "markup.bold" = {
         fg = "red";
