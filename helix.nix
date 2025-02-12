@@ -15,22 +15,15 @@
       let
         keybindings = {
           tab.x = ":write-quit-all";
-          space.i = ":toggle lsp.display-inlay-hints";
           x = "select_line_below";
-          H = "@F)mi(";
-          L = "@f(mi(";
           X = "select_line_above";
           S-left = "jump_backward";
           S-right = "jump_forward";
-          w = "collapse_selection";
           ret = ":write";
-          A-c = "copy_selection_on_prev_line";
-          A-d = "@:e <C-r>%<C-w>";
-          up = "select_textobject_inner";
-          down = "select_textobject_around";
           left = "@[";
           right = "@]";
-          C-j = "join_selections_space";
+          up = "select_textobject_inner";
+          down = "select_textobject_around";
           # open lazygit
           C-g = [
             ":write-all"
@@ -49,6 +42,19 @@
             "open_below"
             "delete_word_backward"
           ];
+          # rebindings because default keymap is a bit awkward with my custom layout
+          # DEFAULT: A-C
+          A-c = "copy_selection_on_prev_line";
+          # DEFAULT: A-J
+          C-j = "join_selections_space";
+          # DEFAULT: A-K
+          C-k = "remove_selections";
+          # DEFAULT: A-I
+          C-c = "select_all_children";
+          # DEFAULT: A-n
+          A-right = "select_next_sibling";
+          # DEFAULT: A-U
+          C-S-u = "later";
         };
       in
       {
@@ -81,8 +87,6 @@
         };
         keys.normal = keybindings // {
           backspace = "goto_word";
-          _ = "@vgs";
-          "$" = "@vge";
         };
         # newline without comment
         keys.insert.A-ret = [
@@ -95,10 +99,6 @@
       inherits = "catppuccin_mocha";
       "variable.other.member" = "teal";
       "function.macro" = "rosewater";
-
-      # "type.builtin" = "teal";
-
-      # "type.enum.variant.builtin" = "sapphire";
 
       "ui.cursor.primary.normal" = {
         fg = "base";
@@ -146,26 +146,6 @@
 
     languages = {
       language-server = {
-        texlab.config.texlab = {
-          build = {
-            executable = "pdflatex";
-            args = [
-              "-synctex=1"
-              "-interaction=nonstopmode"
-              "-output-directory=build"
-              "%f"
-            ];
-            onSave = true;
-            forwardSearchAfter = true;
-          };
-          forwardSearch.executable = "zathura";
-          forwardSearch.args = [
-            "--synctex-forward"
-            "%l:1:%f"
-            "%p"
-          ];
-          chktex.onEdit = true;
-        };
         rust-analyzer.config = {
           check.command = "clippy";
           # makes it work when in an integration_test

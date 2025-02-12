@@ -20,7 +20,7 @@ config.keys = {
 	{ key = "-", mods = "CTRL", action = wezterm.action.DecreaseFontSize },
 	{ key = "n", mods = "CTRL", action = wezterm.action.ActivateTabRelative(1) },
 	{ key = "p", mods = "CTRL", action = wezterm.action.ActivateTabRelative(-1) },
-	{ key = "x", mods = "CTRL", action = wezterm.action.CloseCurrentTab({ confirm = true }) },
+	{ key = "X", mods = "CTRL", action = wezterm.action.CloseCurrentTab({ confirm = true }) },
 	{ key = "=", mods = "CTRL", action = wezterm.action.ResetFontSize },
 	{ key = "LeftArrow", mods = "OPT", action = wezterm.action({ SendString = "\x1bb" }) },
 	{ key = "RightArrow", mods = "OPT", action = wezterm.action({ SendString = "\x1bf" }) },
