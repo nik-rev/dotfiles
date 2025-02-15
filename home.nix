@@ -119,7 +119,6 @@ let
   c = with pkgs-unstable; [
     clang
     cmake
-    # llvm
     # llvmPackages_19.libllvm
     clang-tools
     mold
@@ -162,6 +161,13 @@ in
     fd.enable = true;
     go.enable = true;
     go.goBin = "go/bin";
+    obs-studio = {
+      enable = true;
+      plugins = with pkgs.obs-studio-plugins; [
+        wlrobs
+        droidcam-obs
+      ];
+    };
   };
   home = {
     sessionPath = [
@@ -228,7 +234,12 @@ in
         direnv
         postgresql
         vial
+        # screen recording
+        # obs-studio
+        # # capture screen on wayland
+        # obs-studio-plugins.wlrobs
         pgcli
+        vlc
         nixpkgs-review
       ])
       ++ haskell_

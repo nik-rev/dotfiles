@@ -304,9 +304,6 @@
               ">"
               "- [ ]"
             ];
-            language-servers = [
-              "tailwindcss"
-            ];
           }
           {
             name = "scss";
