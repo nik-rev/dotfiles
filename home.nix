@@ -233,6 +233,7 @@ in
         # with this tool, that isn't the case anymore
         direnv
         postgresql
+        # llvm
         vial
         # screen recording
         # obs-studio

@@ -101,6 +101,10 @@
       "variable.other.member" = "teal";
       "function.macro" = "rosewater";
 
+      "ui.selection" = {
+        bg = "surface0";
+      };
+
       # these changes are synced from the main catppuccin
       # repository. Once the catppuccin theme is updated for Helix
       # upstream, remove this code

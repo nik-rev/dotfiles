@@ -21,7 +21,7 @@
       ],
       [
         -1,
-        "KC_ESCAPE",
+        "KC_GESC",
         "KC_A",
         "KC_R",
         "KC_S",
@@ -555,9 +555,9 @@
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", 200]
   ],
   "combo": [
-    ["KC_LALT", "KC_LEFT", "KC_NO", "KC_NO", "KC_HOME"],
-    ["KC_LALT", "KC_RIGHT", "KC_NO", "KC_NO", "KC_END"],
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"],
+    ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"],
+    ["KC_LALT", "KC_Z", "KC_NO", "KC_NO", "LALT(KC_ENTER)"],
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"],
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"],
     ["KC_NO", "KC_NO", "KC_NO", "KC_NO", "KC_NO"],
