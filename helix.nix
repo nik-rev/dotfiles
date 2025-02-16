@@ -84,9 +84,11 @@
         };
         keys.select = keybindings // {
           backspace = "extend_to_word";
+          "A-*" = "extend_repeat_last_motion_reverse";
         };
         keys.normal = keybindings // {
           backspace = "goto_word";
+          "A-*" = "repeat_last_motion_reverse";
         };
         # newline without comment
         keys.insert.A-ret = [
@@ -100,10 +102,6 @@
       # custom improvements
       "variable.other.member" = "teal";
       "function.macro" = "rosewater";
-
-      "ui.selection" = {
-        bg = "surface0";
-      };
 
       # these changes are synced from the main catppuccin
       # repository. Once the catppuccin theme is updated for Helix

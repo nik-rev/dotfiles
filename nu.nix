@@ -48,6 +48,8 @@
         "icat" = "wezterm imgcat";
         "copy" = "xclip -selection clipboard";
         "icopy" = "xclip -selection clipboard -target image/png";
+        # when using `nix develop`, use nushell instead of bash.
+        "d" = "nix develop --command nu";
       };
       extraConfig = ''
         source /home/e/.cache/zoxide/init.nu
