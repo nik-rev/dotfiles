@@ -14,6 +14,10 @@
         size = 0.001;
       };
       bars = [ ];
+      # gaps = {
+      # left = 880;
+      #   right = 440;
+      # };
       keybindings = {
         "XF86AudioRaiseVolume" = "exec --no-startup-id pamixer --increase 5";
         "XF86AudioLowerVolume" = "exec --no-startup-id pamixer --decrease 5";
@@ -28,6 +32,7 @@
         "Mod1+e" = "focus up";
         "Mod1+i" = "focus down";
         "Mod1+o" = "focus right";
+        "Mod1+z" = "sticky toggle";
         "Mod1+2" = "move left";
         "Mod1+4" = "move down";
         "Mod1+1" = "move up";

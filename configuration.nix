@@ -8,6 +8,7 @@
 {
   imports = [
     inputs.hardware-configuration.outPath
+    ./vm.nix
   ];
 
   # Required for sway to start

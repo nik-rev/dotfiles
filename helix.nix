@@ -14,7 +14,10 @@
     settings =
       let
         keybindings = {
-          tab.x = ":write-quit-all";
+          space.x = ":write-quit-all";
+          space.X = ":write-quit-all!";
+          space.C-d = "@<space>D%severity ERROR";
+          tab = "collapse_selection";
           x = "select_line_below";
           X = "select_line_above";
           S-left = "jump_backward";
@@ -106,6 +109,7 @@
       # these changes are synced from the main catppuccin
       # repository. Once the catppuccin theme is updated for Helix
       # upstream, remove this code
+      "markup.link.label" = "sapphire";
       "ui.cursor.primary.normal" = {
         fg = "base";
         bg = "rosewater";
@@ -200,6 +204,12 @@
             };
           };
         };
+        # https://github.com/tekumara/typos-lsp/blob/main/docs/helix-config.md
+        typos-lsp = {
+          command = lib.getExe pkgs-unstable.typos-lsp;
+          environment.RUST_LOG = "error";
+          config.diagnosticSeverity = "Warning";
+        };
       };
 
       language =
@@ -217,6 +227,7 @@
               parser
             ];
           };
+
         in
         map (language: language // { auto-format = true; }) ([
           {
@@ -234,6 +245,31 @@
             ];
             formatter = prettier "prettier-plugin-astro" "astro";
           }
+          {
+            name = "nix";
+            auto-pairs = {
+              "=" = ";";
+              # unchanged:
+              "(" = ")";
+              "{" = "}";
+              "[" = "]";
+              "'" = "'";
+              "\"" = "\"";
+              "`" = "`";
+            };
+          }        
+          {
+            name = "rust";
+            auto-pairs = {
+              "|" = "|";
+              # unchanged:
+              "(" = ")";
+              "{" = "}";
+              "[" = "]";
+              "\"" = "\"";
+              "`" = "`";
+              };
+          }        
           {
             name = "svelte";
             language-servers = [
@@ -298,6 +334,7 @@
           {
             name = "markdown";
             formatter = prettierd ".md";
+            language-servers = [ "typos-lsp" ];
             comment-tokens = [
               "-"
               "+"

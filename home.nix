@@ -91,6 +91,7 @@ let
   ];
   javascript = with pkgs-unstable; [
     typescript-language-server
+    tailwindcss
     tailwindcss-language-server
     svelte-language-server
     vscode-langservers-extracted
@@ -181,6 +182,8 @@ in
     packages =
       with pkgs;
       [
+        # virtual machine for Windows
+        quickemu
         bat
         sof-firmware
         ripgrep
@@ -213,6 +216,7 @@ in
         jq
         zip
         unzip
+        virt-manager
         # playwright-driver
         dconf
         hugo
@@ -231,7 +235,6 @@ in
 
         # when using standard nix-shell all my configurations are lost
         # with this tool, that isn't the case anymore
-        direnv
         postgresql
         # llvm
         vial
@@ -240,8 +243,14 @@ in
         # # capture screen on wayland
         # obs-studio-plugins.wlrobs
         pgcli
-        vlc
+        mpv
+        # vlc
         nixpkgs-review
+        # spell checker
+        typos
+        typos-lsp
+        # alsa-lib.dev
+        alsa-lib
       ])
       ++ haskell_
       ++ rust

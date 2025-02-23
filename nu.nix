@@ -48,8 +48,10 @@
         "icat" = "wezterm imgcat";
         "copy" = "xclip -selection clipboard";
         "icopy" = "xclip -selection clipboard -target image/png";
+        "sway-pad" = "swaymsg gaps left all set 440 ; swaymsg gaps right all set 440";
+        "sway-unpad" = "swaymsg gaps left all set 0 ; swaymsg gaps right all set 0";
         # when using `nix develop`, use nushell instead of bash.
-        "d" = "nix develop --command nu";
+        "d" = "nix develop --command nu --execute \"$env.PROMPT_INDICATOR = 'nix> '\"";
       };
       extraConfig = ''
         source /home/e/.cache/zoxide/init.nu
@@ -58,6 +60,16 @@
         def --env --wrapped t [ ...args: string ] {
           z ...$args
           ^ls --classify --color=always
+        }
+
+        # for recording videos in a 16 * 9 resolution on a monitor of a different resolution
+        def spad [] {
+          swaymsg gaps left all set 440
+          swaymsg gaps right all set 440
+        }
+        def unspad [] {
+          swaymsg gaps left all set 0
+          swaymsg gaps right all set 0
         }
 
         $env.path = ($env.path | append $"($env.home)/.cache/npm/global/bin")
@@ -76,14 +88,6 @@
         }
 
         $env.PROMPT_COMMAND = ""
-
-        $env.config.hooks.env_change.PWD = [{ ||
-          if (which direnv | is-empty) {
-            return
-          }
-
-          direnv export json | from json | default {} | load-env
-        }]
 
         $env.config.show_banner = false
 

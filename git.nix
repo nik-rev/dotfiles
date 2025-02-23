@@ -12,20 +12,9 @@
       branch.sort = "committerdate";
     };
     aliases = {
-      "a" = "add";
-      "c" = "commit";
-      "s" = "status";
-      "f" = "fetch";
-      "b" = "branch";
-      "l" = "log";
-      "co" = "checkout";
-      "cl" = "clone";
-      "ps" = "push";
-      "pl" = "pull";
-      "sw" = "switch";
-      "re" = "remote";
-      "M" = "merge";
-      "R" = "rebase";
+      # downloads commits and trees while fetching blobs on-demand
+      # this is better than a shallow git clone --depth=1 for many reasons
+      "partial-clone" = "clone --filter=blob:none";
     };
   };
 }

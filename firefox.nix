@@ -1,6 +1,7 @@
 {
   pkgs-nur,
   lib,
+  pkgs-unstable,
   ...
 }:
 let
@@ -17,6 +18,7 @@ in
 {
   programs.firefox = {
     enable = true;
+    package = pkgs-unstable.firefox;
     policies = {
       DisableFirefoxStudies = true;
       DisableTelemetry = true;
@@ -120,6 +122,9 @@ in
         # address + credit card manager
         "extensions.formautofill.addresses.enabled" = false;
         "extensions.formautofill.creditCards.enabled" = false;
+        # makes firefox faster
+        # https://www.reddit.com/r/swaywm/comments/1iuqclq/firefox_is_now_way_more_efficient_under_sway_it/
+        "gfx.webrenderer.compositor.force-enabled" = true;
       };
     };
   };
