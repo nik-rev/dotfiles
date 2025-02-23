@@ -25,12 +25,10 @@
         "XF86MonBrightnessUp" = "exec --no-startup-id brightnessctl set +5%";
         "XF86MonBrightnessDown" = "exec --no-startup-id brightnessctl set 5%-";
         "Mod1+k" = "exec grim -g \"$(slurp -d)\" - | wl-copy";
-        "Mod1+m" = "exec wezterm-gui";
+        "Mod1+i" = "exec wezterm-gui";
         "Mod1+r" = "exec firefox";
         "Mod1+t" = "kill";
-        "Mod1+n" = "focus left";
-        "Mod1+e" = "focus up";
-        "Mod1+i" = "focus down";
+        "Mod1+e" = "focus left";
         "Mod1+o" = "focus right";
         "Mod1+z" = "sticky toggle";
         "Mod1+2" = "move left";
@@ -48,8 +46,10 @@
         "Mod1+7" = "move container to workspace number 4";
         "Mod1+j" = "resize grow width 10 px or 10 ppt";
         "Mod1+l" = "resize shrink width 10 px or 10 ppt";
-        "Mod1+u" = "resize grow height 10 px or 10 ppt";
-        "Mod1+y" = "resize shrink height 10 px or 10 ppt";
+        # "Mod1+e" = "focus up";
+        # "Mod1+i" = "focus down";
+        # "Mod1+u" = "resize grow height 10 px or 10 ppt";
+        # "Mod1+y" = "resize shrink height 10 px or 10 ppt";
       };
       colors = {
         focused = {
