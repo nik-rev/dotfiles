@@ -251,6 +251,8 @@ in
         typos-lsp
         # alsa-lib.dev
         alsa-lib
+        # utility to view battery percentage
+        acpi
       ])
       ++ haskell_
       ++ rust
