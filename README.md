@@ -1,6 +1,6 @@
 # Nikita's NixOS Dotfiles
 
-I like simple and reliable configs, preferrably 1 file for each software.
+I like simple and reliable configs, preferably 1 file for each software.
 
 Why I'm using Nix:
 

@@ -253,6 +253,16 @@ in
         alsa-lib
         # utility to view battery percentage
         acpi
+        tree-sitter
+        leetgo
+        # debugger
+        lldb
+        # difftool
+        difftastic
+        # telegram
+        telegram-desktop
+        # unzip .rar files
+        unar
       ])
       ++ haskell_
       ++ rust
