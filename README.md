@@ -22,6 +22,8 @@ Find out SSID and INTERFACE with:
 iwlist scan | grep ESSID && ip link
 ```
 
+079397575
+
 Generate WiFi configuration and connect to wifi:
 
 ```bash

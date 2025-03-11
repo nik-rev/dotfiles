@@ -51,7 +51,7 @@
         "sway-pad" = "swaymsg gaps left all set 440 ; swaymsg gaps right all set 440";
         "sway-unpad" = "swaymsg gaps left all set 0 ; swaymsg gaps right all set 0";
         # when using `nix develop`, use nushell instead of bash.
-        "d" = "nix develop --command nu --execute \"$env.PROMPT_INDICATOR = 'nix> '\"";
+        "d" = "nix develop --command nu --execute \"$env.PROMPT_INDICATOR = 'n> '\"";
       };
       extraConfig = ''
         source /home/e/.cache/zoxide/init.nu

@@ -81,7 +81,10 @@
   users.users.e = {
     initialPassword = "e";
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ];
     shell = pkgs.nushell;
   };
 
@@ -125,7 +128,8 @@
   networking = {
     hostName = "nixos";
     firewall.enable = true;
-    wireless.enable = true;
+    # wireless.enable = true;
+    networkmanager.enable = true;
   };
 
   services = {

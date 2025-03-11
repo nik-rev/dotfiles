@@ -16,6 +16,7 @@
     };
 
     helix.url = "github:NikitaRevenco/helix/patchy";
+    yazi.url = "github:sxyazi/yazi/main";
     patchy.url = "github:NikitaRevenco/patchy/main";
     wezterm = {
       url = "github:wez/wezterm?dir=nix";

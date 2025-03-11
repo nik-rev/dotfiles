@@ -27,6 +27,20 @@
           right = "@]";
           up = "select_textobject_inner";
           down = "select_textobject_around";
+          space.e = [
+            ":sh rm -f /tmp/unique-file-u41ae14"
+            ":insert-output yazi '%{buffer_name}' --chooser-file=/tmp/unique-file-u41ae14"
+            ":insert-output echo \"\x1b[?1049h\" > /dev/tty"
+            ":open %sh{cat /tmp/unique-file-u41ae14}"
+            ":redraw"
+          ];
+          space.E = [
+            ":sh rm -f /tmp/unique-file-h21a434"
+            ":insert-output yazi '%{workspace_directory}' --chooser-file=/tmp/unique-file-h21a434"
+            ":insert-output echo \"\x1b[?1049h\" > /dev/tty"
+            ":open %sh{cat /tmp/unique-file-h21a434}"
+            ":redraw"
+          ];
           # open lazygit
           C-g = [
             ":write-all"
@@ -69,6 +83,7 @@
           line-number = "relative";
           inline-diagnostics.cursor-line = "hint";
           cursorline = true;
+          lsp.auto-signature-help = false;
           statusline = {
             left = [ ];
             center = [ ];
@@ -87,11 +102,9 @@
         };
         keys.select = keybindings // {
           backspace = "extend_to_word";
-          "A-*" = "extend_repeat_last_motion_reverse";
         };
         keys.normal = keybindings // {
           backspace = "goto_word";
-          "A-*" = "repeat_last_motion_reverse";
         };
         # newline without comment
         keys.insert.A-ret = [
@@ -257,7 +270,7 @@
               "\"" = "\"";
               "`" = "`";
             };
-          }        
+          }
           {
             name = "rust";
             auto-pairs = {
@@ -268,8 +281,8 @@
               "[" = "]";
               "\"" = "\"";
               "`" = "`";
-              };
-          }        
+            };
+          }
           {
             name = "svelte";
             language-servers = [
