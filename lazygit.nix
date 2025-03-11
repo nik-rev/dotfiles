@@ -5,9 +5,18 @@
       git.paging = {
         colorArg = "always";
       };
+      update.method = "never";
       gui = {
         showIcons = true;
         nerdFontsVersion = "3";
+        showBottomLine = false;
+        animateExplosion = false;
+        showListFooter = false;
+        showCommandLog = false;
+        quitOnTopLevelReturn = true;
+        showPanelJumps = false;
+        commitHashLength = 0;
+        statusPanelView = "allBranchesLog";
         theme = {
           activeBorderColor = [
             "#cba6f7"
