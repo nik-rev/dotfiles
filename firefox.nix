@@ -7,10 +7,8 @@
 let
   # more extensions are found at https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
   extensions = with pkgs-nur.nur.repos.rycee.firefox-addons; [
-    react-devtools
     ublock-origin
     clearurls
-    stylus
     proton-pass
     sponsorblock
   ];
@@ -42,15 +40,27 @@ in
       search.engines = {
         "GitHub Code" = {
           urls = [ { template = "https://github.com/search?q={searchTerms}&type=code"; } ];
-          definedAliases = [ "@gc" ];
+          definedAliases = [ "@gh" ];
         };
         "GitHub Issues" = {
-          urls = [ { template = "https://github.com/search?q={searchTerms}&type=issues"; } ];
-          definedAliases = [ "@gi" ];
+          urls = [ { template = "https://github.com/search?q={searchTerms}&type=repositories"; } ];
+          definedAliases = [ "@repo" ];
         };
         "Nix Packages" = {
           urls = [ { template = "https://search.nixos.org/packages?query={searchTerms}"; } ];
           definedAliases = [ "@np" ];
+        };
+        "Home Manager Option Search" = {
+          urls = [ { template = "https://home-manager-options.extranix.com/?query={searchTerms}"; } ];
+          definedAliases = [ "@hm" ];
+        };
+        "Crates.io" = {
+          urls = [ { template = "https://crates.io/crates/{searchTerms}"; } ];
+          definedAliases = [ "@crates" ];
+        };
+        "YouTube" = {
+          urls = [ { template = "https://www.youtube.com/results?search_query={searchTerms}"; } ];
+          definedAliases = [ "@yt" ];
         };
       };
       # more settings: https://kb.mozillazine.org/About:config_entries

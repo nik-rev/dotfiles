@@ -4,6 +4,7 @@
     settings = {
       git.paging = {
         colorArg = "always";
+        pager = "delta --dark --paging=never;";
       };
       update.method = "never";
       gui = {
