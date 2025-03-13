@@ -59,7 +59,7 @@
             "open_below"
             "delete_word_backward"
           ];
-          # rebindings because default keymap is a bit awkward with my custom layout
+          # rebindings because default keymap is awkward with my custom keyboard layout
           # DEFAULT: A-C
           A-c = "copy_selection_on_prev_line";
           # DEFAULT: A-J
@@ -77,6 +77,7 @@
       {
         theme = "catppuccin";
         editor = {
+          # uses system clipboard
           default-yank-register = "+";
           auto-info = false;
           soft-wrap.enable = true;
@@ -100,17 +101,19 @@
             render = true;
           };
         };
-        keys.select = keybindings // {
-          backspace = "extend_to_word";
+        keys = {
+          select = keybindings // {
+            backspace = "extend_to_word";
+          };
+          normal = keybindings // {
+            # newline without comment
+            backspace = "goto_word";
+          };
+          insert.A-ret = [
+            "insert_newline"
+            "delete_word_backward"
+          ];
         };
-        keys.normal = keybindings // {
-          backspace = "goto_word";
-        };
-        # newline without comment
-        keys.insert.A-ret = [
-          "insert_newline"
-          "delete_word_backward"
-        ];
       };
 
     themes.catppuccin = {

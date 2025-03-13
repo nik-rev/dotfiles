@@ -1,5 +1,6 @@
 {
   inputs = {
+    # I don't want to keep hardware configuration file with my main configs
     hardware-configuration = {
       url = "path:/etc/nix/hardware.nix";
       flake = false;
@@ -15,14 +16,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    helix.url = "github:NikitaRevenco/helix/patchy";
-    yazi.url = "github:sxyazi/yazi/main";
     patchy.url = "github:NikitaRevenco/patchy/main";
+    # why flake: My fork uses custom merged PRs that I want to use.
+    helix.url = "github:NikitaRevenco/helix/patchy";
+    # why flake: I can use Yazi right inside of helix
+    yazi.url = "github:sxyazi/yazi/main";
+    # why flake: wezterm has some issues with Sway which were fixed in the latest versions
     wezterm = {
       url = "github:wez/wezterm?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    playwright.url = "github:pietdevries94/playwright-web-flake/1.47.0";
   };
 
   outputs =
@@ -32,19 +35,14 @@
       nixpkgs-unstable,
       nixpkgs-old,
       nur,
-      playwright,
       home-manager,
       ...
     }@inputs:
     let
       system = "x86_64-linux";
-      overlay = final: prev: {
-        inherit (playwright.packages.${system}) playwright-driver playwright-test;
-      };
       pkgs-unstable = import nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ overlay ];
       };
       pkgs-nur = import nixpkgs-unstable {
         inherit system;
@@ -59,17 +57,15 @@
         inherit system specialArgs;
         modules = [
           ./configuration.nix
-          # nur.modules.nixos.default
           home-manager.nixosModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = specialArgs;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.e = {
-              imports = [
+            home-manager = {
+              useGlobalPkgs = true;
+              extraSpecialArgs = specialArgs;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              users.e.imports = [
                 ./home.nix
-                # inputs.nur.modules.homeManager.default
               ];
             };
           }

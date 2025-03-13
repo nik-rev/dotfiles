@@ -1,4 +1,4 @@
-# Nikita's NixOS Dotfiles
+# Nik's NixOS Dotfiles
 
 I like simple and reliable configs, preferably 1 file for each software.
 
@@ -21,8 +21,6 @@ Find out SSID and INTERFACE with:
 ```bash
 iwlist scan | grep ESSID && ip link
 ```
-
-079397575
 
 Generate WiFi configuration and connect to wifi:
 

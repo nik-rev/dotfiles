@@ -7,6 +7,7 @@
       window.titlebar = false;
       floating.titlebar = false;
       focus.wrapping = "no";
+      # if there is only 1 window then hide. Otherwise don't
       window.hideEdgeBorders = "smart";
       # disable title bar https://github.com/swaywm/sway/issues/6946#issuecomment-1182012140
       fonts = {
@@ -14,10 +15,6 @@
         size = 0.001;
       };
       bars = [ ];
-      # gaps = {
-      # left = 880;
-      #   right = 440;
-      # };
       keybindings = {
         "XF86AudioRaiseVolume" = "exec --no-startup-id pamixer --increase 5";
         "XF86AudioLowerVolume" = "exec --no-startup-id pamixer --decrease 5";
@@ -46,10 +43,6 @@
         "Mod1+7" = "move container to workspace number 4";
         "Mod1+j" = "resize grow width 10 px or 10 ppt";
         "Mod1+l" = "resize shrink width 10 px or 10 ppt";
-        # "Mod1+e" = "focus up";
-        # "Mod1+i" = "focus down";
-        # "Mod1+u" = "resize grow height 10 px or 10 ppt";
-        # "Mod1+y" = "resize shrink height 10 px or 10 ppt";
       };
       colors = {
         focused = {
@@ -97,23 +90,4 @@
       }
     '';
   };
-  # use startx (^which i3) to run
-  # Disable i3 config for now, but can still use it when I want to.
-  # xsession.windowManager.i3 = {
-  #   enable = true;
-  #   inherit config;
-  # };
-  #
-  # Also add this in configuration.nix:
-  #
-  # xserver = {
-  #   enable = true;
-  #   displayManager.startx.enable = true;
-  #   windowManager.i3 = {
-  #     enable = true;
-  #   };
-  #   autoRepeatDelay = 200;
-  #   autoRepeatInterval = 25;
-  #   xkb.layout = "us";
-  # };
 }

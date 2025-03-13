@@ -14,8 +14,6 @@
   # Required for sway to start
   hardware.graphics.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
-
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
@@ -30,9 +28,6 @@
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=${pkgs.mold}/bin/mold";
       # it puts into $HOME/go by default
       GOPATH = "$HOME/.go";
-      # https://nixos.wiki/wiki/Playwright
-      PLAYWRIGHT_BROWSERS_PATH = pkgs-unstable.playwright-driver.browsers;
-      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
       EDITOR = "hx";
 
       # required to build some rust packages such as nushell
@@ -74,7 +69,6 @@
   time.timeZone = "Europe/London";
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  security.sudo.wheelNeedsPassword = false;
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration: https://wiki.nixos.org/wiki/Sway
   security.polkit.enable = true;
 
@@ -93,47 +87,27 @@
   # allows running executables (useful for c++ libraries) https://github.com/nix-community/nix-ld
   programs.nix-ld.enable = true;
 
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  services.udev.extraRules = ''
-    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"
-  '';
-
-  # services.postgresql = {
-  #   enable = true;
-  #   ensureDatabases = [ "mydatabase" ];
-  #   enableTCPIP = true;
-  #   port = 5432;
-  #   authentication = pkgs.lib.mkOverride 10 ''
-  #     #...
-  #     #type database DBuser origin-address auth-method
-  #     local all       all     trust
-  #     # ipv4
-  #     host  all      all     127.0.0.1/32   trust
-  #     # ipv6
-  #     host all       all     ::1/128        trust
-  #   '';
-  #   initialScript = pkgs.writeText "backend-initScript" ''
-  #     CREATE ROLE nixcloud WITH LOGIN PASSWORD 'nixcloud' CREATEDB;
-  #     CREATE DATABASE nixcloud;
-  #     GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
-  #   '';
-  # };
-
   networking = {
     hostName = "nixos";
     firewall.enable = true;
-    # wireless.enable = true;
     networkmanager.enable = true;
   };
 
   services = {
     libinput.enable = true;
+    # adds all executables to /usr/bin to be able to run
+    # various scripts on NixOS
+    envfs.enable = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+    # required for Vial
+    udev.extraRules = ''
+      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"
+    '';
     openssh = {
       enable = true;
       settings = {
