@@ -13,7 +13,6 @@
 {
   imports = [
     ./helix.nix
-    ./firefox.nix
     ./git.nix
     ./lazygit.nix
     ./nu.nix
@@ -97,6 +96,8 @@
         rust = with pkgs-unstable; [
           rustup # install everything Rust
           zola # static site generator
+          # remove unused dependencies
+          cargo-udeps
         ];
         nix = with pkgs-unstable; [
           nil # language server
@@ -153,6 +154,7 @@
       [
         sof-firmware
         p7zip
+        inputs.zen-browser.packages.${pkgs.system}.default
         imagemagick
         just # command runner
         brightnessctl # control brightness

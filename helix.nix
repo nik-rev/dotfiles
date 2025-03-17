@@ -170,10 +170,12 @@
 
     languages = {
       language-server = {
-        rust-analyzer.config = {
-          check.command = "clippy";
+        rust-analyzer = {
+          config.check.command = "clippy";
           # makes it work when in an integration_test
-          # cargo.features = [ "integration_test" ];
+          # config.cargo.features = [ "integration_test" ];
+          rustfmt.extraArgs = [ "+nightly" ];
+          config.rustfmt.extraArgs = [ "+nightly" ];
         };
         nginx = {
           command = "nginx-language-server";
@@ -270,18 +272,6 @@
               "{" = "}";
               "[" = "]";
               "'" = "'";
-              "\"" = "\"";
-              "`" = "`";
-            };
-          }
-          {
-            name = "rust";
-            auto-pairs = {
-              "|" = "|";
-              # unchanged:
-              "(" = ")";
-              "{" = "}";
-              "[" = "]";
               "\"" = "\"";
               "`" = "`";
             };

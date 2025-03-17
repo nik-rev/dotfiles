@@ -7,6 +7,7 @@
     };
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.05";
     nur.url = "github:nix-community/NUR";
