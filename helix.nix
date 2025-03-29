@@ -45,8 +45,17 @@
           C-g = [
             ":write-all"
             ":new"
-            ":insert-output lazygit"
+            ":insert-output lazygit >/dev/tty"
             ":buffer-close!"
+            ":redraw"
+            ":reload-all"
+          ];
+          # open gitui
+          C-e = [
+            ":write-all"
+            # ":new"
+            ":insert-output gitui >/dev/tty"
+            # ":buffer-close!"
             ":redraw"
             ":reload-all"
           ];
@@ -79,6 +88,9 @@
         editor = {
           # uses system clipboard
           default-yank-register = "+";
+          idle-timeout = 5;
+          completion-timeout = 5;
+          smart-tab.enable = false;
           auto-info = false;
           soft-wrap.enable = true;
           line-number = "relative";
@@ -93,7 +105,7 @@
               "file-name"
               "diagnostics"
             ];
-            merge-with-commandline = true;
+            # merge-with-commandline = true;
           };
           indent-guides = {
             character = "╎";
@@ -170,12 +182,17 @@
 
     languages = {
       language-server = {
-        rust-analyzer = {
-          config.check.command = "clippy";
+        steel-language-server = {
+          command = "steel-language-server";
+          args = [ ];
+        };
+        rust-analyzer.config = {
+          check.command = "clippy";
           # makes it work when in an integration_test
-          # config.cargo.features = [ "integration_test" ];
-          rustfmt.extraArgs = [ "+nightly" ];
-          config.rustfmt.extraArgs = [ "+nightly" ];
+          # cargo.features = [ "integration" ];
+          checkOnSave.allTargets = true;
+          # rustfmt.extraArgs = [ "+nightly" ];
+          # config.rustfmt.extraArgs = [ "+nightly" ];
         };
         nginx = {
           command = "nginx-language-server";
@@ -262,6 +279,10 @@
               "tailwindcss"
             ];
             formatter = prettier "prettier-plugin-astro" "astro";
+          }
+          {
+            name = "scheme";
+            language-servers = [ "steel-language-server" ];
           }
           {
             name = "nix";

@@ -10,6 +10,7 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.05";
+    niri.url = "github:sodiboo/niri-flake/main";
     nur.url = "github:nix-community/NUR";
     nur.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
@@ -36,6 +37,7 @@
       nixpkgs-unstable,
       nixpkgs-old,
       nur,
+      niri,
       home-manager,
       ...
     }@inputs:
@@ -44,6 +46,7 @@
       pkgs-unstable = import nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
+        overlays = [ niri.overlays.niri ];
       };
       pkgs-nur = import nixpkgs-unstable {
         inherit system;
@@ -59,6 +62,7 @@
         modules = [
           ./configuration.nix
           home-manager.nixosModules.home-manager
+          # niri.nixosModules.niri
           {
             home-manager = {
               useGlobalPkgs = true;
@@ -66,6 +70,7 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               users.e.imports = [
+                niri.homeModules.niri
                 ./home.nix
               ];
             };

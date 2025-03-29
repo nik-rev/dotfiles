@@ -28,6 +28,63 @@
     keyValue.generate "rc" { update-notifier = false; };
   xdg.userDirs.download = "${config.home.homeDirectory}/t";
   programs = {
+    gitui = {
+      enable = true;
+      theme = ''
+        (
+            selected_tab: Some("Reset"),
+            command_fg: Some("#cdd6f4"),
+            selection_bg: Some("#585b70"),
+            selection_fg: Some("#cdd6f4"),
+            cmdbar_bg: Some("#181825"),
+            cmdbar_extra_lines_bg: Some("#181825"),
+            disabled_fg: Some("#7f849c"),
+            diff_line_add: Some("#a6e3a1"),
+            diff_line_delete: Some("#f38ba8"),
+            diff_file_added: Some("#a6e3a1"),
+            diff_file_removed: Some("#eba0ac"),
+            diff_file_moved: Some("#cba6f7"),
+            diff_file_modified: Some("#fab387"),
+            commit_hash: Some("#b4befe"),
+            commit_time: Some("#bac2de"),
+            commit_author: Some("#74c7ec"),
+            danger_fg: Some("#f38ba8"),
+            push_gauge_bg: Some("#89b4fa"),
+            push_gauge_fg: Some("#1e1e2e"),
+            tag_fg: Some("#f5e0dc"),
+            branch_fg: Some("#94e2d5")
+        )
+      '';
+    };
+    niri = {
+      enable = true;
+      package = pkgs-unstable.niri-unstable;
+      settings = {
+        binds = with config.lib.niri.actions; {
+          "XF86AudioRaiseVolume".action = spawn "exec" "--no-startup-id" "pamixer" "--increase" "5";
+          "XF86AudioLowerVolume".action = spawn "exec" "--no-startup-id" "pamixer" "--decrease" "5";
+          "XF86AudioMute".action = spawn "exec" "--no-startup-id" "pamixer" "--toggle-mute";
+          "XF86MonBrightnessUp".action = spawn "exec" "--no-startup-id" "brightnessctl" "set" "+5%";
+          "XF86MonBrightnessDown".action = spawn "exec" "--no-startup-id" "brightnessctl" "set" "5%-";
+          "Mod+k".action.screenshot = [ ];
+          "Mod+t".action.close-window = [ ];
+          "Mod+e".action.focus-column-left = [ ];
+          "Mod+o".action.focus-column-right = [ ];
+          "Mod+i".action = spawn "wezterm-gui";
+          "Mod+r".action = spawn "zen";
+          "Mod+w".action.focus-workspace = [ 1 ];
+          "Mod+f".action.focus-workspace = [ 2 ];
+          "Mod+p".action.focus-workspace = [ 3 ];
+          "Mod+b".action.focus-workspace = [ 4 ];
+        };
+      };
+    };
+    zed-editor = {
+      enable = true;
+      userSettings = {
+        ui_font_size = 32;
+      };
+    };
     yazi = {
       enable = true;
       package = inputs.yazi.packages.${pkgs.system}.yazi;
@@ -156,6 +213,8 @@
         p7zip
         inputs.zen-browser.packages.${pkgs.system}.default
         imagemagick
+        aider-chat
+        act # local github CI runner
         just # command runner
         brightnessctl # control brightness
         quickemu # painless virtual machines
@@ -183,7 +242,6 @@
         unar # unzip .rar files
         pciutils # view connected PCI devices
         telegram-desktop
-        slack
       ]
       ++ haskell_
       ++ rust

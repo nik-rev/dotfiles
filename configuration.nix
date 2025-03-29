@@ -3,6 +3,7 @@
   lib,
   pkgs-unstable,
   inputs,
+  config,
   ...
 }:
 {
@@ -13,6 +14,31 @@
 
   # Required for sway to start
   hardware.graphics.enable = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  hardware.nvidia = {
+    modesetting.enable = true;
+    # we don't have an open source compatible nvidia driver
+    powerManagement.enable = true;
+    powerManagement.finegrained = false;
+
+    open = true;
+
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
+
+    prime = {
+      offload.enable = false;
+      sync.enable = true;
+      nvidiaBusId = "PCI:1:0:0";
+      amdgpuBusId = "PCI:4:0:0";
+    };
+  };
+  hardware.opengl = {
+    enable = true;
+    # driSupport = true;
+    driSupport32Bit = true;
+  };
 
   nix.settings.experimental-features = [
     "nix-command"
@@ -86,6 +112,7 @@
   programs.zsh.enable = true;
   # allows running executables (useful for c++ libraries) https://github.com/nix-community/nix-ld
   programs.nix-ld.enable = true;
+  programs.xwayland.enable = true;
 
   networking = {
     hostName = "nixos";
@@ -124,9 +151,14 @@
   ];
 
   boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "intel_pstate=no_hwp"
       "quiet"
+      # required for `niri` because otherwise the screen is black when starting from tty
+      "nvidia-drm.fbdev=1"
+      "nvidia-drm.modeset=1"
+      "NVreg_EnableGpuFirmware=0"
     ];
     loader.efi.canTouchEfiVariables = true;
     loader.grub = {

@@ -72,6 +72,14 @@
           swaymsg gaps right all set 0
         }
 
+        def nix-ungit [] {
+          cp ../flake.nix .
+          git add flake.nix
+          nix develop --command nu --execute "$env.PROMPT_INDICATOR = 'n> '"
+          rm flake.nix flake.lock
+          git add flake.nix
+        }
+
         $env.path = ($env.path | append $"($env.home)/.cache/npm/global/bin")
         $env.path = ($env.path | append $"($env.home)/.cargo/bin")
 
