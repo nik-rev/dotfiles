@@ -28,16 +28,13 @@
   xdg.configFile."rio/config.toml".source = ./rio.toml;
 
   # ssh
-  programs.ssh = {
-    enable = true;
-    forwardAgent = true;
-    addKeysToAgent = "yes";
-    matchBlocks = {
-      "*" = {
-        identityFile = "~/.ssh/id_ed25519";
-      };
-    };
-    # includes = [ "id_ed25519" ];
+  programs.ssh.enable = true;
+
+  # add ssh key on login
+  systemd.user.services.add_ssh_keys = {
+    Uni.Description = "Add SHH keys";
+    Service.ExecStart = "${pkgs.openssh}/bin/ssh-add $HOME/.ssh/id_ed25519";
+    Install.WantedBy = [ "default.target" ];
   };
 
   programs = {
