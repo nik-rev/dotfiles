@@ -30,7 +30,7 @@
   # ssh
   programs.ssh = {
     enable = true;
-    includes = [ "~/.ssh/id_ed25519" ];
+    includes = [ "id_ed25519" ];
   };
 
   programs = {
