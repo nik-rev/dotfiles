@@ -45,7 +45,6 @@
         "g" = "git";
         "nrs" = "sudo nixos-rebuild switch";
         "cat" = "bat --style=plain";
-        "icat" = "wezterm imgcat";
         "copy" = "xclip -selection clipboard";
         "icopy" = "xclip -selection clipboard -target image/png";
         "sway-pad" = "swaymsg gaps left all set 440 ; swaymsg gaps right all set 440";

@@ -14,7 +14,6 @@
   imports = [
     ./helix.nix
     ./git.nix
-    ./lazygit.nix
     ./nu.nix
     ./sway.nix
   ];
@@ -56,12 +55,6 @@
         )
       '';
     };
-    zed-editor = {
-      enable = true;
-      userSettings = {
-        ui_font_size = 32;
-      };
-    };
     yazi = {
       enable = true;
       package = inputs.yazi.packages.${pkgs.system}.yazi;
@@ -84,11 +77,6 @@
       };
     };
     zoxide.enable = true;
-    wezterm = {
-      enable = true;
-      # currently, rendering is broken in the new wezterm versions https://github.com/NixOS/nixpkgs/issues/336069
-      package = inputs.wezterm.packages.${pkgs.system}.default;
-    };
     ripgrep.enable = true;
     fzf.enable = true;
     fd.enable = true;

@@ -41,21 +41,15 @@
             ":open %sh{cat /tmp/unique-file-h21a434}"
             ":redraw"
           ];
-          # open lazygit
           C-g = [
             ":write-all"
-            ":new"
-            ":insert-output lazygit >/dev/tty"
-            ":buffer-close!"
+            ":insert-output gitui >/dev/tty"
             ":redraw"
             ":reload-all"
           ];
-          # open gitui
           C-e = [
             ":write-all"
-            # ":new"
             ":insert-output scooter >/dev/tty"
-            # ":buffer-close!"
             ":redraw"
             ":reload-all"
           ];

@@ -1,8 +1,9 @@
 confirm-before-quit = false
-editor.program = "hx"
 bindings.keys = [
   { key = "n", with = "control", action = "SelectNextTab" },
   { key = "p", with = "control", action = "SelectPrevTab" },
+  { key = "d", with = "alt", action = "ScrollHalfPageDown" },
+  { key = "u", with = "alt", action = "ScrollHalfPageUp" },
   { key = "x", with = "control | shift", action = "CloseTab" },
   { key = "=", with = "control | shift", action = "IncreaseFontSize" },
   { key = "-", with = "control", action = "DecreaseFontSize" },
@@ -38,7 +39,7 @@ bold.family = "JetBrainsMono NF"
 italic.family = "JetBrainsMono NF"
 bold-italic.family = "JetBrainsMono NF"
 
-# catppuccin theme
+### catppuccin theme
 
 [colors]
 # Normal
@@ -47,6 +48,7 @@ background = '#1e1e2e'
 black = '#45475a'
 blue = '#89b4fa'
 cursor = '#f5e0dc'
+vi-cursor = '#f5e0dc'
 cyan = '#94e2d5'
 green = '#a6e3a1'
 magenta = '#f5c2e7'
@@ -54,7 +56,7 @@ red = '#f38ba8'
 white = '#bac2de'
 yellow = '#f9e2af'
 # UI colors
-tabs = '#1e1e2e'
+tabs = '#b4Befe'
 tabs-active = '#b4befe'
 selection-foreground = '#1e1e2e'
 selection-background = '#f5e0dc'

@@ -23,11 +23,6 @@
     helix.url = "github:NikitaRevenco/helix/patchy";
     # why flake: I can use Yazi right inside of helix
     yazi.url = "github:sxyazi/yazi/main";
-    # why flake: wezterm has some issues with Sway which were fixed in the latest versions
-    wezterm = {
-      url = "github:wez/wezterm?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
