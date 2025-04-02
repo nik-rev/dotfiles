@@ -28,7 +28,7 @@
   xdg.configFile."rio/config.toml".source = ./rio.toml;
 
   # ssh
-  programs.ssh.enable = true;
+  # programs.ssh.enable = true;
 
   programs = {
     gitui = {

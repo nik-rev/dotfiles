@@ -3,10 +3,12 @@
   lib,
   pkgs-unstable,
   inputs,
+  config,
   ...
 }:
 let
   USER_ID = 1000;
+  USER = "e";
 in
 {
   imports = [
@@ -82,8 +84,9 @@ in
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration: https://wiki.nixos.org/wiki/Sway
   security.polkit.enable = true;
 
-  users.users.e = {
+  users.users.${USER} = {
     initialPassword = "e";
+    uid = USER_ID;
     # linger = true;
     isNormalUser = true;
     extraGroups = [
@@ -129,7 +132,6 @@ in
     };
   };
 
-  users.users.e.uid = USER_ID;
   environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString USER_ID}/ssh-agent";
   programs.ssh.startAgent = true;
   # add ssh key on login
@@ -140,7 +142,7 @@ in
       Type = "oneshot";
       ExecStartPre = "${pkgs.coreutils-full}/bin/sleep 1";
       ExecStart = [
-        "${pkgs.openssh}/bin/ssh-add ~/.ssh/id_ed25519"
+        "${pkgs.openssh}/bin/ssh-add ${config.users.users.${USER}.home}/.ssh/id_ed25519"
       ];
       Restart = "on-failure";
       RestartSec = 1;
