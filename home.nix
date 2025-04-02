@@ -26,6 +26,11 @@
     keyValue.generate "rc" { update-notifier = false; };
   xdg.userDirs.download = "${config.home.homeDirectory}/t";
   xdg.configFile."rio/config.toml".source = ./rio.toml;
+  services.ssh-agent.enable = true;
+  programs.ssh = {
+    enable = true;
+    includes = [ "~/.ssh/id_ed25519" ];
+  };
   programs = {
     gitui = {
       enable = true;

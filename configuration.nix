@@ -3,6 +3,7 @@
   lib,
   pkgs-unstable,
   inputs,
+  config,
   ...
 }:
 let
@@ -105,9 +106,9 @@ in
     networkmanager.enable = true;
   };
 
-  users.users.e.uid = USER_ID;
-  programs.ssh.startAgent = true;
-  environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString USER_ID}/ssh-agent";
+  # users.users.e.uid = USER_ID;
+  # programs.ssh.startAgent = true;
+  # environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString USER_ID}/ssh-agent";
 
   services = {
     libinput.enable = true;
