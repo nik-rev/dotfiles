@@ -108,7 +108,7 @@ in
 
   # users.users.e.uid = USER_ID;
   # programs.ssh.startAgent = true;
-  # environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString USER_ID}/ssh-agent";
+  environment.sessionVariables.SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/ssh-agent.socket";
 
   services = {
     libinput.enable = true;
