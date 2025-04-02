@@ -30,6 +30,21 @@
   # ssh
   programs.ssh = {
     enable = true;
+    matchBlocks =
+      let
+        hosts = [
+          "bitbucket.org"
+          "github.com"
+          "gitlab.com"
+        ];
+        identityFile = "~/.ssh/id_ed25519";
+      in
+      builtins.listToAttrs (
+        map (host: {
+          name = host;
+          value = { inherit identityFile; };
+        }) hosts
+      );
     includes = [ "id_ed25519" ];
   };
 
