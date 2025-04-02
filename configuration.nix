@@ -105,10 +105,6 @@ in
     networkmanager.enable = true;
   };
 
-  users.users.e.uid = USER_ID;
-  programs.ssh.startAgent = true;
-  environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString USER_ID}/ssh-agent";
-
   services = {
     libinput.enable = true;
     # adds all executables to /usr/bin to be able to run
@@ -130,6 +126,24 @@ in
         PermitRootLogin = "no";
         PasswordAuthentication = false;
       };
+    };
+  };
+
+  users.users.e.uid = USER_ID;
+  environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString USER_ID}/ssh-agent";
+  programs.ssh.startAgent = true;
+  # add ssh key on login
+  systemd.user.services.ssh-add-key = {
+    wantedBy = [ "default.target" ];
+    after = [ "ssh-agent.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStartPre = "${pkgs.coreutils-full}/bin/sleep 1";
+      ExecStart = [
+        "${pkgs.openssh}/bin/ssh-add ~/.ssh/id_ed25519"
+      ];
+      Restart = "on-failure";
+      RestartSec = 1;
     };
   };
 
