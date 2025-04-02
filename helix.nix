@@ -54,7 +54,7 @@
           C-e = [
             ":write-all"
             # ":new"
-            ":insert-output gitui >/dev/tty"
+            ":insert-output scooter >/dev/tty"
             # ":buffer-close!"
             ":redraw"
             ":reload-all"

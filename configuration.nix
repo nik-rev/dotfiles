@@ -3,7 +3,6 @@
   lib,
   pkgs-unstable,
   inputs,
-  config,
   ...
 }:
 {
@@ -16,24 +15,6 @@
   hardware.graphics.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
-  hardware.nvidia = {
-    modesetting.enable = true;
-    # we don't have an open source compatible nvidia driver
-    powerManagement.enable = true;
-    powerManagement.finegrained = false;
-
-    open = true;
-
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
-
-    prime = {
-      offload.enable = false;
-      sync.enable = true;
-      nvidiaBusId = "PCI:1:0:0";
-      amdgpuBusId = "PCI:4:0:0";
-    };
-  };
   hardware.opengl = {
     enable = true;
     # driSupport = true;

@@ -95,8 +95,8 @@
     "hardware-configuration": {
       "flake": false,
       "locked": {
-        "lastModified": 1730427933,
-        "narHash": "sha256-TZrvqU0rRIpXYkvO/dmgZtuIIYwFo7UylIo6W9aeztU=",
+        "lastModified": 1731686503,
+        "narHash": "sha256-RrvuoOmkQkGZqMbCnxiAVvzIdyVF5Bdai4lJUsKIYO4=",
         "path": "/etc/nix/hardware.nix",
         "type": "path"
       },

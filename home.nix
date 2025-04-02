@@ -19,7 +19,6 @@
     ./sway.nix
   ];
 
-  xdg.configFile."wezterm/wezterm.lua".source = ./wezterm.lua;
   # disable update check for pnpm
   xdg.configFile."pnpm/rc".source =
     let
@@ -27,6 +26,7 @@
     in
     keyValue.generate "rc" { update-notifier = false; };
   xdg.userDirs.download = "${config.home.homeDirectory}/t";
+  xdg.configFile."rio/config.toml".source = ./rio.toml;
   programs = {
     gitui = {
       enable = true;
@@ -55,29 +55,6 @@
             branch_fg: Some("#94e2d5")
         )
       '';
-    };
-    niri = {
-      enable = true;
-      package = pkgs-unstable.niri-unstable;
-      settings = {
-        binds = with config.lib.niri.actions; {
-          "XF86AudioRaiseVolume".action = spawn "exec" "--no-startup-id" "pamixer" "--increase" "5";
-          "XF86AudioLowerVolume".action = spawn "exec" "--no-startup-id" "pamixer" "--decrease" "5";
-          "XF86AudioMute".action = spawn "exec" "--no-startup-id" "pamixer" "--toggle-mute";
-          "XF86MonBrightnessUp".action = spawn "exec" "--no-startup-id" "brightnessctl" "set" "+5%";
-          "XF86MonBrightnessDown".action = spawn "exec" "--no-startup-id" "brightnessctl" "set" "5%-";
-          "Mod+k".action.screenshot = [ ];
-          "Mod+t".action.close-window = [ ];
-          "Mod+e".action.focus-column-left = [ ];
-          "Mod+o".action.focus-column-right = [ ];
-          "Mod+i".action = spawn "wezterm-gui";
-          "Mod+r".action = spawn "zen";
-          "Mod+w".action.focus-workspace = [ 1 ];
-          "Mod+f".action.focus-workspace = [ 2 ];
-          "Mod+p".action.focus-workspace = [ 3 ];
-          "Mod+b".action.focus-workspace = [ 4 ];
-        };
-      };
     };
     zed-editor = {
       enable = true;
@@ -145,6 +122,9 @@
           typstyle # formatter
           tinymist # language server
         ];
+        asm = with pkgs-unstable; [
+          asm-lsp
+        ];
         go = with pkgs-unstable; [
           gopls # language server
           gofumpt # formatter
@@ -210,6 +190,7 @@
       with pkgs-unstable;
       [
         sof-firmware
+        rio
         p7zip
         inputs.zen-browser.packages.${pkgs.system}.default
         imagemagick
@@ -250,6 +231,7 @@
       ++ c
       ++ shell
       ++ javascript
+      ++ asm
       ++ go
       ++ typst_;
     stateVersion = "24.11";
