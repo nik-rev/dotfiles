@@ -106,9 +106,9 @@ in
     networkmanager.enable = true;
   };
 
-  # users.users.e.uid = USER_ID;
-  # programs.ssh.startAgent = true;
-  environment.sessionVariables.SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/ssh-agent.socket";
+  users.users.e.uid = USER_ID;
+  programs.ssh.startAgent = true;
+  environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString USER_ID}/ssh-agent";
 
   services = {
     libinput.enable = true;

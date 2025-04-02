@@ -28,7 +28,6 @@
   xdg.configFile."rio/config.toml".source = ./rio.toml;
 
   # ssh
-  services.ssh-agent.enable = true;
   programs.ssh = {
     enable = true;
     includes = [ "~/.ssh/id_ed25519" ];
