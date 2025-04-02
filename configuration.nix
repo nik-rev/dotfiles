@@ -25,6 +25,21 @@
     "nix-command"
     "flakes"
   ];
+  systemd.user.services.ssh-agent = {
+    description = "SSH key agent";
+    wantedBy = [ "default.target" ];
+    after = [ "graphical-session.target" ]; # Ensures it starts after login
+    serviceConfig = {
+      Type = "simple";
+      Environment = [
+        "SSH_AUTH_SOCK=%t/ssh-agent.socket"
+        "KEY_FILE=%h/.ssh/id_ed25519"
+      ];
+      ExecStart = "${pkgs.openssh}/bin/ssh-agent -D -a $SSH_AUTH_SOCK";
+      ExecStartPost = "${pkgs.bash}/bin/bash -c 'sleep 1 && ${pkgs.openssh}/bin/ssh-add $KEY_FILE'";
+      ExecStop = "kill -15 $MAINPID";
+    };
+  };
 
   environment = {
     systemPackages = with pkgs; [
@@ -81,6 +96,7 @@
 
   users.users.e = {
     initialPassword = "e";
+    linger = true;
     isNormalUser = true;
     extraGroups = [
       "wheel"
