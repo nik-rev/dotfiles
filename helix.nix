@@ -126,12 +126,16 @@
       inherits = "catppuccin_mocha";
       # custom improvements
       "variable.other.member" = "teal";
-      "function.macro" = "rosewater";
 
       # these changes are synced from the main catppuccin
       # repository. Once the catppuccin theme is updated for Helix
       # upstream, remove this code
+      "function.macro" = "rosewater";
       "markup.link.label" = "sapphire";
+      "ui.cursor.select" = {
+        fg = "base";
+        bg = "#878ec0";
+      };
       "ui.cursor.primary.normal" = {
         fg = "base";
         bg = "rosewater";

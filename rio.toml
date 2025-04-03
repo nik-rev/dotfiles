@@ -1,4 +1,6 @@
 confirm-before-quit = false
+use-fork = false
+navigation.use-current-path = true
 bindings.keys = [
   { key = "n", with = "control", action = "SelectNextTab" },
   { key = "p", with = "control", action = "SelectPrevTab" },
@@ -7,8 +9,8 @@ bindings.keys = [
   { key = "x", with = "control | shift", action = "CloseTab" },
   { key = "=", with = "control | shift", action = "IncreaseFontSize" },
   { key = "-", with = "control", action = "DecreaseFontSize" },
-  { key = "f", with = "control", action = "SearchForward" },
-  { key = "b", with = "control", action = "SearchBackward" },
+  { key = "f", with = "control | shift", action = "SearchForward" },
+  { key = "b", with = "control | shift", action = "SearchBackward" },
   { key = "=", with = "control", action = "ResetFontSize" },
   { key = "F11", action = "ToggleFullScreen" },
   { key = "\\", with = "control", action = "ToggleVIMode" },

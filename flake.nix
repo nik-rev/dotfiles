@@ -7,7 +7,6 @@
     };
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.05";
     niri.url = "github:sodiboo/niri-flake/main";
@@ -23,6 +22,7 @@
     helix.url = "github:NikitaRevenco/helix/patchy";
     # why flake: I can use Yazi right inside of helix
     yazi.url = "github:sxyazi/yazi/main";
+    rio.url = "github:raphamorim/rio/renderer-fixes";
   };
 
   outputs =

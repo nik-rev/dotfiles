@@ -3,7 +3,12 @@
 #   jq -r '.exercises[].slug' | \
 #   xargs -I {} -n1 sh -c "exercism download --track=$track --exercise {} || true"
 
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  pkgs-unstable,
+  ...
+}:
 {
   # zoxide is sourced AFTER extraConfig, which is problematic since my `t` alias does not work. So I source it myself and disable the default source to not source the same file twice
   programs.zoxide.enableNushellIntegration = false;
@@ -35,6 +40,7 @@
     in
     {
       enable = true;
+      package = pkgs-unstable.nushell;
       shellAliases = {
         "md" = "mkdir";
         "rd" = "rmdir";
