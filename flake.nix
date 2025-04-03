@@ -9,7 +9,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.05";
-    niri.url = "github:sodiboo/niri-flake/main";
     nur.url = "github:nix-community/NUR";
     nur.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
@@ -19,10 +18,11 @@
 
     patchy.url = "github:NikitaRevenco/patchy/main";
     # why flake: My fork uses custom merged PRs that I want to use.
-    helix.url = "github:NikitaRevenco/helix/patchy";
+    helix.url = "github:helix-editor/helix/master";
     # why flake: I can use Yazi right inside of helix
     yazi.url = "github:sxyazi/yazi/main";
-    rio.url = "github:raphamorim/rio/renderer-fixes";
+    # why flake: wezterm has some issues with Sway which were fixed in the latest versions
+    wezterm.url = "github:wez/wezterm?dir=nix";
   };
 
   outputs =
@@ -32,7 +32,6 @@
       nixpkgs-unstable,
       nixpkgs-old,
       nur,
-      niri,
       home-manager,
       ...
     }@inputs:
@@ -41,7 +40,6 @@
       pkgs-unstable = import nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ niri.overlays.niri ];
       };
       pkgs-nur = import nixpkgs-unstable {
         inherit system;
@@ -57,7 +55,6 @@
         modules = [
           ./configuration.nix
           home-manager.nixosModules.home-manager
-          # niri.nixosModules.niri
           {
             home-manager = {
               useGlobalPkgs = true;
@@ -65,7 +62,6 @@
               useUserPackages = true;
               backupFileExtension = "backup";
               users.e.imports = [
-                niri.homeModules.niri
                 ./home.nix
               ];
             };

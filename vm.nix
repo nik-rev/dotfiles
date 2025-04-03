@@ -1,7 +1,5 @@
 { pkgs, ... }:
-
 {
-
   # Enable dconf (System Management Tool)
   programs.dconf.enable = true;
 
@@ -17,7 +15,6 @@
     spice-protocol
     win-virtio
     win-spice
-    gnome.adwaita-icon-theme
   ];
 
   # Manage the virtualisation services
@@ -33,5 +30,4 @@
     spiceUSBRedirection.enable = true;
   };
   services.spice-vdagentd.enable = true;
-
 }

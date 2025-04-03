@@ -10,6 +10,7 @@
     defaultEditor = true;
     enable = true;
     package = inputs.helix.packages.${pkgs.system}.helix;
+    # package = pkgs-unstable.helix;
 
     settings =
       let
@@ -43,7 +44,7 @@
           ];
           C-g = [
             ":write-all"
-            ":insert-output gitui >/dev/tty"
+            ":insert-output lazygit >/dev/tty"
             ":redraw"
             ":reload-all"
           ];

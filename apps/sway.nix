@@ -22,7 +22,7 @@
         "XF86MonBrightnessUp" = "exec --no-startup-id brightnessctl set +5%";
         "XF86MonBrightnessDown" = "exec --no-startup-id brightnessctl set 5%-";
         "Mod1+k" = "exec grim -g \"$(slurp -d)\" - | wl-copy";
-        "Mod1+i" = "exec rio";
+        "Mod1+i" = "exec wezterm-gui";
         "Mod1+r" = "exec firefox";
         "Mod1+t" = "kill";
         "Mod1+e" = "focus left";

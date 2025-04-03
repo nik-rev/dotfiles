@@ -49,6 +49,7 @@
         "sn" = "sudo -E hx";
         "e" = ls-command;
         "g" = "git";
+        "icat" = "wezterm imgcat";
         "nrs" = "sudo nixos-rebuild switch";
         "cat" = "bat --style=plain";
         "copy" = "xclip -selection clipboard";
@@ -99,6 +100,19 @@
 
           $path_segment | str replace --all (char path_sep) $"(ansi white)(char path_sep) (ansi blue)"
         }
+
+        $env.config.keybindings ++= [
+          {
+            name: "unfreeze",
+            modifier: control,
+            keycode: "char_z",
+            event: {
+              send: executehostcommand,
+              cmd: "job unfreeze"
+            },
+            mode: emacs
+          }
+        ]
 
         $env.PROMPT_COMMAND = ""
 
