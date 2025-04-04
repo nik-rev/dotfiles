@@ -140,7 +140,7 @@
         regular = {
           family = "JetBrainsMono NF";
         };
-        size = 19;
+        size = 23;
       };
       navigation = {
         use-current-path = true;

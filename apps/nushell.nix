@@ -16,7 +16,8 @@
   programs.carapace.enable = true;
   programs.nushell =
     let
-      vivid = lib.getExe pkgs.vivid;
+      # adds lots of cool colors to different file types
+      vivid = lib.getExe pkgs-unstable.vivid;
       # we could run this command directly in the configuration file however that command would run everytime nushell starts
       # This way, we run the command just once when we build the system. In the actual configuration file we then have just the string, withoutn needing to spawn a new child process
       colored = builtins.readFile (
@@ -29,6 +30,9 @@
         }
       );
       ls-command = "^ls --classify --color=always";
+      # . => go to parent directory;
+      # .. => go to parent's parent directory;
+      # ..., ...., ..... similarly go 1 level up
       dir-changes = builtins.concatStringsSep "\n" (
         map (count: ''
           def --env ${lib.concatStrings (lib.replicate count "o")} [] {
@@ -45,10 +49,10 @@
         "md" = "mkdir";
         "rd" = "rmdir";
         "n" = "hx";
+        "g" = "lazygit";
         "no" = "hx .";
         "sn" = "sudo -E hx";
         "e" = ls-command;
-        "g" = "git";
         "icat" = "wezterm imgcat";
         "nrs" = "sudo nixos-rebuild switch";
         "cat" = "bat --style=plain";

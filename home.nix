@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   pkgs-unstable,
   ...
@@ -18,9 +17,11 @@
     ./apps/wezterm.nix
     ./apps/nushell.nix
     ./apps/lazygit.nix
+    ./apps/firefox.nix
   ];
   programs = {
     zoxide.enable = true;
+    zoxide.package = pkgs-unstable.zoxide;
     ripgrep.enable = true;
     fzf.enable = true;
     fd.enable = true;
@@ -37,7 +38,6 @@
   home.packages = with pkgs-unstable; [
     sof-firmware
     p7zip
-    firefox
     imagemagick
     aider-chat
     act # local github CI runner
