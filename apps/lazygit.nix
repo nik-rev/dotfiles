@@ -1,6 +1,8 @@
+{ pkgs, ... }:
 {
   programs.lazygit = {
     enable = true;
+    package = pkgs.u.lazygit;
     settings = {
       git.paging = {
         colorArg = "always";

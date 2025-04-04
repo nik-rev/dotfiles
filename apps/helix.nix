@@ -2,7 +2,6 @@
   pkgs,
   lib,
   inputs,
-  pkgs-unstable,
   ...
 }:
 {
@@ -10,7 +9,6 @@
     defaultEditor = true;
     enable = true;
     package = inputs.helix.packages.${pkgs.system}.helix;
-    # package = pkgs-unstable.helix;
 
     settings =
       let
@@ -221,26 +219,26 @@
           args = [ "--stdio" ];
         };
         tailwindcss = {
-          command = lib.getExe pkgs-unstable.tailwindcss-language-server;
+          command = lib.getExe pkgs.u.tailwindcss-language-server;
           args = [ "--stdio" ];
         };
         ruff = {
-          command = lib.getExe pkgs-unstable.ruff;
+          command = lib.getExe pkgs.u.ruff;
         };
         gopls.config.gofumpt = true;
         astro-ls = {
-          command = lib.getExe pkgs-unstable.nodePackages."@astrojs/language-server";
+          command = lib.getExe pkgs.u.nodePackages."@astrojs/language-server";
           args = [ "--stdio" ];
           config = {
             typescript = {
-              tsdk = "${pkgs-unstable.typescript}/lib/node_modules/typescript/lib";
+              tsdk = "${pkgs.u.typescript}/lib/node_modules/typescript/lib";
               environment = "node";
             };
           };
         };
         # https://github.com/tekumara/typos-lsp/blob/main/docs/helix-config.md
         typos-lsp = {
-          command = lib.getExe pkgs-unstable.typos-lsp;
+          command = lib.getExe pkgs.u.typos-lsp;
           environment.RUST_LOG = "error";
           config.diagnosticSeverity = "Warning";
         };
@@ -249,11 +247,11 @@
       language =
         let
           prettierd = lang: {
-            command = lib.getExe pkgs-unstable.prettierd;
+            command = lib.getExe pkgs.u.prettierd;
             args = [ lang ];
           };
           prettier = plugin: parser: {
-            command = lib.getExe pkgs-unstable.nodePackages.prettier;
+            command = lib.getExe pkgs.u.nodePackages.prettier;
             args = [
               "--plugin"
               plugin
@@ -401,7 +399,7 @@
           }
           {
             name = "toml";
-            formatter.command = lib.getExe pkgs-unstable.taplo;
+            formatter.command = lib.getExe pkgs.u.taplo;
             formatter.args = [
               "format"
               "-"
@@ -413,7 +411,7 @@
           }
           {
             name = "c-sharp";
-            formatter.command = lib.getExe pkgs-unstable.csharpier;
+            formatter.command = lib.getExe pkgs.u.csharpier;
           }
           {
             name = "javascript";
@@ -421,20 +419,20 @@
           }
           {
             name = "nix";
-            formatter.command = lib.getExe pkgs-unstable.nixfmt-rfc-style;
+            formatter.command = lib.getExe pkgs.u.nixfmt-rfc-style;
           }
           {
             name = "lua";
-            formatter.command = lib.getExe pkgs-unstable.stylua;
+            formatter.command = lib.getExe pkgs.u.stylua;
             formatter.args = [ "-" ];
           }
           {
             name = "bash";
-            formatter.command = lib.getExe pkgs-unstable.shfmt;
+            formatter.command = lib.getExe pkgs.u.shfmt;
           }
           {
             name = "haskell";
-            formatter.command = lib.getExe pkgs-unstable.ormolu;
+            formatter.command = lib.getExe pkgs.u.ormolu;
             formatter.args = [
               "--stdin-input-file"
               "."

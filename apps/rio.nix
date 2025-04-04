@@ -1,8 +1,8 @@
-{ pkgs-unstable, ... }:
+{ pkgs, ... }:
 {
   programs.rio = {
     enable = true;
-    package = pkgs-unstable.rio;
+    package = pkgs.u.rio;
     settings = {
       bindings = {
         keys = [

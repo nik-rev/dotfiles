@@ -6,7 +6,6 @@
 {
   pkgs,
   lib,
-  pkgs-unstable,
   ...
 }:
 {
@@ -17,7 +16,7 @@
   programs.nushell =
     let
       # adds lots of cool colors to different file types
-      vivid = lib.getExe pkgs-unstable.vivid;
+      vivid = lib.getExe pkgs.u.vivid;
       # we could run this command directly in the configuration file however that command would run everytime nushell starts
       # This way, we run the command just once when we build the system. In the actual configuration file we then have just the string, withoutn needing to spawn a new child process
       colored = builtins.readFile (
@@ -44,7 +43,7 @@
     in
     {
       enable = true;
-      package = pkgs-unstable.nushell;
+      package = pkgs.u.nushell;
       shellAliases = {
         "md" = "mkdir";
         "rd" = "rmdir";

@@ -8,14 +8,18 @@
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-old.url = "github:NixOS/nixpkgs/nixos-24.05";
-    nur.url = "github:nix-community/NUR";
-    nur.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # contains stuff like firefox extensions
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # why flake: makes it easy for me to use my software
     patchy.url = "github:NikitaRevenco/patchy/main";
     # why flake: My fork uses custom merged PRs that I want to use.
     helix.url = "github:helix-editor/helix/master";
@@ -30,23 +34,28 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
-      nixpkgs-old,
       nur,
       home-manager,
       ...
     }@inputs:
     let
       system = "x86_64-linux";
-      pkgs-unstable = import nixpkgs-unstable {
+      pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-      };
-      pkgs-nur = import nixpkgs-unstable {
-        inherit system;
-        overlays = [ nur.overlays.default ];
+        overlays = [
+          nur.overlays.default
+          # unstable nixpkgs
+          (final: prev: {
+            u = import nixpkgs-unstable {
+              inherit system;
+              config.allowUnfree = true;
+            };
+          })
+        ];
       };
       specialArgs = {
-        inherit pkgs-unstable inputs pkgs-nur;
+        inherit inputs pkgs;
       };
     in
     {
@@ -60,7 +69,7 @@
               useGlobalPkgs = true;
               extraSpecialArgs = specialArgs;
               useUserPackages = true;
-              backupFileExtension = "backup";
+              backupFileExtension = "hm-backup";
               users.e.imports = [
                 ./home.nix
               ];

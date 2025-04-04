@@ -1,8 +1,8 @@
-{ pkgs-unstable, ... }:
+{ pkgs, ... }:
 {
   programs.gitui = {
     enable = true;
-    package = pkgs-unstable.gitui;
+    package = pkgs.u.gitui;
     # catppuccin theme
     theme = ''
       (

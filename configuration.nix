@@ -2,7 +2,6 @@
   pkgs,
   inputs,
   config,
-  pkgs-unstable,
   ...
 }:
 let
@@ -15,13 +14,16 @@ in
     ./vm.nix
   ];
 
-  # Required for sway to start
-  hardware.graphics.enable = true;
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-  hardware.opengl = {
-    enable = true;
-    driSupport32Bit = true;
+  hardware = {
+    # Required for sway to start
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
   };
 
   nix.settings.experimental-features = [
@@ -38,10 +40,12 @@ in
       RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=${pkgs.mold}/bin/mold";
       # it puts into $HOME/go by default
       GOPATH = "$HOME/.go";
+      # fixes invisible cursors in Sway
+      WLR_NO_HARDWARE_CURSORS = "1";
     };
   };
 
-  ### fonts
+  ### Fonts
 
   fonts = {
     packages = with pkgs; [
@@ -66,9 +70,6 @@ in
     };
   };
 
-  time.timeZone = "Europe/London";
-  i18n.defaultLocale = "en_GB.UTF-8";
-
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration: https://wiki.nixos.org/wiki/Sway
   security.polkit.enable = true;
 
@@ -77,10 +78,12 @@ in
     uid = user_id;
     isNormalUser = true;
     extraGroups = [
+      # allow using `sudo`
       "wheel"
+      # allow configuring wifi
       "networkmanager"
     ];
-    shell = pkgs-unstable.nushell;
+    shell = pkgs.u.nushell;
   };
 
   networking = {
@@ -94,16 +97,27 @@ in
     # adds all executables to /usr/bin to be able to run
     # various scripts on NixOS
     envfs.enable = true;
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-    # required for Vial
+    # required for Vial (keyboard configurator)
     udev.extraRules = ''
       KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"
     '';
+  };
+
+  ### Locale
+
+  time.timeZone = "Europe/London";
+  i18n.defaultLocale = "en_GB.UTF-8";
+
+  ### Sound
+
+  # rtkit is optional but recommended https://wiki.nixos.org/wiki/PipeWire
+  security.rtkit.enable = true;
+  services.pipewire = {
+    package = pkgs.u.pipewire;
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
   };
 
   ### SSH
@@ -117,7 +131,7 @@ in
   };
   environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString user_id}/ssh-agent";
   programs.ssh.startAgent = true;
-  # add ssh key on login
+  # service add ssh key on login
   systemd.user.services.ssh-add-key = {
     wantedBy = [ "default.target" ];
     after = [ "ssh-agent.service" ];
@@ -131,6 +145,8 @@ in
       RestartSec = 1;
     };
   };
+
+  ### Kernel
 
   fileSystems."/".options = [
     "noatime"
@@ -150,6 +166,7 @@ in
       device = "nodev";
       efiSupport = true;
     };
+    # see instructions in README for how to configure LUKS encryption
     initrd.luks.devices.cryptroot.device = "/dev/disk/by-partlabel/luks_root";
   };
 

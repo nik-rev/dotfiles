@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs-unstable,
   ...
 }:
 {
@@ -21,12 +20,10 @@
   ];
   programs = {
     zoxide.enable = true;
-    zoxide.package = pkgs-unstable.zoxide;
+    zoxide.package = pkgs.u.zoxide;
     ripgrep.enable = true;
     fzf.enable = true;
     fd.enable = true;
-    go.enable = true;
-    go.goBin = "go/bin";
     obs-studio = {
       enable = true;
       plugins = with pkgs.obs-studio-plugins; [
@@ -35,10 +32,13 @@
       ];
     };
   };
-  home.packages = with pkgs-unstable; [
+  home.packages = with pkgs.u; [
     sof-firmware
     p7zip
+    termusic # terminal music player
     imagemagick
+    bottom
+    yt-dlp # download tracks from youtube
     aider-chat
     act # local github CI runner
     just # command runner

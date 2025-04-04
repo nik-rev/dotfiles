@@ -1,6 +1,10 @@
-{ pkgs-unstable, ... }:
+{ pkgs, ... }:
 {
-  home.packages = with pkgs-unstable; [
+  programs.go = {
+    enable = true;
+    goBin = "go/bin";
+  };
+  home.packages = with pkgs.u; [
     ### typst
     typst # compiler
     typstyle # formatter

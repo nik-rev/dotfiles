@@ -1,12 +1,11 @@
 {
-  pkgs-nur,
+  pkgs,
   lib,
-  pkgs-unstable,
   ...
 }:
 let
   # more extensions are found at https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
-  extensions = with pkgs-nur.nur.repos.rycee.firefox-addons; [
+  extensions = with pkgs.nur.repos.rycee.firefox-addons; [
     ublock-origin # ad blocker
     clearurls # remove tracking information from URLs
     proton-pass # password manager
@@ -17,7 +16,7 @@ in
 {
   programs.firefox = {
     enable = true;
-    package = pkgs-unstable.firefox;
+    package = pkgs.u.firefox;
     # all policies: https://mozilla.github.io/policy-templates/
     policies = {
       PasswordManagerEnabled = false;
