@@ -21,53 +21,44 @@
   programs = {
     zoxide.enable = true;
     zoxide.package = pkgs.u.zoxide;
-    ripgrep.enable = true;
-    fzf.enable = true;
-    fd.enable = true;
-    obs-studio = {
-      enable = true;
-      plugins = with pkgs.obs-studio-plugins; [
-        wlrobs
-        droidcam-obs
-      ];
-    };
   };
   home.packages = with pkgs.u; [
-    sof-firmware
-    p7zip
-    termusic # terminal music player
-    imagemagick
-    bottom
-    yt-dlp # download tracks from youtube
-    aider-chat
-    act # local github CI runner
-    just # command runner
-    brightnessctl # control brightness
-    quickemu # painless virtual machines
-    zathura # document viewer (e.g. PDF)
-    libreoffice # document viewer suite
-    onefetch # repository information
-    pamixer # sound control
-    gimp # image editor
-    vivid # generates LS_COLORS
-    wl-clipboard
+    ### CLI tools
+    ripgrep # find text in files
+    fd # find files
+    skim # find files (fuzzy)
     doggo # dns CLI
-    dconf
     gh # GitHub CLI
-    scooter # mass search and replace
     hyperfine # benchmarking tool
-    slurp # take screenshots (wayland wl-roots)
-    grim # copy slurp screenshots to clipboard (wayland wl-roots)
     tree # tree view of files
-    vial # keyboard configurator
-    mpv # video player
-    typos # spell checker
-    typos-lsp # spell checker markdown LSP
-    acpi # utility to view battery percentage
-    leetgo # leetcode using Helix editor
-    unar # unzip .rar files
+    p7zip # 7z
     pciutils # view connected PCI devices
+    onefetch # repository information
+    unar # unzip .rar files
+    yt-dlp # download tracks from youtube
+    imagemagick # monster CLI command for working with images
+    ffmpeg # monster CLI command for working with videos
+
+    ### apps
+    zathura # document viewer (e.g. PDF)
+    termusic # terminal music player
+    grim # copy slurp screenshots to clipboard (wayland wl-roots)
+    slurp # take screenshots (wayland wl-roots)
+    libreoffice # document viewer suite
+    vial # keyboard configurator
+    gimp # image editor
+    scooter # mass search and replace
+    mpv # video player
+    quickemu # painless virtual machines
     telegram-desktop
+
+    ### system utilities (background)
+    brightnessctl # control brightness
+    vivid # generates LS_COLORS for directories to look awesome
+    acpi # utility to view battery percentage
+    wl-clipboard # screenshots on wayland
+    pamixer # sound control
+    sof-firmware
   ];
   home.stateVersion = "24.11";
 }

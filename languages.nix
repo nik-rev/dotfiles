@@ -5,6 +5,10 @@
     goBin = "go/bin";
   };
   home.packages = with pkgs.u; [
+    ### markdown
+    typos # spell checker
+    typos-lsp # spell checker markdown LSP
+
     ### typst
     typst # compiler
     typstyle # formatter
