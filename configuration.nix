@@ -12,6 +12,7 @@ in
   imports = [
     inputs.hardware-configuration.outPath
     ./vm.nix
+    ./nvidia.nix
   ];
 
   hardware = {
