@@ -71,6 +71,10 @@ in
       };
       # more settings: https://kb.mozillazine.org/About:config_entries
       settings = {
+        # When pressing F11, does not do full screen but hides the title bar and search bar
+        # A sort of "zen mode", if you will.
+        # from: https://superuser.com/questions/1568072/hide-navigation-bar-in-firefox
+        "full-screen-api.ignore-widgets" = true;
         # catppuccin background color
         "browser.display.background_color.dark" = "#1e1e2e";
         "browser.discovery.enabled" = false;
