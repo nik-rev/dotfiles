@@ -88,9 +88,9 @@
         repeat_delay 200
         repeat_rate 50
       }
-      input type:touchpad {
-        events disabled
-      }
+      # input type:touchpad {
+      #   events disabled
+      # }
     '';
   };
 }
