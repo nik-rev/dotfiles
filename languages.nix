@@ -8,6 +8,7 @@
     ### markdown
     typos # spell checker
     typos-lsp # spell checker markdown LSP
+    harper
 
     ### typst
     typst # compiler

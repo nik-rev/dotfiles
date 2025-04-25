@@ -1,5 +1,6 @@
 {
   pkgs,
+  inputs,
   ...
 }:
 {
@@ -22,7 +23,14 @@
     zoxide.enable = true;
     zoxide.package = pkgs.u.zoxide;
   };
+  home.pointerCursor = {
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    gtk.enable = true;
+    x11.enable = true;
+  };
   home.packages = with pkgs.u; [
+    inputs.ferrishot.packages.${pkgs.system}.default
     ### CLI tools
     ripgrep # find text in files
     fd # find files

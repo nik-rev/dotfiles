@@ -21,7 +21,7 @@
         "XF86AudioMute" = "exec --no-startup-id pamixer --toggle-mute";
         "XF86MonBrightnessUp" = "exec --no-startup-id brightnessctl set +5%";
         "XF86MonBrightnessDown" = "exec --no-startup-id brightnessctl set 5%-";
-        "Mod1+k" = "exec grim -g \"$(slurp -d)\" - | wl-copy";
+        "Mod1+m" = "exec ferrishot";
         "Mod1+i" = "exec wezterm-gui";
         "Mod1+r" = "exec firefox";
         "Mod1+t" = "kill";
@@ -41,8 +41,8 @@
         "Mod1+0" = "move container to workspace number 2";
         "Mod1+3" = "move container to workspace number 3";
         "Mod1+7" = "move container to workspace number 4";
-        "Mod1+j" = "resize grow width 10 px or 10 ppt";
-        "Mod1+l" = "resize shrink width 10 px or 10 ppt";
+        "Mod1+u" = "resize grow width 10 px or 10 ppt";
+        "Mod1+y" = "resize shrink width 10 px or 10 ppt";
       };
       colors = {
         focused = {

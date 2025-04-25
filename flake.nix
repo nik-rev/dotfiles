@@ -21,6 +21,8 @@
 
     # why flake: makes it easy for me to use my software
     patchy.url = "github:NikitaRevenco/patchy/main";
+    # why flake: makes it easy for me to use my software
+    ferrishot.url = "github:nik-rev/ferrishot/main";
     # why flake: My fork uses custom merged PRs that I want to use.
     helix.url = "github:helix-editor/helix/master";
     # why flake: I can use Yazi right inside of helix

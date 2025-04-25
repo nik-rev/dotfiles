@@ -15,6 +15,15 @@ in
     ./nvidia.nix
   ];
 
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+    ];
+  };
+
   hardware = {
     # Required for sway to start
     graphics = {
@@ -154,6 +163,23 @@ in
     "nodiratime"
     "discard"
   ];
+
+  systemd.timers."daily-shutdown" = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "22:00";
+      Persistent = true;
+    };
+  };
+
+  systemd.services."daily-shutdown" = {
+    script = ''
+      /run/current-system/sw/bin/systemctl poweroff
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+    };
+  };
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;

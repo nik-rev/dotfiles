@@ -59,8 +59,6 @@
         "icopy" = "xclip -selection clipboard -target image/png";
         "sway-pad" = "swaymsg gaps left all set 440 ; swaymsg gaps right all set 440";
         "sway-unpad" = "swaymsg gaps left all set 0 ; swaymsg gaps right all set 0";
-        # when using `nix develop`, use nushell instead of bash.
-        "d" = "nix develop --command nu --execute \"$env.PROMPT_INDICATOR = 'n> '\"";
       };
       extraConfig = ''
         source /home/e/.cache/zoxide/init.nu
@@ -69,6 +67,16 @@
         def --env --wrapped t [ ...args: string ] {
           z ...$args
           ^ls --classify --color=always
+        }
+
+        # `nix develop` with nushell
+        def --wrapped d [ ...args: string ] {
+          nix develop ...$args --command nu --execute "$env.PROMPT_INDICATOR = 'n> '"
+        }
+
+        # `nix-shell` with nushell
+        def --wrapped ns [ ...args: string ] {
+          nix-shell ...$args --run `nu --execute "\$env.PROMPT_INDICATOR = 'ns> '"`
         }
 
         # for recording videos in a 16 * 9 resolution on a monitor of a different resolution

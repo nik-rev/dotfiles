@@ -123,58 +123,10 @@
 
     themes.catppuccin = {
       inherits = "catppuccin_mocha";
-      # custom improvements
       "variable.other.member" = "teal";
-
-      # these changes are synced from the main catppuccin
-      # repository. Once the catppuccin theme is updated for Helix
-      # upstream, remove this code
+      # this is actually the default but Helix master hasn't synced the catppuccin changes yet
       "function.macro" = "rosewater";
-      "markup.link.label" = "sapphire";
-      "ui.cursor.select" = {
-        fg = "base";
-        bg = "#878ec0";
-      };
-      "ui.cursor.primary.normal" = {
-        fg = "base";
-        bg = "rosewater";
-      };
-      "ui.cursor.primary.select" = {
-        fg = "base";
-        bg = "lavender";
-      };
-      "ui.cursor.normal" = {
-        fg = "base";
-        bg = "#b5a6a8";
-      };
-      "ui.virtual.inlay-hint" = {
-        fg = "surface2";
-        bg = "mantle";
-      };
-      "ui.virtual.inlay-hint.parameter" = "subtext0";
-      "ui.virtual.inlay-hint.type" = "subtext1";
-      "function.builtin" = {
-        fg = "blue";
-        modifiers = [ "bold" ];
-      };
-      "markup.heading.1" = "red";
-      "markup.heading.2" = "peach";
-      "markup.heading.3" = "yellow";
-      "markup.heading.4" = "green";
-      "markup.heading.5" = "sapphire";
-      "markup.heading.6" = "lavender";
-      "markup.list" = "teal";
-      "markup.bold" = {
-        fg = "red";
-        modifiers = [ "bold" ];
-      };
-      "markup.italic" = {
-        fg = "red";
-        modifiers = [ "italic" ];
-      };
-      "markup.link.text" = "lavender";
-      "markup.raw" = "green";
-      "markup.quote" = "pink";
+
     };
 
     languages = {
@@ -187,7 +139,7 @@
           check.command = "clippy";
           # makes it work when in an integration_test
           # cargo.features = [ "integration" ];
-          checkOnSave.allTargets = true;
+          # checkOnSave.allTargets = true;
           # rustfmt.extraArgs = [ "+nightly" ];
           # config.rustfmt.extraArgs = [ "+nightly" ];
         };
