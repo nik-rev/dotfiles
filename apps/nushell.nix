@@ -15,12 +15,16 @@
   programs.carapace.enable = true;
   programs.nushell =
     let
+      zoxide = lib.getExe pkgs.u.zoxide;
       # adds lots of cool colors to different file types
       vivid = lib.getExe pkgs.u.vivid;
       # we could run this command directly in the configuration file however that command would run everytime nushell starts
       # This way, we run the command just once when we build the system. In the actual configuration file we then have just the string, withoutn needing to spawn a new child process
       colored = builtins.readFile (
         pkgs.runCommand "generate LS_COLORS value" { } "${vivid} generate catppuccin-mocha >$out"
+      );
+      zoxideIntegration = builtins.readFile (
+        pkgs.runCommand "generate LS_COLORS value" { } "${zoxide} init nushell >$out"
       );
       catppuccin-mocha = builtins.readFile (
         builtins.fetchurl {
@@ -61,7 +65,7 @@
         "sway-unpad" = "swaymsg gaps left all set 0 ; swaymsg gaps right all set 0";
       };
       extraConfig = ''
-        source /home/e/.cache/zoxide/init.nu
+        ${zoxideIntegration}
 
         # pass all args to zoxide then list contents of the new directory
         def --env --wrapped t [ ...args: string ] {

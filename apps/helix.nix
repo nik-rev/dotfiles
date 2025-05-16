@@ -126,7 +126,14 @@
       "variable.other.member" = "teal";
       # this is actually the default but Helix master hasn't synced the catppuccin changes yet
       "function.macro" = "rosewater";
-
+      rainbow = [
+        "red"
+        "peach"
+        "yellow"
+        "green"
+        "sapphire"
+        "lavender"
+      ];
     };
 
     languages = {
@@ -232,6 +239,13 @@
           {
             name = "scheme";
             language-servers = [ "steel-language-server" ];
+            formatter = {
+              command = "raco";
+              args = [
+                "fmt"
+                "-i"
+              ];
+            };
           }
           {
             name = "nix";

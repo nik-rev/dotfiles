@@ -103,6 +103,7 @@ in
   };
 
   services = {
+    blueman.enable = true;
     libinput.enable = true;
     # adds all executables to /usr/bin to be able to run
     # various scripts on NixOS

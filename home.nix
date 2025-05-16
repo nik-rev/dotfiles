@@ -31,6 +31,9 @@
   };
   home.packages = with pkgs.u; [
     inputs.ferrishot.packages.${pkgs.system}.default
+    inkscape
+    racket
+    ast-grep
     ### CLI tools
     ripgrep # find text in files
     fd # find files
