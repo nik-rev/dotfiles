@@ -24,11 +24,13 @@
     # why flake: makes it easy for me to use my software
     ferrishot.url = "github:nik-rev/ferrishot/main";
     # why flake: My fork uses custom merged PRs that I want to use.
-    helix.url = "github:helix-editor/helix/master";
+    helix.url = "github:nik-rev/helix/2nd-filename-extension";
     # why flake: I can use Yazi right inside of helix
     yazi.url = "github:sxyazi/yazi/main";
     # why flake: wezterm has some issues with Sway which were fixed in the latest versions
     wezterm.url = "github:wez/wezterm?dir=nix";
+    # I want to use the latest version
+    niri.url = "github:/YaLTeR/niri/main";
   };
 
   outputs =

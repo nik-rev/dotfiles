@@ -14,6 +14,8 @@ in
     ./vm.nix
     ./nvidia.nix
   ];
+  programs.niri.package = inputs.niri.packages.${pkgs.system}.default;
+  programs.niri.enable = true;
 
   xdg.portal = {
     enable = true;
@@ -46,8 +48,8 @@ in
       git
     ];
     sessionVariables = {
-      # faster rustc linker times
-      RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=${pkgs.mold}/bin/mold";
+      # # faster rustc linker times
+      # RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=${pkgs.mold}/bin/mold";
       # it puts into $HOME/go by default
       GOPATH = "$HOME/.go";
       # fixes invisible cursors in Sway
@@ -168,7 +170,7 @@ in
   systemd.timers."daily-shutdown" = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "22:00";
+      OnCalendar = "21:00";
       Persistent = true;
     };
   };
@@ -179,6 +181,24 @@ in
     '';
     serviceConfig = {
       Type = "oneshot";
+    };
+  };
+
+  systemd.services."shutdown-at-night-if-booted" = {
+    description = "Shutdown if booted during night hours";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "time-sync.target" ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = ''
+        ${pkgs.bash}/bin/bash -c '
+          hour=$(date +%H)
+          if [ $hour -ge 21 ] || [ $hour -lt 6 ]; then
+            ${pkgs.systemd}/bin/systemctl poweroff
+          fi
+        '
+      '';
     };
   };
 

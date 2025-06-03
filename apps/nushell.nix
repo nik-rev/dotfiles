@@ -32,7 +32,7 @@
           sha256 = "1pww5kpmcvgp8f8gwb8q8gl0q5jcav069njpa78f3bxlscf48ffn";
         }
       );
-      ls-command = "^ls --classify --color=always";
+      ls-command = "^ls --classify -rt --color=always";
       # . => go to parent directory;
       # .. => go to parent's parent directory;
       # ..., ...., ..... similarly go 1 level up
@@ -49,101 +49,87 @@
       enable = true;
       package = pkgs.u.nushell;
       shellAliases = {
-        "md" = "mkdir";
-        "rd" = "rmdir";
-        "n" = "hx";
-        "g" = "lazygit";
-        "no" = "hx .";
-        "sn" = "sudo -E hx";
         "e" = ls-command;
         "icat" = "wezterm imgcat";
         "nrs" = "sudo nixos-rebuild switch";
         "cat" = "bat --style=plain";
         "copy" = "xclip -selection clipboard";
         "icopy" = "xclip -selection clipboard -target image/png";
-        "sway-pad" = "swaymsg gaps left all set 440 ; swaymsg gaps right all set 440";
-        "sway-unpad" = "swaymsg gaps left all set 0 ; swaymsg gaps right all set 0";
+        "c" = "cargo";
+        "g" = "git";
+        "lg" = "lazygit";
+        "rz" = "ripunzip";
+        "n" = "hx";
+        "no" = "hx .";
+        "sn" = "sudo -E hx";
       };
-      extraConfig = ''
-        ${zoxideIntegration}
+      extraConfig = # nu
+        ''
+          ${zoxideIntegration}
 
-        # pass all args to zoxide then list contents of the new directory
-        def --env --wrapped t [ ...args: string ] {
-          z ...$args
-          ^ls --classify --color=always
-        }
-
-        # `nix develop` with nushell
-        def --wrapped d [ ...args: string ] {
-          nix develop ...$args --command nu --execute "$env.PROMPT_INDICATOR = 'n> '"
-        }
-
-        # `nix-shell` with nushell
-        def --wrapped ns [ ...args: string ] {
-          nix-shell ...$args --run `nu --execute "\$env.PROMPT_INDICATOR = 'ns> '"`
-        }
-
-        # for recording videos in a 16 * 9 resolution on a monitor of a different resolution
-        def spad [] {
-          swaymsg gaps left all set 440
-          swaymsg gaps right all set 440
-        }
-        def unspad [] {
-          swaymsg gaps left all set 0
-          swaymsg gaps right all set 0
-        }
-
-        def nix-ungit [] {
-          cp ../flake.nix .
-          git add flake.nix
-          nix develop --command nu --execute "$env.PROMPT_INDICATOR = 'n> '"
-          rm flake.nix flake.lock
-          git add flake.nix
-        }
-
-        $env.path = ($env.path | append $"($env.home)/.cache/npm/global/bin")
-        $env.path = ($env.path | append $"($env.home)/.cargo/bin")
-
-        $env.PROMPT_COMMAND_RIGHT = {||
-          let dir = match (do -i { $env.PWD | path relative-to $nu.home-path }) {
-              null => $env.PWD
-              '\' => '~'
-              $relative_pwd => ([~ $relative_pwd] | path join)
+          # pass all args to zoxide then list contents of the new directory
+          def --env --wrapped t [ ...args: string ] {
+            z ...$args
+            ^ls --classify --color=always
           }
 
-          let path_segment = $"(ansi blue)($dir)(ansi reset)"
-
-          $path_segment | str replace --all (char path_sep) $"(ansi white)(char path_sep) (ansi blue)"
-        }
-
-        $env.config.keybindings ++= [
-          {
-            name: "unfreeze",
-            modifier: control,
-            keycode: "char_z",
-            event: {
-              send: executehostcommand,
-              cmd: "job unfreeze"
-            },
-            mode: emacs
+          # `nix develop` with nushell
+          def --wrapped d [ ...args: string ] {
+            nix develop ...$args --command nu --execute "$env.PROMPT_INDICATOR = 'n> '"
           }
-        ]
 
-        $env.PROMPT_COMMAND = ""
+          # `nix-shell` with nushell
+          def --wrapped ns [ ...args: string ] {
+            nix-shell ...$args --run `nu --execute "\$env.PROMPT_INDICATOR = 'ns> '"`
+          }
 
-        $env.config.show_banner = false
+          # for recording videos in a 16 * 9 resolution on a monitor of a different resolution
+          def spad [] {
+            swaymsg gaps left all set 440
+            swaymsg gaps right all set 440
+          }
+          def unspad [] {
+            swaymsg gaps left all set 0
+            swaymsg gaps right all set 0
+          }
 
-        # catppuccin compatible colors
-        $env.LS_COLORS = r#'${colored}'#
+          $env.path = ($env.path | append $"($env.home)/.cargo/bin")
 
-        ${dir-changes}
-        ${catppuccin-mocha}
-      '';
-      extraLogin = ''
-        # auto start i3 when logging in
-        if (tty) == "dev/tty1" {
-          startx (which i3 | first | get path)
-        }
-      '';
+          $env.PROMPT_COMMAND_RIGHT = {||
+            let dir = match (do -i { $env.PWD | path relative-to $nu.home-path }) {
+                null => $env.PWD
+                '\' => '~'
+                $relative_pwd => ([~ $relative_pwd] | path join)
+            }
+
+            let path_segment = $"(ansi blue)($dir)(ansi reset)"
+
+            $path_segment | str replace --all (char path_sep) $"(ansi white)(char path_sep) (ansi blue)"
+          }
+
+          # ctrl-z to toggle foreground and background
+          $env.config.keybindings ++= [
+            {
+              name: "unfreeze",
+              modifier: control,
+              keycode: "char_z",
+              event: {
+                send: executehostcommand,
+                cmd: "job unfreeze"
+              },
+              mode: emacs
+            }
+          ]
+
+          $env.PROMPT_COMMAND = ""
+
+          $env.config.show_banner = false
+
+          # catppuccin compatible colors for ls
+          $env.LS_COLORS = r#'${colored}'#
+
+          ${dir-changes}
+          ${catppuccin-mocha}
+        '';
     };
 }

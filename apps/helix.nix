@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   inputs,
   ...
 }:
@@ -13,9 +12,15 @@
     settings =
       let
         keybindings = {
+          m."\"" = "@f\";vmmdi\"";
+          m."'" = "@f';vmmdi'";
+          m."[" = "@f];vmmdi[";
+          m."(" = "@f);vmmdi(";
+          m."<" = "@f<gt>;vmmdi<lt><gt><left>";
+          m."{" = "@f};vmmdi{";
           space.x = ":write-quit-all";
           space.X = ":write-quit-all!";
-          space.C-d = "@<space>D%severity ERROR";
+          space.C-d = "@<space>D%severity ERROR ";
           tab = "collapse_selection";
           x = "select_line_below";
           X = "select_line_above";
@@ -98,7 +103,6 @@
               "file-name"
               "diagnostics"
             ];
-            # merge-with-commandline = true;
           };
           indent-guides = {
             character = "╎";
@@ -126,285 +130,31 @@
       "variable.other.member" = "teal";
       # this is actually the default but Helix master hasn't synced the catppuccin changes yet
       "function.macro" = "rosewater";
-      rainbow = [
-        "red"
-        "peach"
-        "yellow"
-        "green"
-        "sapphire"
-        "lavender"
-      ];
     };
 
     languages = {
       language-server = {
-        steel-language-server = {
-          command = "steel-language-server";
-          args = [ ];
-        };
         rust-analyzer.config = {
           check.command = "clippy";
-          # makes it work when in an integration_test
-          # cargo.features = [ "integration" ];
-          # checkOnSave.allTargets = true;
-          # rustfmt.extraArgs = [ "+nightly" ];
-          # config.rustfmt.extraArgs = [ "+nightly" ];
-        };
-        nginx = {
-          command = "nginx-language-server";
-          filetypes = [ "nginx" ];
-          required-root-patterns = [ "nginx.conf" ];
-        };
-        # eslint = {
-        #   args = [ "--stdio" ];
-        #   command = "vscode-eslint-language-server";
-        #   config.validate = "on";
-        # };
-        typescript-language-server = {
-          required-root-patterns = [ "package.json" ];
-          args = [ "--stdio" ];
-        };
-        deno = {
-          command = "deno";
-          args = [ "lsp" ];
-          config.deno = {
-            enable = true;
-            lint = true;
-          };
-          required-root-patterns = [ "deno.*" ];
-        };
-        mdx = {
-          command = "mdx-language-server";
-          args = [ "--stdio" ];
-        };
-        tailwindcss = {
-          command = lib.getExe pkgs.u.tailwindcss-language-server;
-          args = [ "--stdio" ];
-        };
-        ruff = {
-          command = lib.getExe pkgs.u.ruff;
-        };
-        gopls.config.gofumpt = true;
-        astro-ls = {
-          command = lib.getExe pkgs.u.nodePackages."@astrojs/language-server";
-          args = [ "--stdio" ];
-          config = {
-            typescript = {
-              tsdk = "${pkgs.u.typescript}/lib/node_modules/typescript/lib";
-              environment = "node";
-            };
-          };
-        };
-        # https://github.com/tekumara/typos-lsp/blob/main/docs/helix-config.md
-        typos-lsp = {
-          command = lib.getExe pkgs.u.typos-lsp;
-          environment.RUST_LOG = "error";
-          config.diagnosticSeverity = "Warning";
         };
       };
 
-      language =
-        let
-          prettierd = lang: {
-            command = lib.getExe pkgs.u.prettierd;
-            args = [ lang ];
+      language = [
+        {
+          name = "nix";
+          auto-format = true;
+          auto-pairs = {
+            "=" = ";";
+            # unchanged:
+            "(" = ")";
+            "{" = "}";
+            "[" = "]";
+            "'" = "'";
+            "\"" = "\"";
+            "`" = "`";
           };
-          prettier = plugin: parser: {
-            command = lib.getExe pkgs.u.nodePackages.prettier;
-            args = [
-              "--plugin"
-              plugin
-              "--parser"
-              parser
-            ];
-          };
-
-        in
-        map (language: language // { auto-format = true; }) ([
-          {
-            name = "astro";
-            scope = "source.astro";
-            injection-regex = "astro";
-            file-types = [ "astro" ];
-            roots = [
-              "package.json"
-              "astro.config.mjs"
-            ];
-            language-servers = [
-              "astro-ls"
-              "tailwindcss"
-            ];
-            formatter = prettier "prettier-plugin-astro" "astro";
-          }
-          {
-            name = "scheme";
-            language-servers = [ "steel-language-server" ];
-            formatter = {
-              command = "raco";
-              args = [
-                "fmt"
-                "-i"
-              ];
-            };
-          }
-          {
-            name = "nix";
-            auto-pairs = {
-              "=" = ";";
-              # unchanged:
-              "(" = ")";
-              "{" = "}";
-              "[" = "]";
-              "'" = "'";
-              "\"" = "\"";
-              "`" = "`";
-            };
-          }
-          {
-            name = "svelte";
-            language-servers = [
-              "svelteserver"
-              "tailwindcss"
-            ];
-            formatter = prettier "prettier-plugin-svelte" "svelte";
-          }
-          {
-            name = "cpp";
-            file-types = [
-              "cpp"
-              "cc"
-              "cxx"
-              "hpp"
-              "hcc"
-              "hxx"
-            ];
-            formatter.command = "clang-format";
-          }
-          {
-            name = "typst";
-            formatter.command = "typstyle";
-          }
-          {
-            name = "latex";
-          }
-          {
-            name = "c";
-            file-types = [
-              "c"
-              "h"
-            ];
-            formatter.command = "clang-format";
-          }
-          # TODO: use nufmt to format nushell files when the formatter becomes available
-          # {
-          #   name = "nu";
-          #   formatter.command = "nufmt";
-          #   formatter.args = [ "--stdin" ];
-          # }
-          {
-            name = "python";
-            language-servers = [
-              "pyright"
-              "ruff"
-            ];
-          }
-          {
-            name = "typescript";
-            formatter = prettierd ".ts";
-            language-servers = [
-              "typescript-language-server"
-              "eslint"
-              "deno"
-            ];
-          }
-          {
-            name = "yaml";
-            formatter = prettierd ".yaml";
-          }
-          {
-            name = "markdown";
-            formatter = prettierd ".md";
-            language-servers = [ "typos-lsp" ];
-            comment-tokens = [
-              "-"
-              "+"
-              "*"
-              "1."
-              ">"
-              "- [ ]"
-            ];
-          }
-          {
-            name = "scss";
-            formatter = prettierd ".scss";
-          }
-          {
-            name = "css";
-            formatter = prettierd ".css";
-          }
-          {
-            name = "tsx";
-            formatter = prettierd ".tsx";
-            language-servers = [
-              "tailwindcss"
-              "typescript-language-server"
-              # "eslint"
-            ];
-            block-comment-tokens = [
-              "{/*"
-              "*/}"
-            ];
-          }
-          {
-            name = "jsx";
-            formatter = prettierd ".jsx";
-          }
-          {
-            name = "json";
-            formatter = prettierd ".json";
-          }
-          {
-            name = "toml";
-            formatter.command = lib.getExe pkgs.u.taplo;
-            formatter.args = [
-              "format"
-              "-"
-            ];
-          }
-          {
-            name = "html";
-            formatter = prettierd ".html";
-          }
-          {
-            name = "c-sharp";
-            formatter.command = lib.getExe pkgs.u.csharpier;
-          }
-          {
-            name = "javascript";
-            formatter = prettierd ".js";
-          }
-          {
-            name = "nix";
-            formatter.command = lib.getExe pkgs.u.nixfmt-rfc-style;
-          }
-          {
-            name = "lua";
-            formatter.command = lib.getExe pkgs.u.stylua;
-            formatter.args = [ "-" ];
-          }
-          {
-            name = "bash";
-            formatter.command = lib.getExe pkgs.u.shfmt;
-          }
-          {
-            name = "haskell";
-            formatter.command = lib.getExe pkgs.u.ormolu;
-            formatter.args = [
-              "--stdin-input-file"
-              "."
-            ];
-          }
-        ]);
+        }
+      ];
     };
   };
 }

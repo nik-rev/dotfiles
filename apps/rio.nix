@@ -128,19 +128,10 @@
       };
       confirm-before-quit = false;
       fonts = {
-        bold = {
-          family = "JetBrainsMono NF";
-        };
-        bold-italic = {
-          family = "JetBrainsMono NF";
-        };
-        italic = {
-          family = "JetBrainsMono NF";
-        };
-        regular = {
-          family = "JetBrainsMono NF";
-        };
+        family = "JetBrainsMono Nerd Font";
         size = 23;
+        extras = [ { family = "Noto Sans Mono CJK JP"; } ];
+        emojis = [ { family = "Noto Color Emoji"; } ];
       };
       navigation = {
         use-current-path = true;

@@ -12,12 +12,14 @@
     ./apps/gitui.nix
     ./apps/obs.nix
     ./apps/rio.nix
-    ./apps/sway.nix
     ./apps/bat.nix
     ./apps/wezterm.nix
     ./apps/nushell.nix
-    ./apps/lazygit.nix
+    # --- Not written in Rust
     ./apps/firefox.nix
+    ./apps/sway.nix
+    ./apps/lazygit.nix
+    # ---
   ];
   programs = {
     zoxide.enable = true;
@@ -30,46 +32,44 @@
     x11.enable = true;
   };
   home.packages = with pkgs.u; [
-    inputs.ferrishot.packages.${pkgs.system}.default
-    inkscape
-    racket
-    ast-grep
     ### CLI tools
     ripgrep # find text in files
+    ast-grep # grep AST trees
     fd # find files
-    skim # find files (fuzzy)
-    doggo # dns CLI
-    gh # GitHub CLI
+    uutils-coreutils-noprefix # replace the standard GNU tools with Rust coreutils
+    inputs.ferrishot.packages.${pkgs.system}.default # screenshot app
     hyperfine # benchmarking tool
-    tree # tree view of files
-    p7zip # 7z
-    pciutils # view connected PCI devices
+    ripunzip # unzip files
     onefetch # repository information
+    termusic # terminal music player
+    serpl # mass search and replace
+    vivid # generates LS_COLORS for directories to look awesome
+
+    # --- Not written in Rust
+    brightnessctl # control brightness
+    acpi # utility to view battery percentage
+    vial # keyboard configurator
+    doggo # dns CLI
     unar # unzip .rar files
     yt-dlp # download tracks from youtube
+    gh # GitHub CLI
     imagemagick # monster CLI command for working with images
     ffmpeg # monster CLI command for working with videos
-
-    ### apps
-    zathura # document viewer (e.g. PDF)
-    termusic # terminal music player
-    grim # copy slurp screenshots to clipboard (wayland wl-roots)
-    slurp # take screenshots (wayland wl-roots)
-    libreoffice # document viewer suite
-    vial # keyboard configurator
     gimp # image editor
-    scooter # mass search and replace
+    slurp # take screenshots (wayland wl-roots)
+    wl-clipboard # screenshots on wayland
+    tree # tree view of files
+    pciutils # view connected PCI devices
+    libreoffice # document viewer suite
+    grim # copy slurp screenshots to clipboard (wayland wl-roots)
+    pamixer # sound control
+    sof-firmware
+    inkscape # SVG editor
+    zathura # document viewer (e.g. PDF)
     mpv # video player
     quickemu # painless virtual machines
     telegram-desktop
-
-    ### system utilities (background)
-    brightnessctl # control brightness
-    vivid # generates LS_COLORS for directories to look awesome
-    acpi # utility to view battery percentage
-    wl-clipboard # screenshots on wayland
-    pamixer # sound control
-    sof-firmware
+    # ---
   ];
   home.stateVersion = "24.11";
 }
