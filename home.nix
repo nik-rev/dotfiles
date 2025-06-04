@@ -71,5 +71,5 @@
     telegram-desktop
     # ---
   ];
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.05";
 }

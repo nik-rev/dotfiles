@@ -10,7 +10,6 @@ let
     clearurls # remove tracking information from URLs
     proton-pass # password manager
     sponsorblock # skip sponsored segments in youtube videos
-    simple-translate # translate selected text
   ];
 in
 {
@@ -40,31 +39,31 @@ in
       );
     };
     profiles.nik = {
-      inherit extensions;
+      extensions.packages = extensions;
       search.force = true;
       isDefault = true;
       search.engines = {
-        "GitHub Code" = {
+        github_code = {
           urls = [ { template = "https://github.com/search?q={searchTerms}&type=code"; } ];
           definedAliases = [ "@gh" ];
         };
-        "GitHub Issues" = {
+        github_issues = {
           urls = [ { template = "https://github.com/search?q={searchTerms}&type=repositories"; } ];
           definedAliases = [ "@repo" ];
         };
-        "Nix Packages" = {
+        nixpkgs = {
           urls = [ { template = "https://search.nixos.org/packages?query={searchTerms}"; } ];
           definedAliases = [ "@np" ];
         };
-        "Home Manager Option Search" = {
+        home_manager_options = {
           urls = [ { template = "https://home-manager-options.extranix.com/?query={searchTerms}"; } ];
           definedAliases = [ "@hm" ];
         };
-        "Crates.io" = {
+        crates_io = {
           urls = [ { template = "https://crates.io/crates/{searchTerms}"; } ];
           definedAliases = [ "@crates" ];
         };
-        "YouTube" = {
+        youtube = {
           urls = [ { template = "https://www.youtube.com/results?search_query={searchTerms}"; } ];
           definedAliases = [ "@yt" ];
         };

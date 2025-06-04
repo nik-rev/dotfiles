@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 let
   catppuccin = pkgs.fetchFromGitHub {
     owner = "catppuccin";
@@ -9,6 +9,9 @@ let
 in
 {
   programs.yazi.enable = true;
-  programs.yazi.package = inputs.yazi.packages.${pkgs.system}.yazi;
+  programs.yazi.package = pkgs.u.yazi;
+  programs.yazi.settings = {
+    manager.sort_dir_first = true;
+  };
   xdg.configFile."yazi/theme.toml".source = "${catppuccin}/themes/mocha/catppuccin-mocha-blue.toml";
 }

@@ -14,16 +14,23 @@ in
     ./vm.nix
     ./nvidia.nix
   ];
-  programs.niri.package = inputs.niri.packages.${pkgs.system}.default;
-  programs.niri.enable = true;
+  # programs.niri.package = inputs.niri.packages.${pkgs.system}.default;
+  # programs.niri.enable = true;
 
   xdg.portal = {
     enable = true;
+    config = {
+      sway = {
+        default = ["wlr" "gtk"];
+      };
+    };
     xdgOpenUsePortal = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-wlr
       xdg-desktop-portal-gtk
     ];
+    config.common.default = "*";
+    wlr.enable = true;
   };
 
   hardware = {
@@ -64,11 +71,7 @@ in
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
-      (nerdfonts.override {
-        fonts = [
-          "JetBrainsMono"
-        ];
-      })
+      pkgs.nerd-fonts.jetbrains-mono
       texlivePackages.xcharter
     ];
     fontconfig = {
@@ -218,5 +221,5 @@ in
     initrd.luks.devices.cryptroot.device = "/dev/disk/by-partlabel/luks_root";
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }

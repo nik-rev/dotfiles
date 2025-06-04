@@ -6,10 +6,10 @@
       flake = false;
     };
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -25,12 +25,8 @@
     ferrishot.url = "github:nik-rev/ferrishot/main";
     # why flake: My fork uses custom merged PRs that I want to use.
     helix.url = "github:nik-rev/helix/2nd-filename-extension";
-    # why flake: I can use Yazi right inside of helix
-    yazi.url = "github:sxyazi/yazi/main";
     # why flake: wezterm has some issues with Sway which were fixed in the latest versions
     wezterm.url = "github:wez/wezterm?dir=nix";
-    # I want to use the latest version
-    niri.url = "github:/YaLTeR/niri/main";
   };
 
   outputs =
@@ -44,34 +40,30 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        overlays = [
-          nur.overlays.default
-          # unstable nixpkgs
-          (final: prev: {
-            u = import nixpkgs-unstable {
-              inherit system;
-              config.allowUnfree = true;
-            };
-          })
-        ];
-      };
-      specialArgs = {
-        inherit inputs pkgs;
-      };
     in
     {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        inherit system specialArgs;
+        inherit system;
+        specialArgs.inputs = inputs;
         modules = [
+          {
+            nixpkgs.overlays = [
+              nur.overlays.default
+              # unstable nixpkgs
+              (final: prev: {
+                u = import nixpkgs-unstable {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
+              })
+            ];
+          }
           ./configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager = {
               useGlobalPkgs = true;
-              extraSpecialArgs = specialArgs;
+              extraSpecialArgs.inputs = inputs;
               useUserPackages = true;
               backupFileExtension = "hm-backup";
               users.e.imports = [
