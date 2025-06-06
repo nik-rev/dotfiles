@@ -173,7 +173,7 @@ in
   systemd.timers."daily-shutdown" = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "21:00";
+      OnCalendar = "23:00";
       Persistent = true;
     };
   };

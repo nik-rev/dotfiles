@@ -2,7 +2,7 @@
   programs.git = {
     enable = true;
     userName = "Nik Revenco";
-    userEmail = "154856872+NikitaRevenco@users.noreply.github.com";
+    userEmail = "pm@nikrev.com";
     extraConfig = {
       pull.rebase = true;
       init.defaultBranch = "main";
@@ -17,6 +17,7 @@
       options = {
         features = "catppuccin-mocha";
         line-numbers = false;
+        # Copied from https://github.com/catppuccin/delta/blob/main/catppuccin.gitconfig
         "catppuccin-mocha" = {
           blame-palette = "#1e1e2e #181825 #11111b #313244 #45475a";
           commit-decoration-style = "box ul";
@@ -39,9 +40,9 @@
           plus-style = "syntax #2c3239";
           map-styles = ''
             bold purple => syntax "#494060",
-                 bold blue => syntax "#384361",
-                 bold cyan => syntax "#384d5d",
-                 bold yellow => syntax "#544f4e"
+            bold blue => syntax "#384361",
+            bold cyan => syntax "#384d5d",
+            bold yellow => syntax "#544f4e"
           '';
           # Should match the name of the bat theme
           syntax-theme = "catppuccin";
