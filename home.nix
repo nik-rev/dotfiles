@@ -39,11 +39,13 @@
     uutils-coreutils-noprefix # replace the standard GNU tools with Rust coreutils
     inputs.ferrishot.packages.${pkgs.system}.default # screenshot app
     hyperfine # benchmarking tool
-    ripunzip # unzip files
     onefetch # repository information
+    ouch # compression and decompression
     termusic # terminal music player
     serpl # mass search and replace
     vivid # generates LS_COLORS for directories to look awesome
+    pastel # color utility tool
+    presenterm # markdown terminal slideshow
 
     # --- Not written in Rust
     brightnessctl # control brightness

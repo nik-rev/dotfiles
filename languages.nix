@@ -5,6 +5,8 @@
     goBin = "go/bin";
   };
   home.packages = with pkgs.u; [
+    clang
+    
     ### markdown
     typos # spell checker
     typos-lsp # spell checker markdown LSP
