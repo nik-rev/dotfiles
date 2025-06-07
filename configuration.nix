@@ -21,7 +21,10 @@ in
     enable = true;
     config = {
       sway = {
-        default = ["wlr" "gtk"];
+        default = [
+          "wlr"
+          "gtk"
+        ];
       };
     };
     xdgOpenUsePortal = true;
@@ -110,7 +113,6 @@ in
   services = {
     blueman.enable = true;
     libinput.enable = true;
-    blueman.enable = true;
     # adds all executables to /usr/bin to be able to run
     # various scripts on NixOS
     envfs.enable = true;
