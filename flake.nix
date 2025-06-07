@@ -54,6 +54,9 @@
                 u = import nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
+                  # Without this we get an error message:
+                  # "you can't use speech synthesis because speech dispatcher won't open"
+                  config.firefox.speechSynthesisSupport = true;
                 };
               })
             ];
