@@ -46,10 +46,10 @@
     vivid # generates LS_COLORS for directories to look awesome
     pastel # color utility tool
     presenterm # markdown terminal slideshow
+    batmon # battery TUI
 
     # --- Not written in Rust
     brightnessctl # control brightness
-    acpi # utility to view battery percentage
     vial # keyboard configurator
     doggo # dns CLI
     unar # unzip .rar files
