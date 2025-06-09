@@ -6,11 +6,9 @@
 {
   imports = [
     ./languages.nix
-    ./apps/git.nix
     ./apps/helix.nix
     ./apps/yazi.nix
     ./apps/gitui.nix
-    ./apps/obs.nix
     ./apps/rio.nix
     ./apps/bat.nix
     ./apps/wezterm.nix
@@ -18,6 +16,8 @@
     # --- Not written in Rust
     ./apps/firefox.nix
     ./apps/sway.nix
+    ./apps/obs.nix
+    ./apps/git.nix
     ./apps/lazygit.nix
     # ---
   ];
@@ -47,11 +47,12 @@
     pastel # color utility tool
     presenterm # markdown terminal slideshow
     batmon # battery TUI
+    gitoxide # git rewrite in Rust
+    dogedns # dns CLI
 
     # --- Not written in Rust
     brightnessctl # control brightness
     vial # keyboard configurator
-    doggo # dns CLI
     unar # unzip .rar files
     yt-dlp # download tracks from youtube
     gh # GitHub CLI

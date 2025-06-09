@@ -9,7 +9,8 @@ let
     ublock-origin # ad blocker
     clearurls # remove tracking information from URLs
     proton-pass # password manager
-    sponsorblock # skip sponsored segments in youtube videos
+    sponsorblock # auto-skip sponsored segments in youtube videos
+    catppuccin-mocha-mauve # color theme
   ];
 in
 {

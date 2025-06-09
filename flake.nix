@@ -20,11 +20,11 @@
     };
 
     # why flake: makes it easy for me to use my software
-    patchy.url = "github:NikitaRevenco/patchy/main";
+    patchy.url = "github:nik-rev/patchy/main";
     # why flake: makes it easy for me to use my software
     ferrishot.url = "github:nik-rev/ferrishot/main";
     # why flake: My fork uses custom merged PRs that I want to use.
-    helix.url = "github:nik-rev/helix/2nd-filename-extension";
+    helix.url = "github:helix-editor/helix/master";
     # why flake: wezterm has some issues with Sway which were fixed in the latest versions
     wezterm.url = "github:wez/wezterm?dir=nix";
   };
@@ -53,9 +53,10 @@
               (final: prev: {
                 u = import nixpkgs-unstable {
                   inherit system;
-                  config.allowUnfree = true;
-                  # Without this we get an error message:
-                  # "you can't use speech synthesis because speech dispatcher won't open"
+                  # Without this we get an error message in discord:
+                  # 
+                  # > "You can't use speech synthesis because
+                  # > speech dispatcher won't open"
                   config.firefox.speechSynthesisSupport = true;
                 };
               })

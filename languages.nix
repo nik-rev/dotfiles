@@ -1,3 +1,5 @@
+#! Tooling-specific things I want to have installed globally
+
 { pkgs, ... }:
 {
   programs.go = {

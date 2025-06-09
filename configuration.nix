@@ -1,7 +1,6 @@
 {
   pkgs,
   inputs,
-  config,
   ...
 }:
 let
@@ -14,8 +13,6 @@ in
     ./vm.nix
     ./nvidia.nix
   ];
-  # programs.niri.package = inputs.niri.packages.${pkgs.system}.default;
-  # programs.niri.enable = true;
 
   xdg.portal = {
     enable = true;
@@ -54,12 +51,8 @@ in
   ];
 
   environment = {
-    systemPackages = with pkgs; [
-      git
-    ];
     sessionVariables = {
-      # # faster rustc linker times
-      # RUSTFLAGS = "-C linker=clang -C link-arg=-fuse-ld=${pkgs.mold}/bin/mold";
+      EDITOR = "hx";
       # it puts into $HOME/go by default
       GOPATH = "$HOME/.go";
       # fixes invisible cursors in Sway
@@ -75,7 +68,6 @@ in
       noto-fonts-cjk-sans
       noto-fonts-emoji
       pkgs.nerd-fonts.jetbrains-mono
-      texlivePackages.xcharter
     ];
     fontconfig = {
       enable = true;
@@ -139,32 +131,6 @@ in
     pulse.enable = true;
   };
 
-  ### SSH
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
-  environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString user_id}/ssh-agent";
-  programs.ssh.startAgent = true;
-  # service add ssh key on login
-  systemd.user.services.ssh-add-key = {
-    wantedBy = [ "default.target" ];
-    after = [ "ssh-agent.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStartPre = "${pkgs.coreutils-full}/bin/sleep 1";
-      ExecStart = [
-        "${pkgs.openssh}/bin/ssh-add ${config.users.users.${username}.home}/.ssh/id_ed25519"
-      ];
-      Restart = "on-failure";
-      RestartSec = 1;
-    };
-  };
-
   ### Kernel
 
   fileSystems."/".options = [
@@ -190,28 +156,9 @@ in
     };
   };
 
-  systemd.services."shutdown-at-night-if-booted" = {
-    description = "Shutdown if booted during night hours";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "time-sync.target" ];
-
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''
-        ${pkgs.bash}/bin/bash -c '
-          hour=$(date +%H)
-          if [ $hour -ge 21 ] || [ $hour -lt 6 ]; then
-            ${pkgs.systemd}/bin/systemctl poweroff
-          fi
-        '
-      '';
-    };
-  };
-
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
-      "intel_pstate=no_hwp"
       "quiet"
     ];
     loader.efi.canTouchEfiVariables = true;

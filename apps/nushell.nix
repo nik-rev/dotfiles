@@ -1,8 +1,3 @@
-# download all exercises for an exercism track
-# track=$TRACK_NAME; curl "https://exercism.org/api/v2/tracks/$track/exercises" | \     ~/exercism/rust
-#   jq -r '.exercises[].slug' | \
-#   xargs -I {} -n1 sh -c "exercism download --track=$track --exercise {} || true"
-
 {
   pkgs,
   lib,
@@ -15,32 +10,35 @@
   programs.carapace.enable = true;
   programs.nushell =
     let
-      zoxide = lib.getExe pkgs.u.zoxide;
-      # adds lots of cool colors to different file types
-      vivid = lib.getExe pkgs.u.vivid;
       # we could run this command directly in the configuration file however that command would run everytime nushell starts
       # This way, we run the command just once when we build the system. In the actual configuration file we then have just the string, withoutn needing to spawn a new child process
-      colored = builtins.readFile (
-        pkgs.runCommand "generate LS_COLORS value" { } "${vivid} generate catppuccin-mocha >$out"
+      ls_colors_catppuccin = builtins.readFile (
+        pkgs.runCommand "generate LS_COLORS value" { } "${lib.getExe pkgs.u.vivid} generate catppuccin-mocha >$out"
       );
-      zoxideIntegration = builtins.readFile (
-        pkgs.runCommand "generate LS_COLORS value" { } "${zoxide} init nushell >$out"
+      # Manual zoxide integration, because I need to make aliases from these commands
+      #
+      # And the default zoxide integration that nushell provides places the zoxide commands
+      # after the `extraConfig`, which causes an error
+      zoxide_nushell = builtins.readFile (
+        pkgs.runCommand "generate LS_COLORS value" { } "${lib.getExe pkgs.u.zoxide} init nushell >$out"
       );
-      catppuccin-mocha = builtins.readFile (
+      # Catppuccin-themed nushell
+      catppuccin_nushell = builtins.readFile (
         builtins.fetchurl {
-          url = "https://raw.githubusercontent.com/NikitaRevenco/catppuccin-nushell/10a429db05e74787b12766652dc2f5478da43b6f/themes/catppuccin_mocha.nu";
+          url = "https://raw.githubusercontent.com/catppuccin/nushell/refs/heads/main/themes/catppuccin_mocha.nu";
           sha256 = "1pww5kpmcvgp8f8gwb8q8gl0q5jcav069njpa78f3bxlscf48ffn";
         }
       );
-      ls-command = "^ls --classify -rt --color=always";
+      # this is the command that I want to use when listing directories
+      ls_command = "^ls --classify -rt --color=always";
       # . => go to parent directory;
       # .. => go to parent's parent directory;
       # ..., ...., ..... similarly go 1 level up
-      dir-changes = builtins.concatStringsSep "\n" (
+      goto_parent_dir_commands = builtins.concatStringsSep "\n" (
         map (count: ''
           def --env ${lib.concatStrings (lib.replicate count "o")} [] {
             cd ${builtins.concatStringsSep "/" (lib.replicate count "..")}
-            ${ls-command}
+            ${ls_command}
           }
         '') (lib.range 1 5)
       );
@@ -49,24 +47,24 @@
       enable = true;
       package = pkgs.u.nushell;
       shellAliases = {
-        "e" = ls-command;
+        "e" = ls_command;
         "icat" = "wezterm imgcat";
         "nrs" = "sudo nixos-rebuild switch";
         "cat" = "bat --style=plain";
-        "copy" = "xclip -selection clipboard";
-        "icopy" = "xclip -selection clipboard -target image/png";
         "c" = "cargo";
         "g" = "git";
+        "y" = "yazi";
         "lg" = "lazygit";
-        "rz" = "ripunzip";
         "n" = "hx";
         "no" = "hx .";
         "sn" = "sudo -E hx";
       };
       extraConfig = # nu
         ''
-          ${zoxideIntegration}
+          ${zoxide_nushell}
 
+          # Command for switching directories
+          # 
           # pass all args to zoxide then list contents of the new directory
           def --env --wrapped t [ ...args: string ] {
             z ...$args
@@ -93,7 +91,12 @@
             swaymsg gaps right all set 0
           }
 
-          $env.path = ($env.path | append $"($env.home)/.cargo/bin")
+          # Clone in an ergonomic way
+          def clone [ $owner $repo ] {
+            gix clone $"git@github.com:($owner)/($repo).git" o> /dev/null
+          }
+
+          $env.path ++= $"($env.home)/.cargo/bin"
 
           $env.PROMPT_COMMAND_RIGHT = {||
             let dir = match (do -i { $env.PWD | path relative-to $nu.home-path }) {
@@ -126,10 +129,10 @@
           $env.config.show_banner = false
 
           # catppuccin compatible colors for ls
-          $env.LS_COLORS = r#'${colored}'#
+          $env.LS_COLORS = r#'${ls_colors_catppuccin}'#
 
-          ${dir-changes}
-          ${catppuccin-mocha}
+          ${goto_parent_dir_commands}
+          ${catppuccin_nushell}
         '';
     };
 }
