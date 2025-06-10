@@ -38,6 +38,7 @@
     fd # find files
     uutils-coreutils-noprefix # replace the standard GNU tools with Rust coreutils
     inputs.ferrishot.packages.${pkgs.system}.default # screenshot app
+    inputs.lumina.packages.${pkgs.system}.default # screenshot app
     hyperfine # benchmarking tool
     onefetch # repository information
     ouch # compression and decompression
@@ -51,7 +52,6 @@
     dogedns # dns CLI
 
     # --- Not written in Rust
-    brightnessctl # control brightness
     vial # keyboard configurator
     unar # unzip .rar files
     yt-dlp # download tracks from youtube

@@ -19,8 +19,8 @@
         "XF86AudioRaiseVolume" = "exec --no-startup-id pamixer --increase 5";
         "XF86AudioLowerVolume" = "exec --no-startup-id pamixer --decrease 5";
         "XF86AudioMute" = "exec --no-startup-id pamixer --toggle-mute";
-        "XF86MonBrightnessUp" = "exec --no-startup-id brightnessctl set +5%";
-        "XF86MonBrightnessDown" = "exec --no-startup-id brightnessctl set 5%-";
+        "XF86MonBrightnessUp" = "exec --no-startup-id lumina set +5%";
+        "XF86MonBrightnessDown" = "exec --no-startup-id lumina set -5%";
         "Mod1+m" = "exec ferrishot";
         "Mod1+i" = "exec wezterm-gui";
         "Mod1+r" = "exec firefox";

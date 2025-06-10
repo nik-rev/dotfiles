@@ -92,11 +92,13 @@
           }
 
           # Clone in an ergonomic way
-          def clone [ $owner $repo ] {
+          def clone [ $owner, $repo ] {
             gix clone $"git@github.com:($owner)/($repo).git" o> /dev/null
           }
 
-          $env.path ++= $"($env.home)/.cargo/bin"
+          $env.path ++= [
+              $"($env.home)/.cargo/bin"
+          ]
 
           $env.PROMPT_COMMAND_RIGHT = {||
             let dir = match (do -i { $env.PWD | path relative-to $nu.home-path }) {
