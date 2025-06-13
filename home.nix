@@ -55,7 +55,7 @@
 
     # --- Not written in Rust
     vial # keyboard configurator
-    unar # unzip .rar files
+    imhex # hex editor
     yt-dlp # download tracks from youtube
     gh # GitHub CLI
     imagemagick # monster CLI command for working with images
@@ -63,9 +63,7 @@
     gimp # image editor
     slurp # take screenshots (wayland wl-roots)
     wl-clipboard # screenshots on wayland
-    tree # tree view of files
     pciutils # view connected PCI devices
-    libreoffice # document viewer suite
     grim # copy slurp screenshots to clipboard (wayland wl-roots)
     pamixer # sound control
     sof-firmware
@@ -73,7 +71,6 @@
     zathura # document viewer (e.g. PDF)
     mpv # video player
     quickemu # painless virtual machines
-    telegram-desktop
     # ---
   ];
   home.stateVersion = "25.05";
