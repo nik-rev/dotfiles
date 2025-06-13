@@ -136,6 +136,7 @@
       language-server = {
         rust-analyzer.config = {
           check.command = "clippy";
+          rustc.source = "discover";
         };
       };
 

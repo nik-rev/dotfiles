@@ -50,6 +50,7 @@
         "e" = ls_command;
         "icat" = "wezterm imgcat";
         "nrs" = "sudo nixos-rebuild switch";
+        "l" = "lazygit";
         "cat" = "bat --style=plain";
         "c" = "cargo";
         "g" = "git";
@@ -99,7 +100,7 @@
                 _ => "repos"
             }
 
-            let $repo_dir = $"($env.HOME)/($clone_dir)"
+            let $repo_dir = $"($env.HOME)/($clone_dir)/($repo)"
             mkdir $clone_dir
             gix clone $"git@github.com:($owner)/($repo).git" $repo_dir o> /dev/null
             cd $repo_dir

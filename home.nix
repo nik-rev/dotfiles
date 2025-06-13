@@ -7,6 +7,7 @@
   imports = [
     ./languages.nix
     ./apps/helix.nix
+    ./apps/atuin.nix
     ./apps/yazi.nix
     ./apps/gitui.nix
     ./apps/rio.nix
@@ -36,6 +37,7 @@
     ripgrep # find text in files
     ast-grep # grep AST trees
     fd # find files
+    bottom # system monitor
     uutils-coreutils-noprefix # replace the standard GNU tools with Rust coreutils
     inputs.ferrishot.packages.${pkgs.system}.default # screenshot app
     inputs.lumina.packages.${pkgs.system}.default # screenshot app
