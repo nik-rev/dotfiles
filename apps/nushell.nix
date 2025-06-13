@@ -92,8 +92,17 @@
           }
 
           # Clone in an ergonomic way
-          def clone [ $owner, $repo ] {
-            gix clone $"git@github.com:($owner)/($repo).git" o> /dev/null
+          def --env clone [ $owner, $repo ] {
+            let clone_dir = match $owner {
+                "nik-contrib" => "contrib",
+                "nik-rev" => "projects",
+                _ => "repos"
+            }
+
+            let $repo_dir = $"($env.HOME)/($clone_dir)"
+            mkdir $clone_dir
+            gix clone $"git@github.com:($owner)/($repo).git" $repo_dir o> /dev/null
+            cd $repo_dir
           }
 
           $env.path ++= [
