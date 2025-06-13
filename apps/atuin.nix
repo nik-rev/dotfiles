@@ -21,7 +21,6 @@
       show_help = false;
       # do not show tabs for Search / Inspect
       show_tabs = false;
-      keymap_mode = "vim-normal";
       style = "full";
     };
     enableNushellIntegration = true;
