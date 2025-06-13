@@ -24,5 +24,6 @@
       style = "full";
     };
     enableNushellIntegration = true;
+    flags = [ "--disable-up-arrow" ];
   };
 }
