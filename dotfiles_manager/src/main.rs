@@ -1,5 +1,6 @@
 use simply_colored::*;
 use std::env::current_dir;
+use std::fs::canonicalize;
 use std::io::Write as _;
 use std::path::absolute;
 use std::{env, fs, path::Path};
@@ -45,7 +46,11 @@ fn main() {
             let relative_location = old_location.strip_prefix(&root_configs).unwrap();
             let new_location = config.join(relative_location);
 
-            let old_relative_to_cwd = old_location.strip_prefix(&current_dir).unwrap().display();
+            let old_relative_to_cwd_canon = canonicalize(old_location).unwrap();
+            let old_relative_to_cwd = old_relative_to_cwd_canon
+                .strip_prefix(&current_dir)
+                .unwrap()
+                .display();
 
             // 1. Remove the old file
             match fs::remove_file(&new_location) {
@@ -54,7 +59,7 @@ fn main() {
                     panic!("{err}");
                 }
                 Ok(()) => {
-                    log::info!("{RED}removed{RESET} {old_relative_to_cwd}");
+                    log::warn!("{RED}removed{RESET} {old_relative_to_cwd}");
                 }
             }
 
