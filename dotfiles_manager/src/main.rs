@@ -1,6 +1,5 @@
 use simply_colored::*;
 use std::env::current_dir;
-use std::fs::canonicalize;
 use std::io::Write as _;
 use std::path::absolute;
 use std::{env, fs, path::Path};
