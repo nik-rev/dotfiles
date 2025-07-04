@@ -32,6 +32,7 @@
     pkgs.u.nushell # shell
     ripgrep # find text in files
     inputs.helix.packages.${pkgs.system}.helix # editor
+    delta # differ
     ast-grep # grep AST trees
     pkgs.u.yazi # terminal file manager
     inputs.wezterm.packages.${pkgs.system}.default # terminal emulator
