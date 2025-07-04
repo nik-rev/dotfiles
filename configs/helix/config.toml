@@ -1,3 +1,19 @@
+{{#* inline "rebindings" }}
+# rebindings because default keymap is awkward with my custom keyboard layout
+# DEFAULT: A-C
+A-c = "copy_selection_on_prev_line"
+# DEFAULT: A-J
+C-j = "join_selections_space"
+# DEFAULT: A-K
+C-k = "remove_selections"
+# DEFAULT: A-I
+C-c = "select_all_children"
+# DEFAULT: A-n
+A-right = "select_next_sibling"
+# DEFAULT: A-U
+C-S-u = "later"
+{{/inline}}
+
 theme = "catppuccin"
 
 [editor]
@@ -64,19 +80,7 @@ space.X = ":write-quit-all!"
 space.e = [":sh rm -f /tmp/unique-file-u41ae14", ":insert-output yazi '%{buffer_name}' --chooser-file=/tmp/unique-file-u41ae14", ":insert-output echo \"x1b[?1049h\" > /dev/tty", ":open %sh{cat /tmp/unique-file-u41ae14}", ":redraw"]
 space.x = ":write-quit-all"
 
-# rebindings because default keymap is awkward with my custom keyboard layout
-# DEFAULT: A-C
-A-c = "copy_selection_on_prev_line"
-# DEFAULT: A-J
-C-j = "join_selections_space"
-# DEFAULT: A-K
-C-k = "remove_selections"
-# DEFAULT: A-I
-C-c = "select_all_children"
-# DEFAULT: A-n
-A-right = "select_next_sibling"
-# DEFAULT: A-U
-C-S-u = "later"
+{{> rebindings }}
 
 [keys.select]
 C-e = [":write-all", ":insert-output scooter >/dev/tty", ":redraw", ":reload-all"]
@@ -107,17 +111,5 @@ m."(" = "@f);vmmdi("
 m."<" = "@f<gt>;vmmdi<lt><gt><left>"
 m."[" = "@f];vmmdi["
 m."{" = "@f};vmmdi{"
-# --- rebindings because default keymap is awkward with my custom keyboard layout
-# DEFAULT: A-C
-A-c = "copy_selection_on_prev_line"
-# DEFAULT: A-J
-C-j = "join_selections_space"
-# DEFAULT: A-K
-C-k = "remove_selections"
-# DEFAULT: A-I
-C-c = "select_all_children"
-# DEFAULT: A-n
-A-right = "select_next_sibling"
-# DEFAULT: A-U
-C-S-u = "later"
-# ---
+
+{{> rebindings }}

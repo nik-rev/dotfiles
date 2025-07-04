@@ -1,9 +1,10 @@
+use handlebars::Handlebars;
 use simply_colored::*;
+use std::collections::BTreeMap;
 use std::env::current_dir;
 use std::error::Error;
 use std::fs::canonicalize;
 use std::io::{self, Write as _};
-use std::path::absolute;
 use std::{env, fs, path::Path};
 use tap::Pipe;
 
@@ -189,14 +190,14 @@ fn main() {
             //    our dotfiles.
             fs::create_dir_all(new_location.parent().unwrap()).unwrap();
 
-            let se = absolute(old_location).unwrap();
-            let xe = absolute(&new_location).unwrap();
+            let mut handlebars = Handlebars::new();
+            handlebars
+                .register_template_string("t1", fs::read_to_string(old_location).unwrap())
+                .unwrap();
 
-            // 3. Symlink old -> new
-            #[cfg(target_os = "windows")]
-            std::os::windows::fs::symlink_file(&se, &xe).unwrap();
-            #[cfg(not(target_os = "windows"))]
-            std::os::unix::fs::symlink(se, &xe).unwrap();
+            let contents = handlebars.render("t1", &BTreeMap::<u8, u8>::new()).unwrap();
+
+            fs::write(&new_location, contents).unwrap();
 
             log::info!(
                 "{CYAN}symlinked{RESET} \n  {} {BLACK}\n  ->  {RESET}~{}{}",
