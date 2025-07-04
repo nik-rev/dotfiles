@@ -1,7 +1,6 @@
 {
   pkgs,
   inputs,
-  config,
   ...
 }:
 let
@@ -17,22 +16,22 @@ in
 
   # --- Get rid of the "Bad credentials" error in GitUI
 
-  environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString user_id}/ssh-agent";
-  programs.ssh.startAgent = true;
+  # environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString user_id}/ssh-agent";
+  # programs.ssh.startAgent = true;
   
-  systemd.user.services.ssh-add-key = {
-    wantedBy = [ "default.target" ];
-    after = [ "ssh-agent.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStartPre = "${pkgs.coreutils-full}/bin/sleep 1";
-      ExecStart = [
-        "${pkgs.openssh}/bin/ssh-add ${config.users.users.${username}.home}/.ssh/id_ed25519"
-      ];
-      Restart = "on-failure";
-      RestartSec = 1;
-    };
-  };
+  # systemd.user.services.ssh-add-key = {
+  #   wantedBy = [ "default.target" ];
+  #   after = [ "ssh-agent.service" ];
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     ExecStartPre = "${pkgs.coreutils-full}/bin/sleep 1";
+  #     ExecStart = [
+  #       "${pkgs.openssh}/bin/ssh-add ${config.users.users.${username}.home}/.ssh/id_ed25519"
+  #     ];
+  #     Restart = "on-failure";
+  #     RestartSec = 1;
+  #   };
+  # };
 
   # ---
 
@@ -180,6 +179,7 @@ in
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelModules = ["btusb" "mt7921e"];
     kernelParams = [
       "quiet"
     ];

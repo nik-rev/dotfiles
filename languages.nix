@@ -8,6 +8,7 @@
   };
   home.packages = with pkgs.u; [
     clang
+    gnumake
     
     ### markdown
     typos # spell checker
@@ -28,5 +29,6 @@
 
     # to be able to view built static websites on localhost
     live-server
+    racket
   ];
 }
