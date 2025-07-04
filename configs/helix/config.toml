@@ -1,0 +1,114 @@
+theme = "catppuccin"
+[editor]
+auto-info = false
+completion-timeout = 5
+cursorline = true
+default-yank-register = "+"
+idle-timeout = 5
+line-number = "relative"
+
+[editor.indent-guides]
+character = "╎"
+render = true
+skip-levels = 1
+
+[editor.inline-diagnostics]
+cursor-line = "hint"
+
+[editor.lsp]
+auto-signature-help = false
+
+[editor.smart-tab]
+enable = false
+
+[editor.soft-wrap]
+enable = true
+
+[editor.statusline]
+center = []
+left = []
+right = ["spinner", "file-name", "diagnostics"]
+
+[keys.insert]
+A-ret = ["insert_newline", "delete_word_backward"]
+
+[keys.normal]
+A-c = "copy_selection_on_prev_line"
+A-right = "select_next_sibling"
+C-S-u = "later"
+C-c = "select_all_children"
+C-e = [":write-all", ":insert-output scooter >/dev/tty", ":redraw", ":reload-all"]
+C-g = [":write-all", ":insert-output lazygit >/dev/tty", ":redraw", ":reload-all"]
+C-j = "join_selections_space"
+C-k = "remove_selections"
+S-left = "jump_backward"
+S-right = "jump_forward"
+X = "select_line_above"
+backspace = "goto_word"
+down = "select_textobject_around"
+left = "@["
+ret = ":write"
+right = "@]"
+tab = "collapse_selection"
+up = "select_textobject_inner"
+x = "select_line_below"
+
+[keys.normal.g]
+O = ["open_above", "delete_word_backward"]
+o = ["open_below", "delete_word_backward"]
+
+[keys.normal.m]
+"\"" = "@f\";vmmdi\""
+"'" = "@f';vmmdi'"
+"(" = "@f);vmmdi("
+"<" = "@f<gt>;vmmdi<lt><gt><left>"
+"[" = "@f];vmmdi["
+"{" = "@f};vmmdi{"
+
+[keys.normal.space]
+C-d = "@<space>D%severity ERROR "
+E = [":sh rm -f /tmp/unique-file-h21a434", ":insert-output yazi '%{workspace_directory}' --chooser-file=/tmp/unique-file-h21a434", ":insert-output echo \"x1b[?1049h\" > /dev/tty", ":open %sh{cat /tmp/unique-file-h21a434}", ":redraw"]
+X = ":write-quit-all!"
+e = [":sh rm -f /tmp/unique-file-u41ae14", ":insert-output yazi '%{buffer_name}' --chooser-file=/tmp/unique-file-u41ae14", ":insert-output echo \"x1b[?1049h\" > /dev/tty", ":open %sh{cat /tmp/unique-file-u41ae14}", ":redraw"]
+x = ":write-quit-all"
+
+[keys.select]
+A-c = "copy_selection_on_prev_line"
+A-right = "select_next_sibling"
+C-S-u = "later"
+C-c = "select_all_children"
+C-e = [":write-all", ":insert-output scooter >/dev/tty", ":redraw", ":reload-all"]
+C-g = [":write-all", ":insert-output lazygit >/dev/tty", ":redraw", ":reload-all"]
+C-j = "join_selections_space"
+C-k = "remove_selections"
+S-left = "jump_backward"
+S-right = "jump_forward"
+X = "select_line_above"
+backspace = "extend_to_word"
+down = "select_textobject_around"
+left = "@["
+ret = ":write"
+right = "@]"
+tab = "collapse_selection"
+up = "select_textobject_inner"
+x = "select_line_below"
+
+[keys.select.g]
+O = ["open_above", "delete_word_backward"]
+o = ["open_below", "delete_word_backward"]
+
+[keys.select.m]
+"\"" = "@f\";vmmdi\""
+"'" = "@f';vmmdi'"
+"(" = "@f);vmmdi("
+"<" = "@f<gt>;vmmdi<lt><gt><left>"
+"[" = "@f];vmmdi["
+"{" = "@f};vmmdi{"
+
+[keys.select.space]
+C-d = "@<space>D%severity ERROR "
+E = [":sh rm -f /tmp/unique-file-h21a434", ":insert-output yazi '%{workspace_directory}' --chooser-file=/tmp/unique-file-h21a434", ":insert-output echo \"x1b[?1049h\" > /dev/tty", ":open %sh{cat /tmp/unique-file-h21a434}", ":redraw"]
+X = ":write-quit-all!"
+e = [":sh rm -f /tmp/unique-file-u41ae14", ":insert-output yazi '%{buffer_name}' --chooser-file=/tmp/unique-file-u41ae14", ":insert-output echo \"x1b[?1049h\" > /dev/tty", ":open %sh{cat /tmp/unique-file-u41ae14}", ":redraw"]
+x = ":write-quit-all"
+
