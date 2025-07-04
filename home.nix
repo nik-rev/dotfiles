@@ -6,20 +6,10 @@
 {
   imports = [
     ./languages.nix
-    ./apps/helix.nix
-    ./apps/atuin.nix
-    ./apps/yazi.nix
-    ./apps/gitui.nix
-    ./apps/rio.nix
-    ./apps/bat.nix
-    ./apps/wezterm.nix
-    ./apps/nushell.nix
     # --- Not written in Rust
     ./apps/firefox.nix
     ./apps/sway.nix
     ./apps/obs.nix
-    ./apps/git.nix
-    ./apps/lazygit.nix
     # ---
   ];
   programs = {
@@ -38,21 +28,22 @@
     ### CLI tools
     # currently, font rendering is broken in the new wezterm versions https://github.com/NixOS/nixpkgs/issues/336069
     # inputs.wezterm.packages.${pkgs.system}.default # terminal emulator
-    # bat # better than `cat`
-    # pkgs.u.yazi # CLI file manager
-    # pkgs.u.nushell # shell
-    # pkgs.u.atuin # magical shell history
-    # pkgs.u.rio # terminal emulator
+    bat # better than `cat`
+    pkgs.u.nushell # shell
     ripgrep # find text in files
-    # inputs.helix.packages.${pkgs.system}.helix # editor
-    # pkgs.u.gitui # git UI (like lazygit but in Rust)
+    inputs.helix.packages.${pkgs.system}.helix # editor
     ast-grep # grep AST trees
+    pkgs.u.yazi # terminal file manager
+    inputs.wezterm.packages.${pkgs.system}.default # terminal emulator
+    pkgs.u.rio # terminal emulator
+    pkgs.u.gitui
     fd # find files
     bottom # system monitor
     uutils-coreutils-noprefix # replace the standard GNU tools with Rust coreutils
     inputs.ferrishot.packages.${pkgs.system}.default # screenshot app
     inputs.lumina.packages.${pkgs.system}.default # screenshot app
     hyperfine # benchmarking tool
+    pkgs.u.atuin # shell history
     onefetch # repository information
     ouch # compression and decompression
     termusic # terminal music player
@@ -71,6 +62,7 @@
     vial # keyboard configurator
     imhex # hex editor
     yt-dlp # download tracks from youtube
+    git
     gh # GitHub CLI
     imagemagick # monster CLI command for working with images
     ffmpeg # monster CLI command for working with videos

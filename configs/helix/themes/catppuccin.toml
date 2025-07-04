@@ -1,0 +1,4 @@
+inherits = "catppuccin_mocha"
+"variable.other.member" = "teal"
+# this is actually the default but Helix master hasn't synced the catppuccin changes yet
+"function.macro" = "rosewater"

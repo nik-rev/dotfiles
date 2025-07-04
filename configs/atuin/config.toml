@@ -1,0 +1,5 @@
+# do not show help for commands at the top
+show_help = false
+# do not show tabs for Search / Inspect
+show_tabs = false
+style = "full"

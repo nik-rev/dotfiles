@@ -1,0 +1,19 @@
+[[language]]
+auto-format = true
+name = "nix"
+
+[language.auto-pairs]
+"=" = ";"
+# unchanged:
+"\"" = "\""
+"'" = "'"
+"(" = ")"
+"[" = "]"
+"`" = "`"
+"{" = "}"
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+[language-server.rust-analyzer.config.rustc]
+source = "discover"

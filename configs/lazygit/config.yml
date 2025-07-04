@@ -1,0 +1,39 @@
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never;
+gui:
+  animateExplosion: false
+  commitHashLength: 0
+  nerdFontsVersion: '3'
+  quitOnTopLevelReturn: true
+  showBottomLine: false
+  showCommandLog: false
+  showIcons: true
+  showListFooter: false
+  showPanelJumps: false
+  statusPanelView: allBranchesLog
+  theme:
+    activeBorderColor:
+    - '#cba6f7'
+    - bold
+    authorColors:
+      '*': '#b4befe'
+    cherryPickedCommitBgColor:
+    - '#45475a'
+    cherryPickedCommitFgColor:
+    - '#cba6f7'
+    defaultFgColor:
+    - '#cdd6f4'
+    inactiveBorderColor:
+    - '#a6adc8'
+    optionsTextColor:
+    - '#89b4fa'
+    searchingActiveBorderColor:
+    - '#f9e2af'
+    selectedLineBgColor:
+    - '#313244'
+    unstagedChangesColor:
+    - '#f38ba8'
+update:
+  method: never
