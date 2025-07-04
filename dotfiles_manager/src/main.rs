@@ -68,8 +68,6 @@ fn main() {
             let se = absolute(old_location).unwrap();
             let xe = absolute(&new_location).unwrap();
 
-            println!("{}, {}", se.display(), xe.display());
-
             // 3. Symlink old -> new
             #[cfg(target_os = "windows")]
             std::os::windows::fs::symlink_file(&se, &xe).unwrap();
