@@ -2,6 +2,7 @@ use simply_colored::*;
 use std::env::current_dir;
 use std::fs::canonicalize;
 use std::io::Write as _;
+use std::path::absolute;
 use std::{env, fs, path::Path};
 
 use log::Level;
@@ -41,13 +42,14 @@ fn main() {
         .flatten()
         .filter(|dir_entry| dir_entry.file_type().is_file())
         .for_each(|file| {
-            let old_location = canonicalize(file.path()).unwrap();
+            let old_location = file.path();
             let relative_location = old_location.strip_prefix(&root_configs).unwrap();
-            let new_location = canonicalize(config.join(relative_location)).unwrap();
+            let new_location = config.join(relative_location);
+
             let old_relative_to_cwd = old_location.strip_prefix(&current_dir).unwrap().display();
 
             // 1. Remove the old file
-            match fs::remove_file(&old_location) {
+            match fs::remove_file(&new_location) {
                 Err(err) if err.kind() == std::io::ErrorKind::NotFound => (),
                 Err(err) => {
                     panic!("{err}");
@@ -64,11 +66,16 @@ fn main() {
             //    our dotfiles.
             fs::create_dir_all(new_location.parent().unwrap()).unwrap();
 
+            let se = absolute(old_location).unwrap();
+            let xe = absolute(&new_location).unwrap();
+
+            println!("{}, {}", se.display(), xe.display());
+
             // 3. Symlink old -> new
             #[cfg(target_os = "windows")]
-            std::os::windows::fs::symlink_file(&old_location, &new_location).unwrap();
+            std::os::windows::fs::symlink_file(&se, &xe).unwrap();
             #[cfg(not(target_os = "windows"))]
-            std::os::unix::fs::symlink(&old_location, &new_location).unwrap();
+            std::os::unix::fs::symlink(se, &xe).unwrap();
 
             log::info!(
                 "{CYAN}symlinked{RESET} {} {BLACK}->{RESET} ~{}{}",
