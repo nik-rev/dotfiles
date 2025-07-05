@@ -1,7 +1,10 @@
+use clap::Parser;
+use etcetera::BaseStrategy;
 use handlebars::Handlebars;
+use interpolator::Formattable;
 use serde::{Deserialize, Serialize};
 use simply_colored::*;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 use std::env::current_dir;
 use std::error::Error;
 use std::fs::canonicalize;
@@ -149,8 +152,53 @@ fn main() {
         .filter(|dir_entry| dir_entry.file_type().is_file())
         .for_each(|file| {
             let old_location = file.path();
+
+            let file_contents = fs::read_to_string(old_location).unwrap();
+
+            #[derive(Parser)]
+            struct MarkerArgs {
+                path: String,
+            }
+
+            let strat = etcetera::choose_base_strategy().unwrap();
+
+            let marker = "@dotfilers ";
             let relative_location = old_location.strip_prefix(&root_configs).unwrap();
-            let new_location = config.join(relative_location);
+
+            let new_location = if let Some(first_line) = file_contents.lines().next()
+                && let Some(marker_start_pos) = first_line.find(marker)
+                && let Some(marker_args) = first_line.get(marker_start_pos + marker.len()..)
+            {
+                let args = shellwords::split(marker_args)
+                    .unwrap()
+                    .pipe(MarkerArgs::try_parse_from)
+                    .unwrap();
+                interpolator::format(
+                    &args.path,
+                    &HashMap::from([
+                        (
+                            "config",
+                            strat
+                                .config_dir()
+                                .to_string_lossy()
+                                .to_string()
+                                .pipe_ref(Formattable::display),
+                        ),
+                        (
+                            "home",
+                            strat
+                                .home_dir()
+                                .to_string_lossy()
+                                .to_string()
+                                .pipe_ref(Formattable::display),
+                        ),
+                    ]),
+                )
+                .unwrap()
+                .pipe(PathBuf::from)
+            } else {
+                config.join(relative_location)
+            };
 
             let old_relative_to_cwd_canon = canonicalize(old_location).unwrap();
             let old_relative_to_cwd = old_relative_to_cwd_canon
@@ -178,7 +226,7 @@ fn main() {
 
             let mut handlebars = Handlebars::new();
             handlebars
-                .register_template_string("t1", fs::read_to_string(old_location).unwrap())
+                .register_template_string("t1", file_contents)
                 .unwrap();
 
             let contents = handlebars.render("t1", &BTreeMap::<u8, u8>::new()).unwrap();
@@ -186,10 +234,17 @@ fn main() {
             fs::write(&new_location, contents).unwrap();
 
             log::info!(
-                "{CYAN}symlinked{RESET} \n  {} {BLACK}\n  ->  {RESET}~{}{}",
+                "{CYAN}symlinked{RESET} \n  {} {BLACK}\n  ->  {RESET}{}",
                 old_relative_to_cwd,
-                std::path::MAIN_SEPARATOR,
-                new_location.strip_prefix(&home).unwrap().display()
+                new_location
+                    .strip_prefix(&home)
+                    .map_or(new_location.to_path_buf(), |location| format!(
+                        "~{}{}",
+                        std::path::MAIN_SEPARATOR,
+                        location.display()
+                    )
+                    .pipe(PathBuf::from))
+                    .display()
             );
         })
 }

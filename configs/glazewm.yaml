@@ -1,0 +1,183 @@
+# @dotfilers --path "{home}/.glzr/glazewm/config.yaml"
+general:
+  startup_commands: []
+  focus_follows_cursor: false
+  toggle_workspace_on_refocus: false
+
+  cursor_jump:
+    enabled: true
+    trigger: "monitor_focus"
+
+gaps:
+  inner_gap: "0px"
+  outer_gap:
+    top: "2px"
+    right: "0px"
+    bottom: "0px"
+    left: "0px"
+
+window_effects:
+  focused_window:
+    border:
+      enabled: true
+      color: "#cba6f7"
+
+  other_windows:
+    border:
+      enabled: true
+      color: "#1e1e2e"
+
+window_behavior:
+  initial_state: "tiling"
+
+  state_defaults:
+    floating:
+      centered: true
+
+      shown_on_top: true
+
+    fullscreen:
+      maximized: true
+
+      shown_on_top: true
+
+workspaces:
+  - name: "1"
+  - name: "2"
+  - name: "3"
+  - name: "4"
+
+window_rules:
+  - commands: ["ignore"]
+    match:
+      - window_title: { regex: "[Pp]icture.in.[Pp]icture" }
+        window_class: { regex: "Chrome_WidgetWin_1|MozillaDialogClass" }
+
+      - window_process: { equals: "PowerToys.PowerAccent" }
+      - window_process: { equals: "Lively" }
+        window_class: { regex: "HwndWrapper*" }
+
+binding_modes:
+  - name: "resize"
+    keybindings:
+      - commands: ["resize --width -2%"]
+        bindings: []
+      - commands: ["resize --width +2%"]
+        bindings: []
+      - commands: ["resize --height +2%"]
+        bindings: []
+      - commands: ["resize --height -2%"]
+        bindings: []
+      - commands: ["wm-disable-binding-mode --name resize"]
+        bindings: []
+
+  - name: "pause"
+    keybindings:
+      - commands: ["wm-disable-binding-mode --name pause"]
+        bindings: []
+
+keybindings:
+  - commands: ["focus --direction left"]
+    bindings: ["alt+n"]
+  - commands: ["focus --direction right"]
+    bindings: ["alt+o"]
+  - commands: ["focus --direction up"]
+    bindings: ["alt+e"]
+  - commands: ["focus --direction down"]
+    bindings: ["alt+i"]
+
+  - commands: ["move --direction left"]
+    bindings: ["alt+2"]
+  - commands: ["move --direction right"]
+    bindings: ["alt+8"]
+  - commands: ["move --direction up"]
+    bindings: ["alt+1"]
+  - commands: ["move --direction down"]
+    bindings: ["alt+4"]
+
+  - commands: ["resize --width -2%"]
+    bindings: ["alt+l"]
+  - commands: ["resize --width +2%"]
+    bindings: ["alt+j"]
+  - commands: ["resize --height +2%"]
+    bindings: ["alt+u"]
+  - commands: ["resize --height -2%"]
+    bindings: ["alt+y"]
+
+  - commands: ["wm-enable-binding-mode --name resize"]
+    bindings: []
+
+  - commands: ["wm-enable-binding-mode --name pause"]
+    bindings: []
+
+  - commands: ["toggle-tiling-direction"]
+    bindings: ["alt+h"]
+
+  - commands: ["wm-cycle-focus"]
+    bindings: []
+
+  - commands: ["toggle-floating --centered"]
+    bindings: ["alt+q"]
+
+  - commands: ["toggle-tiling"]
+    bindings: ["alt+g"]
+
+  - commands: ["toggle-fullscreen"]
+    bindings: []
+
+  - commands: ["toggle-minimized"]
+    bindings: []
+
+  - commands: ["close"]
+    bindings: ["alt+t"]
+
+  - commands: ["wm-exit"]
+    bindings: ["alt+z"]
+
+  - commands: ["wm-reload-config"]
+    bindings: []
+
+  - commands: ["wm-redraw"]
+    bindings: []
+
+  - commands: ["shell-exec wezterm-gui"]
+    bindings: ["alt+s"]
+  - commands: ["shell-exec firefox"]
+    bindings: ["alt+r"]
+  - commands: ["shell-exec sharex -RectangleLight -s"]
+    bindings: ["alt+k"]
+
+  - commands: ["focus --next-workspace"]
+    bindings: []
+  - commands: ["focus --prev-workspace"]
+    bindings: []
+
+  - commands: ["focus --recent-workspace"]
+    bindings: ["alt+v"]
+
+  - commands: ["focus --workspace 1"]
+    bindings: ["alt+b", "f6"]
+  - commands: ["focus --workspace 2"]
+    bindings: ["alt+p", "f5"]
+  - commands: ["focus --workspace 3"]
+    bindings: ["alt+f", "f4"]
+  - commands: ["focus --workspace 4"]
+    bindings: ["alt+w", "f3"]
+
+  - commands: ["move-workspace --direction left"]
+    bindings: []
+  - commands: ["move-workspace --direction right"]
+    bindings: []
+  - commands: ["move-workspace --direction up"]
+    bindings: []
+  - commands: ["move-workspace --direction down"]
+    bindings: []
+
+  - commands: ["move --workspace 1"]
+    bindings: ["alt+7"]
+  - commands: ["move --workspace 2"]
+    bindings: ["alt+3"]
+  - commands: ["move --workspace 3"]
+    bindings: ["alt+0"]
+  - commands: ["move --workspace 4"]
+    bindings: ["alt+5"]
