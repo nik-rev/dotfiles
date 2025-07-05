@@ -95,7 +95,8 @@ fn main() {
         .iter()
         .map(|Link { url, path, sha256 }| {
             let contents = ureq::get(url).call()?.body_mut().read_to_string()?;
-            remove_file(path).unwrap();
+            let path = root_configs.join(path);
+            remove_file(&path).unwrap();
             let actual_sha256 = sha256::digest(&contents);
 
             if let Some(sha256) = sha256
@@ -111,7 +112,7 @@ fn main() {
 
             fs::create_dir_all(path.parent().unwrap()).unwrap();
             fs::write(
-                path,
+                &path,
                 generated_comment(&contents, url, path.extension().unwrap().to_str().unwrap()),
             )
             .unwrap();
