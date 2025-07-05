@@ -7,9 +7,9 @@
   imports = [
     ./languages.nix
     # --- Not written in Rust
-    ./apps/firefox.nix
-    ./apps/sway.nix
-    ./apps/obs.nix
+    ./firefox.nix
+    ./sway.nix
+    ./obs.nix
     # ---
   ];
   programs = {
