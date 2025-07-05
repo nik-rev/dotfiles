@@ -1,21 +1,22 @@
 config_dir = "configs"
 
-[[links]]
+[[link]]
 url = "https://raw.githubusercontent.com/catppuccin/nushell/05987d258cb765a881ee1f2f2b65276c8b379658/themes/catppuccin_mocha.nu"
 path = "nushell/catppuccin.nu"
 sha256 = "d639441cd3b4afe1d05157da64c0564c160ce843182dfe9043f76d56ef2c9cdf"
 
-[[links]]
+[[link]]
 url = "https://raw.githubusercontent.com/catppuccin/yazi/1a8c939e47131f2c4bd07a2daea7773c29e2a774/themes/mocha/catppuccin-mocha-blue.toml"
 path = "yazi/theme.toml"
 sha256 = "a9bbdcfab32d1a1cf4d0b34f1cd3ebdb3f30680534a2992dd859936aa2a55bd8"
 
-[[links]]
+[[link]]
 url = "https://raw.githubusercontent.com/catppuccin/gitui/df2f59f847e047ff119a105afff49238311b2d36/themes/catppuccin-mocha.ron"
-path = "gitui/theme.ron"
+path = "gitui_theme.ron"
 sha256 = "a2e4a295fb288ee349eadfe88c28f04b68cdc9dbc673b00d13b1851793e4aa3e"
+link.marker = "--path '{config}/gitui/theme.ron'"
 
-[[links]]
+[[link]]
 url = "https://raw.githubusercontent.com/catppuccin/bat/6810349b28055dce54076712fc05fc68da4b8ec0/themes/Catppuccin%20Mocha.tmTheme"
 path = "bat/themes/catppuccin.tmTheme"
 sha256 = "395566f08ceb301b936b91c077690ef94f7aeb651b121553f201c99c2bd4aa77"

@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 anstyle = "1.0.11"
+anyhow = "1.0.98"
 clap = { version = "4.5.40", features = ["derive"] }
 env_logger = "0.11.8"
 etcetera = "0.10.0"

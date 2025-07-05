@@ -1,2 +1,2 @@
 [alias]
-dotfiles = "run --manifest-path dotfiles_manager/Cargo.toml"
+dotfilers = "run --manifest-path dotfilers/Cargo.toml"
