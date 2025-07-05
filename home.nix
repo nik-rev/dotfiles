@@ -9,14 +9,16 @@
     # --- Not written in Rust
     ./firefox.nix
     ./sway.nix
-    ./obs.nix
     # ---
   ];
   programs = {
-    zoxide.enable = true;
-    zoxide.package = pkgs.u.zoxide;
-    mergiraf.enable = true;
-    mergiraf.package = pkgs.u.mergiraf;
+    obs-studio = {
+      enable = true;
+      plugins = with pkgs.obs-studio-plugins; [
+        wlrobs
+        droidcam-obs
+      ];
+    };
   };
   home.pointerCursor = {
     package = pkgs.bibata-cursors;
@@ -29,6 +31,8 @@
     # currently, font rendering is broken in the new wezterm versions https://github.com/NixOS/nixpkgs/issues/336069
     # inputs.wezterm.packages.${pkgs.system}.default # terminal emulator
     bat # better than `cat`
+    pkgs.u.mergiraf # better merge conflicts
+    pkgs.u.zoxide # better cd
     pkgs.u.nushell # shell
     ripgrep # find text in files
     inputs.helix.packages.${pkgs.system}.helix # editor
