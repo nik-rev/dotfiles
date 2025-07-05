@@ -1,15 +1,30 @@
 use handlebars::Handlebars;
+use serde::{Deserialize, Serialize};
 use simply_colored::*;
 use std::collections::BTreeMap;
 use std::env::current_dir;
 use std::error::Error;
 use std::fs::canonicalize;
 use std::io::{self, Write as _};
+use std::path::PathBuf;
 use std::{env, fs, path::Path};
 use tap::Pipe;
 
 use log::Level;
 use walkdir::WalkDir;
+
+#[derive(Serialize, Deserialize)]
+struct Config {
+    config_dir: PathBuf,
+    links: Vec<Link>,
+}
+
+#[derive(Serialize, Deserialize)]
+struct Link {
+    url: String,
+    path: PathBuf,
+    sha256: Option<String>,
+}
 
 fn remove_file(file: &Path) -> Result<(), io::Error> {
     match fs::remove_file(file) {
@@ -40,10 +55,17 @@ fn main() {
         })
         .init();
 
+    let root = current_dir().unwrap();
+    let config = root
+        .join("dotfiles.toml")
+        .pipe(fs::read_to_string)
+        .unwrap()
+        .pipe(|x| toml::de::from_str::<Config>(&x))
+        .unwrap();
+
     let home = env::home_dir().unwrap();
 
-    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("..");
-    let root_configs = root.join("configs");
+    let root_configs = root.join(config.config_dir);
 
     fn generated_comment(s: &str, url: &str, ext: &str) -> String {
         let header = [
@@ -68,89 +90,52 @@ fn main() {
             .pipe(|comment| format!("{comment}{s}"))
     }
 
-    [
-        (
-            concat!(
-                "https://raw.githubusercontent.com/catppuccin/nushell/",
-                "05987d258cb765a881ee1f2f2b65276c8b379658/themes/catppuccin_mocha.nu",
-            ),
-            root_configs.join("nushell").join("catppuccin.nu"),
-            "d639441cd3b4afe1d05157da64c0564c160ce843182dfe9043f76d56ef2c9cdf",
-        ),
-        (
-            concat!(
-                "https://raw.githubusercontent.com/catppuccin/yazi/",
-                "1a8c939e47131f2c4bd07a2daea7773c29e2a774/themes/mocha/catppuccin-mocha-blue.toml",
-            ),
-            root_configs.join("yazi").join("theme.toml"),
-            "a9bbdcfab32d1a1cf4d0b34f1cd3ebdb3f30680534a2992dd859936aa2a55bd8",
-        ),
-        (
-            concat!(
-                "https://raw.githubusercontent.com/catppuccin/gitui/",
-                "df2f59f847e047ff119a105afff49238311b2d36/themes/catppuccin-mocha.ron",
-            ),
-            root_configs.join("gitui").join("theme.ron"),
-            "a2e4a295fb288ee349eadfe88c28f04b68cdc9dbc673b00d13b1851793e4aa3e",
-        ),
-        (
-            concat!(
-                "https://raw.githubusercontent.com/catppuccin/bat/",
-                "6810349b28055dce54076712fc05fc68da4b8ec0/themes/Catppuccin%20Mocha.tmTheme",
-            ),
-            root_configs
-                .join("bat")
-                .join("themes")
-                .join("catppuccin.tmTheme"),
-            "395566f08ceb301b936b91c077690ef94f7aeb651b121553f201c99c2bd4aa77",
-        ),
-    ]
-    .iter()
-    .map(|(url, download_to, expected_sha256)| {
-        let contents = ureq::get(*url).call()?.body_mut().read_to_string()?;
-        remove_file(download_to).unwrap();
-        let actual_sha256 = sha256::digest(&contents);
+    config
+        .links
+        .iter()
+        .map(|Link { url, path, sha256 }| {
+            let contents = ureq::get(url).call()?.body_mut().read_to_string()?;
+            remove_file(path).unwrap();
+            let actual_sha256 = sha256::digest(&contents);
 
-        if actual_sha256 != *expected_sha256 {
-            let mismatch = format!("link       {BLUE}{url}{RESET}");
-            let actual = format!("actual     {CYAN}{actual_sha256}{RESET}");
-            let expected = format!("expected   {CYAN}{expected_sha256}{RESET}");
-            return Err(format!("hash mismatch\n  {mismatch}\n  {actual}\n  {expected}").into());
-        };
+            if let Some(sha256) = sha256
+                && actual_sha256 != *sha256
+            {
+                let mismatch = format!("link       {BLUE}{url}{RESET}");
+                let actual = format!("actual     {CYAN}{actual_sha256}{RESET}");
+                let expected = format!("expected   {CYAN}{sha256}{RESET}");
+                return Err(
+                    format!("hash mismatch\n  {mismatch}\n  {actual}\n  {expected}").into(),
+                );
+            };
 
-        fs::create_dir_all(download_to.parent().unwrap()).unwrap();
-        fs::write(
-            download_to,
-            generated_comment(
-                &contents,
-                url,
-                download_to.extension().unwrap().to_str().unwrap(),
-            ),
-        )
-        .unwrap();
-        log::info!(
-            "{CYAN}downloaded{RESET}\n  {BLUE}{url}{RESET} {BLACK}\n  ->{RESET}  {}",
-            download_to.display()
-        );
-
-        Ok::<_, Box<dyn Error>>(())
-    })
-    .partition::<Vec<_>, _>(Result::is_ok)
-    .pipe(|(_, errors)| {
-        for error in &errors {
-            log::error!(
-                "{}",
-                error
-                    .as_ref()
-                    .expect_err("can only get here if `Result::is_err`")
+            fs::create_dir_all(path.parent().unwrap()).unwrap();
+            fs::write(
+                path,
+                generated_comment(&contents, url, path.extension().unwrap().to_str().unwrap()),
+            )
+            .unwrap();
+            log::info!(
+                "{CYAN}downloaded{RESET}\n  {BLUE}{url}{RESET} {BLACK}\n  ->{RESET}  {}",
+                path.display()
             );
-        }
-        if !errors.is_empty() {
-            panic!()
-        }
-    });
 
-    let current_dir = current_dir().unwrap();
+            Ok::<_, Box<dyn Error>>(())
+        })
+        .partition::<Vec<_>, _>(Result::is_ok)
+        .pipe(|(_, errors)| {
+            for error in &errors {
+                log::error!(
+                    "{}",
+                    error
+                        .as_ref()
+                        .expect_err("can only get here if `Result::is_err`")
+                );
+            }
+            if !errors.is_empty() {
+                panic!()
+            }
+        });
 
     #[cfg(target_os = "windows")]
     let config = home.join("AppData");
@@ -168,7 +153,7 @@ fn main() {
 
             let old_relative_to_cwd_canon = canonicalize(old_location).unwrap();
             let old_relative_to_cwd = old_relative_to_cwd_canon
-                .strip_prefix(&current_dir)
+                .strip_prefix(&root)
                 .unwrap()
                 .display();
 
