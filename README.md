@@ -8,13 +8,7 @@ Why I'm using Nix:
 - Easy to build software from source with flakes
 - Using a programming language for configuration is really powerful
 
-## Installation
-
-<details>
-
-<summary>
-WiFi Connection
-</summary>
+## Wifi Connection on the installation media
 
 Find out SSID and INTERFACE with:
 
@@ -29,13 +23,19 @@ wpa_passphrase SSID PASSWORD > /etc/wpa_supplicant.conf
 wpa_supplicant -B -i INTERFACE -c /etc/wpa_supplicant.conf
 ```
 
-</details>
+## Installation
+
+Become root:
+
+```sh
+sudo passwd root
+su
+```
 
 Partition drives:
 
 ```bash
-sgdisk -Z -n1:0:+512M -t1:ef02 -c1:boot \
-       -N2 -t2:8309 -c2:root /dev/sdX
+sgdisk -Z -n1:0:+512M -t1:ef02 -c1:boot -N2 -t2:8309 -c2:root /dev/sdX
 ```
 
 Luks setup:
@@ -62,7 +62,7 @@ mkfs.ext4 -L root /dev/vg/root
 mkswap -L swap /dev/vg/swap
 ```
 
-Install nixOS
+Mount the partitions
 
 ```bash
 mount /dev/vg/root /mnt
@@ -71,20 +71,23 @@ mount /dev/disk/by-partlabel/boot /mnt/boot
 swapon /dev/vg/swap
 ```
 
-Copy wpa_supplicant configuration:
+Install nixOS
 
 ```bash
-cp /etc/wpa_supplicant.conf /mnt/etc/wpa_supplicant.conf
+git clone https://github.com/nik-rev/dotfiles.git /mnt/etc/nixos
+nixos-generate-config --root /mnt --show-hardware-config > /mnt/etc/nixos/hardware.nix
+nixos-install -v --flake /mnt/etc/nixos#nixos
+reboot
 ```
 
-Final steps
+## Booting from the live media
 
-```bash
-nix-shell -p git
-git clone https://github.com/nikitarevenco/dotfiles.git \
-          /mnt/etc/nixos
-nixos-generate-config --root /mnt --show-hardware-config \
-            > /mnt/etc/nix/hardware.nix
-nixos-install
-reboot
+In order to fix problems, you can launch from the live media
+
+```sh
+cryptsetup luksOpen /dev/disk/by-partlabel/root cryptroot
+vgchange -ay vg
+mount /dev/vg/root /mnt
+mkdir -p /mnt/boot
+mount /dev/disk/by-partlabel/boot /mnt/boot
 ```
