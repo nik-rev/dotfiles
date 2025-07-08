@@ -18,10 +18,6 @@ character = "╎"
 render = true
 skip-levels = 1
 
-[keys.insert]
-# newline without continue comment
-A-ret = ["insert_newline", "delete_word_backward"]
-
 {{#* inline "shared" }}
 
 # --- newline without continue comment
@@ -102,3 +98,7 @@ backspace = "goto_word"
 [keys.select]
 backspace = "extend_to_word"
 #{{> shared }}
+
+[keys.insert]
+# newline without continue comment
+A-ret = ["insert_newline", "delete_word_backward"]
