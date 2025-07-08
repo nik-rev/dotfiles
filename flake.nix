@@ -1,11 +1,5 @@
 {
   inputs = {
-    # I don't want to keep hardware configuration file with my main configs
-    hardware-configuration = {
-      url = "path:/etc/nix/hardware.nix";
-      flake = false;
-    };
-
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
@@ -42,42 +36,49 @@
     }@inputs:
     let
       system = "x86_64-linux";
+      hostSpecificConfigs = {
+        laptop = [./nix-hardware/laptop.nix ./nix-hardware/nvidia.nix];
+      };
+
+      mkNixosConfiguration = hostSpecific:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs.inputs = inputs;
+          modules = [
+            {
+              nixpkgs.overlays = [
+                nur.overlays.default
+                # unstable nixpkgs
+                (final: prev: {
+                  u = import nixpkgs-unstable {
+                    inherit system;
+                    # Without this we get an error message in discord:
+                    #
+                    # > "You can't use speech synthesis because
+                    # > speech dispatcher won't open"
+                    config.firefox.speechSynthesisSupport = true;
+                  };
+                })
+              ];
+            }
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                extraSpecialArgs.inputs = inputs;
+                useUserPackages = true;
+                backupFileExtension = "hm-backup";
+                users.e.imports = [
+                  ./home.nix
+                ];
+              };
+            }
+          ] ++ hostSpecific;
+        };
     in
     {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs.inputs = inputs;
-        modules = [
-          {
-            nixpkgs.overlays = [
-              nur.overlays.default
-              # unstable nixpkgs
-              (final: prev: {
-                u = import nixpkgs-unstable {
-                  inherit system;
-                  # Without this we get an error message in discord:
-                  # 
-                  # > "You can't use speech synthesis because
-                  # > speech dispatcher won't open"
-                  config.firefox.speechSynthesisSupport = true;
-                };
-              })
-            ];
-          }
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              extraSpecialArgs.inputs = inputs;
-              useUserPackages = true;
-              backupFileExtension = "hm-backup";
-              users.e.imports = [
-                ./home.nix
-              ];
-            };
-          }
-        ];
-      };
+      nixosConfigurations = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames hostSpecificConfigs)
+        (name: mkNixosConfiguration (hostSpecificConfigs.${name}));
     };
 }

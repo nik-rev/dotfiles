@@ -1,7 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
+{ pkgs, ...
 }:
 let
   user_id = 1000;
@@ -9,9 +6,7 @@ let
 in
 {
   imports = [
-    inputs.hardware-configuration.outPath
     ./vm.nix
-    ./nvidia.nix
   ];
 
   # --- Get rid of the "Bad credentials" error in GitUI
@@ -118,7 +113,6 @@ in
   };
 
   networking = {
-    hostName = "nixos";
     firewall.enable = true;
     networkmanager.enable = true;
   };

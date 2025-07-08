@@ -129,19 +129,6 @@
         "type": "github"
       }
     },
-    "hardware-configuration": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1730427933,
-        "narHash": "sha256-TZrvqU0rRIpXYkvO/dmgZtuIIYwFo7UylIo6W9aeztU=",
-        "path": "/etc/nix/hardware.nix",
-        "type": "path"
-      },
-      "original": {
-        "path": "/etc/nix/hardware.nix",
-        "type": "path"
-      }
-    },
     "harfbuzz": {
       "flake": false,
       "locked": {
@@ -396,7 +383,6 @@
     "root": {
       "inputs": {
         "ferrishot": "ferrishot",
-        "hardware-configuration": "hardware-configuration",
         "helix": "helix",
         "home-manager": "home-manager",
         "lumina": "lumina",
