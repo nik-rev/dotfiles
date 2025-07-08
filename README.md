@@ -85,6 +85,8 @@ reboot
 In order to fix problems, you can launch from the live media
 
 ```sh
+sudo passwd root
+su
 cryptsetup luksOpen /dev/disk/by-partlabel/root cryptroot
 vgchange -ay vg
 mount /dev/vg/root /mnt

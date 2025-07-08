@@ -1,4 +1,4 @@
-# @dotfilers --path "{config}/lazygit/config.yml"
+# @dots --path "{config}/lazygit/config.yml"
 git:
   paging:
     colorArg: always

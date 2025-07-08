@@ -15,5 +15,6 @@ name = "nix"
 [language-server.rust-analyzer.config.check]
 command = "clippy"
 
-[language-server.rust-analyzer.config.rustc]
-source = "discover"
+# for clippy development
+# [language-server.rust-analyzer.config.rustc]
+# source = "discover"

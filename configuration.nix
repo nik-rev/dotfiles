@@ -190,7 +190,7 @@ in
       efiSupport = true;
     };
     # see instructions in README for how to configure LUKS encryption
-    initrd.luks.devices.cryptroot.device = "/dev/disk/by-partlabel/luks_root";
+    initrd.luks.devices.cryptroot.device = "/dev/disk/by-partlabel/root";
   };
 
   system.stateVersion = "25.05";

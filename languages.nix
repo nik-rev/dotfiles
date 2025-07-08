@@ -9,6 +9,7 @@
   home.packages = with pkgs.u; [
     clang
     gnumake
+    typos-lsp
     
     ### markdown
     typos # spell checker
