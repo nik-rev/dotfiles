@@ -1,6 +1,7 @@
 [[language]]
 auto-format = true
 name = "nix"
+formatter.command = "nixfmt"
 
 [language.auto-pairs]
 "=" = ";"

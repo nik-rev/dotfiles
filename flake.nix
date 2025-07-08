@@ -37,10 +37,14 @@
     let
       system = "x86_64-linux";
       hostSpecificConfigs = {
-        laptop = [./nix-hardware/laptop.nix ./nix-hardware/nvidia.nix];
+        laptop = [
+          ./nix-hardware/laptop.nix
+          ./nix-hardware/nvidia.nix
+        ];
       };
 
-      mkNixosConfiguration = hostSpecific:
+      mkNixosConfiguration =
+        hostSpecific:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs.inputs = inputs;
@@ -78,7 +82,8 @@
         };
     in
     {
-      nixosConfigurations = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames hostSpecificConfigs)
-        (name: mkNixosConfiguration (hostSpecificConfigs.${name}));
+      nixosConfigurations = nixpkgs.lib.genAttrs (nixpkgs.lib.attrNames hostSpecificConfigs) (
+        name: mkNixosConfiguration (hostSpecificConfigs.${name})
+      );
     };
 }

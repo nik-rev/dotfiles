@@ -1,4 +1,6 @@
-{ pkgs, ...
+{
+  pkgs,
+  ...
 }:
 let
   user_id = 1000;
@@ -13,7 +15,7 @@ in
 
   # environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString user_id}/ssh-agent";
   # programs.ssh.startAgent = true;
-  
+
   # systemd.user.services.ssh-add-key = {
   #   wantedBy = [ "default.target" ];
   #   after = [ "ssh-agent.service" ];
@@ -173,7 +175,10 @@ in
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules = ["btusb" "mt7921e"];
+    kernelModules = [
+      "btusb"
+      "mt7921e"
+    ];
     kernelParams = [
       "quiet"
     ];

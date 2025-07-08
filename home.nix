@@ -89,7 +89,7 @@
     clang
     gnumake
     typos-lsp
-    
+
     ## markdown
     typos # spell checker
     typos-lsp # spell checker markdown LSP

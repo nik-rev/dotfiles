@@ -85,9 +85,9 @@ in
         "browser.tabs.closeWindowWithLastTab" = false;
         # Change the appearance of the scrollbar to a big solid block
         # Makes it easy to find and grab
-        # 
+        #
         # Numbers corresponding to styles
-        # 
+        #
         # 1: Mac OSX
         # 2: GTX
         # 3: Android
