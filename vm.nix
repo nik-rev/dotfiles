@@ -1,12 +1,7 @@
 { pkgs, ... }:
 {
-  # Enable dconf (System Management Tool)
   programs.dconf.enable = true;
-
-  # Add user to libvirtd group
   users.users.e.extraGroups = [ "libvirtd" ];
-
-  # Install necessary packages
   environment.systemPackages = with pkgs; [
     virt-manager
     virt-viewer
@@ -16,8 +11,6 @@
     win-virtio
     win-spice
   ];
-
-  # Manage the virtualisation services
   virtualisation = {
     libvirtd = {
       enable = true;

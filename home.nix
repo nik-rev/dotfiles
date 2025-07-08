@@ -5,11 +5,8 @@
 }:
 {
   imports = [
-    ./languages.nix
-    # --- Not written in Rust
     ./firefox.nix
     ./sway.nix
-    # ---
   ];
   programs = {
     obs-studio = {
@@ -18,6 +15,10 @@
         wlrobs
         droidcam-obs
       ];
+    };
+    go = {
+      enable = true;
+      goBin = "go/bin";
     };
   };
   home.pointerCursor = {
@@ -28,9 +29,8 @@
   };
   home.packages = with pkgs.u; [
     ### CLI tools
-    # currently, font rendering is broken in the new wezterm versions https://github.com/NixOS/nixpkgs/issues/336069
-    # inputs.wezterm.packages.${pkgs.system}.default # terminal emulator
-    bat # better than `cat`
+    pkgs.u.scooter # mass search and replace
+    pkgs.u.bat # better than `cat`
     pkgs.u.mergiraf # better merge conflicts
     pkgs.u.zoxide # better cd
     pkgs.u.nushell # shell
@@ -60,7 +60,7 @@
     gitoxide # git rewrite in Rust
     dogedns # dns CLI
     websocat # websocket CLI
-    rqbit
+    rqbit # CLI torrent client
 
     # --- Not written in Rust
     pkgs.u.lazygit # lazygit (git UI)
@@ -83,6 +83,33 @@
     zathura # document viewer (e.g. PDF)
     mpv # video player
     quickemu # painless virtual machines
+    # ---
+
+    # --- Language or tooling specific
+    clang
+    gnumake
+    typos-lsp
+    
+    ## markdown
+    typos # spell checker
+    typos-lsp # spell checker markdown LSP
+
+    ## typst
+    typst # compiler
+    typstyle # formatter
+    tinymist # language server
+
+    ## rust
+    rustup # install everything Rust
+    zola # static site generator
+
+    ## nix
+    nil # language server
+    nixfmt-rfc-style # formatter
+
+    # to be able to view built static websites on localhost
+    live-server
+    racket
     # ---
   ];
   home.stateVersion = "25.05";
