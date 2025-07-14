@@ -7,10 +7,6 @@ let
   username = "e";
 in
 {
-  imports = [
-    ./vm.nix
-  ];
-
   # --- Get rid of the "Bad credentials" error in GitUI
 
   # environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString user_id}/ssh-agent";

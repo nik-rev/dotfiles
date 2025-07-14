@@ -110,6 +110,7 @@
     # to be able to view built static websites on localhost
     live-server
     racket
+    pkgs.u.tombi
     # ---
   ];
   home.stateVersion = "25.05";
