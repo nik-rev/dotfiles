@@ -1,4 +1,5 @@
 source zoxide.nu
+# carapace _carapace nushell o> configs/nushell/carapace.nu
 source carapace.nu
 source atuin.nu
 source catppuccin.nu
