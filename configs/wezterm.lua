@@ -1,3 +1,4 @@
+# @dots --path "{config}/wezterm/wezterm.lua"
 local wezterm = require 'wezterm'
 
 local wezterm = require("wezterm")

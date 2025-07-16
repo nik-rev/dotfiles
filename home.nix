@@ -71,7 +71,7 @@
     gh # GitHub CLI
     imagemagick # monster CLI command for working with images
     ffmpeg # monster CLI command for working with videos
-    gimp # image editor
+    #gimp # image editor
     git # vcs
     slurp # take screenshots (wayland wl-roots)
     wl-clipboard # screenshots on wayland

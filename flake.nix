@@ -41,6 +41,10 @@
           ./nix-hardware/laptop.nix
           ./nix-hardware/nvidia.nix
         ];
+        pc = [
+          ./nix-hardware/pc.nix
+          ./nix-hardware/nvidia.nix
+        ];
       };
 
       mkNixosConfiguration =
