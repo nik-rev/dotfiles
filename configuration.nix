@@ -152,23 +152,6 @@ in
     "discard"
   ];
 
-  systemd.timers."daily-shutdown" = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "23:00";
-      Persistent = true;
-    };
-  };
-
-  systemd.services."daily-shutdown" = {
-    script = ''
-      /run/current-system/sw/bin/systemctl poweroff
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-    };
-  };
-
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [
