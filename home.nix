@@ -28,27 +28,44 @@
     x11.enable = true;
   };
   home.packages = with pkgs.u; [
-    ### CLI tools
-    pkgs.u.scooter # mass search and replace
-    pkgs.u.bat # better than `cat`
-    pkgs.u.mergiraf # better merge conflicts
-    pkgs.u.zoxide # better cd
-    pkgs.u.nushell # shell
+    # xcharter font
+    (pkgs.stdenv.mkDerivation {
+      pname = "xcharter-font";
+      version = "2023";
+
+      src = pkgs.fetchzip {
+        url = "https://mirrors.ctan.org/fonts/xcharter/otf/XCharterOTF.zip";
+        sha256 = "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881";
+      };
+
+      installPhase = ''
+        mkdir -p $out/share/fonts/opentype
+        cp *.otf $out/share/fonts/opentype/
+      '';
+    })
+    ## CLI tools
+    scooter # mass search and replace
+    bat # better than `cat`
+    mergiraf # better merge conflicts
+    just # command runner
+    zoxide # better cd
+    nushell # shell
     ripgrep # find text in files
     inputs.helix.packages.${pkgs.system}.helix # editor
     delta # differ
     ast-grep # grep AST trees
-    pkgs.u.yazi # terminal file manager
-    inputs.wezterm.packages.${pkgs.system}.default # terminal emulator
-    pkgs.u.rio # terminal emulator
-    pkgs.u.gitui
+    yazi # terminal file manager
+    # inputs.wezterm.packages.${pkgs.system}.default # terminal emulator
+    kitty
+    rio # terminal emulator
+    gitui
     fd # find files
     bottom # system monitor
     uutils-coreutils-noprefix # replace the standard GNU tools with Rust coreutils
     inputs.ferrishot.packages.${pkgs.system}.default # screenshot app
-    inputs.lumina.packages.${pkgs.system}.default # screenshot app
+    inputs.lumina.packages.${pkgs.system}.default # change brightness with hotkey
     hyperfine # benchmarking tool
-    pkgs.u.atuin # shell history
+    atuin # shell history
     onefetch # repository information
     ouch # compression and decompression
     termusic # terminal music player
@@ -63,7 +80,7 @@
     rqbit # CLI torrent client
 
     # --- Not written in Rust
-    pkgs.u.lazygit # lazygit (git UI)
+    lazygit # lazygit (git UI)
     vial # keyboard configurator
     imhex # hex editor
     yt-dlp # download tracks from youtube
@@ -110,7 +127,7 @@
     # to be able to view built static websites on localhost
     live-server
     racket
-    pkgs.u.carapace
+    carapace
     # ---
   ];
   home.stateVersion = "25.05";

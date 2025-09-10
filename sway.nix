@@ -22,7 +22,7 @@
         "XF86MonBrightnessUp" = "exec --no-startup-id lumina set +5%";
         "XF86MonBrightnessDown" = "exec --no-startup-id lumina set -5%";
         "Mod1+m" = "exec ferrishot";
-        "Mod1+i" = "exec wezterm-gui";
+        "Mod1+i" = "exec kitty";
         "Mod1+r" = "exec firefox";
         "Mod1+t" = "kill";
         "Mod1+e" = "focus left";

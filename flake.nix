@@ -22,7 +22,7 @@
     # why flake: My fork uses custom merged PRs that I want to use.
     helix.url = "github:helix-editor/helix/master";
     # why flake: wezterm has some issues with Sway which were fixed in the latest versions
-    wezterm.url = "github:wez/wezterm?dir=nix";
+    # wezterm.url = "github:wez/wezterm?dir=nix";
   };
 
   outputs =
@@ -82,7 +82,8 @@
                 ];
               };
             }
-          ] ++ hostSpecific;
+          ]
+          ++ hostSpecific;
         };
     in
     {
