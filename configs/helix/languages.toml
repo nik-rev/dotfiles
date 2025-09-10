@@ -1,4 +1,9 @@
 [[language]]
+name = "typst"
+auto-format = false
+formatter.command = "typstyle"
+
+[[language]]
 auto-format = true
 name = "nix"
 formatter.command = "nixfmt"
@@ -13,8 +18,9 @@ formatter.command = "nixfmt"
 "`" = "`"
 "{" = "}"
 
-[language-server.rust-analyzer.config.check]
-command = "clippy"
+[language-server.rust-analyzer.config]
+cargo.allFeatures = true
+check.command = "clippy"
 
 # for clippy development
 # [language-server.rust-analyzer.config.rustc]
