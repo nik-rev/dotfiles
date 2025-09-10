@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>name</key>
+    <string>Carbon Theme</string>
+    <key>settings</key>
+    <array>
+        <dict>
+            <key>settings</key>
+            <dict>
+                <key>background</key>
+                <string>#131313</string>
+                <key>caret</key>
+                <string>#dddddd</string>
+                <key>foreground</key>
+                <string>#dddddd</string>
+                <key>invisibles</key>
+                <string>#3b3a32</string>
+                <key>lineHighlight</key>
+                <string>#1e1e1e</string>
+                <key>selection</key>
+                <string>#303030</string>
+                <key>selectionForeground</key>
+                <string>#dddddd</string>
+            </dict>
+        </dict>
+
+        <dict>
+            <key>name</key>
+            <string>Comment, Punctuation</string>
+            <key>scope</key>
+            <string>comment, punctuation</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#999999</string>
+            </dict>
+        </dict>
+
+        <dict>
+            <key>name</key>
+            <string>String, Numeric, Language Constant</string>
+            <key>scope</key>
+            <string>string, constant.numeric, constant.language</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#fefefe</string>
+                <key>fontStyle</key>
+                <string>bold</string>
+            </dict>
+        </dict>
+
+        <dict>
+            <key>name</key>
+            <string>Storage, Tag, Function, Keyword</string>
+            <key>scope</key>
+            <string>storage, entity.name.tag, keyword</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#cbefa6</string>
+            </dict>
+        </dict>
+    </array>
+    <key>uuid</key>
+    <string>4f05788d-e4c7-43c3-882d-450f3b951475</string>
+    <key>colorSpaceName</key>
+    <string>sRGB</string>
+    <key>author</key>
+    <string>Nik Revenco</string>
+</dict>
+</plist>

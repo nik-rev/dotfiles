@@ -1,0 +1,123 @@
+---
+default:
+  margin:
+    percent: 8
+  colors:
+    foreground: palette:foreground
+    background: palette:background
+
+slide_title:
+  alignment: center
+  padding_bottom: 1
+  padding_top: 1
+  colors:
+    foreground: palette:foreground
+  bold: true
+  font_size: 2
+
+code:
+  alignment: center
+  minimum_size: 50
+  minimum_margin:
+    percent: 8
+  theme_name: carbon
+  padding:
+    horizontal: 2
+    vertical: 1
+
+inline_code:
+  colors:
+    foreground: palette:accent
+
+intro_slide:
+  title:
+    alignment: center
+    colors:
+      foreground: palette:foreground
+    font_size: 2
+  subtitle:
+    alignment: center
+    colors:
+      foreground: palette:secondary
+  date:
+    alignment: center
+    colors:
+      foreground: palette:secondary
+  author:
+    alignment: center
+    colors:
+      foreground: palette:accent
+    positioning: page_bottom
+  footer: false
+
+headings:
+  h1:
+    prefix: "██"
+    colors:
+      foreground: palette:blue 
+  h2:
+    prefix: "███"
+    colors:
+      foreground: palette:green
+
+block_quote:
+  prefix: "▍ "
+  colors:
+    prefix: palette:secondary
+
+alert:
+  prefix: "▍ "
+  base_colors:
+    foreground: palette:foreground
+  styles:
+    note:
+      color: palette:blue
+    tip:
+      color: palette:green
+    important:
+      color: palette:purple
+    warning:
+      color: palette:yellow
+    caution:
+      color: palette:red
+
+typst:
+  colors:
+    foreground: palette:foreground
+    background: palette:background
+
+footer:
+  style: template
+  right: "{current_slide} / {total_slides}"
+
+modals:
+  selection_colors:
+    foreground: palette:purple
+
+mermaid:
+  background: transparent
+  theme: dark
+
+d2:
+  theme: 200
+
+palette:
+  colors:
+    foreground: "dddddd"
+    background: "161616"
+    background-dark: "131313"
+    accent: "cbefa6"
+    secondary: "999999"
+
+    # same as --accent but hue is 215 */
+    blue: "a4c3ef"
+    # same as --accent but hue is 281 */
+    purple: "d7a4ef"
+    # same as --accent but hue is 4 */
+    red: "efa9a4"
+    # same as --accent but hue is 138 */
+    green: "a4efba"
+    # same as --accent but hue is 57 */
+    yellow: "efeba4"
+    # same as --accent but hue is 180 */
+    cyan: "a4efef"
