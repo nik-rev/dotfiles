@@ -28,21 +28,6 @@
     x11.enable = true;
   };
   home.packages = with pkgs.u; [
-    # xcharter font
-    (pkgs.stdenv.mkDerivation {
-      pname = "xcharter-font";
-      version = "2023";
-
-      src = pkgs.fetchzip {
-        url = "https://mirrors.ctan.org/fonts/xcharter/otf/XCharterOTF.zip";
-        sha256 = "2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881";
-      };
-
-      installPhase = ''
-        mkdir -p $out/share/fonts/opentype
-        cp *.otf $out/share/fonts/opentype/
-      '';
-    })
     ## CLI tools
     scooter # mass search and replace
     bat # better than `cat`
