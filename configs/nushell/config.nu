@@ -118,6 +118,8 @@ def --env yy [...args] {
   rm -fp $tmp
 }
 
+# toggle primary monitor on/off
+alias "toggle" = swaymsg output eDP-1 toggle 
 alias "c" = cargo
 alias "cat" = bat --style=plain
 alias "e" = ^ls --classify -rt --color=always
