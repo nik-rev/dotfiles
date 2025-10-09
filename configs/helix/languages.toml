@@ -1,3 +1,61 @@
+[language-server.biome]
+command = "biome"
+args = ["lsp-proxy"]
+
+[language-server.rust-analyzer.config]
+cargo.allFeatures = true
+check.command = "clippy"
+
+[language-server.tailwindcss-ls]
+command = "tailwindcss-language-server"
+args = ["--stdio"]
+
+# web languages
+#########################################
+
+[[language]]
+name = "css"
+language-servers = [ "vscode-css-language-server", "tailwindcss-ls"  ]
+formatter = { command = "biome", args = ["format", "--stdin-file-path", "_.css"] }
+auto-format = true
+
+[[language]]
+name = "javascript"
+language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome", "tailwindcss-ls"]
+formatter = { command = "biome", args = ["format", "--stdin-file-path", "_.js"] }
+auto-format = true
+
+[[language]]
+name = "typescript"
+language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome", "tailwindcss-ls"]
+formatter = { command = "biome", args = ["format", "--stdin-file-path=_.ts"] }
+auto-format = true
+
+[[language]]
+name = "jsx"
+language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome", "tailwindcss-ls"]
+formatter = { command = "biome", args = ["format", "--stdin-file-path=_.jsx"] }
+auto-format = true
+
+[[language]]
+name = "tsx"
+language-servers = [ { name = "typescript-language-server", except-features = [ "format" ] }, "biome", "tailwindcss-ls"]
+formatter = { command = "biome", args = ["format", "--stdin-file-path=_.tsx"] }
+auto-format = true
+
+[[language]]
+name = "json"
+language-servers = [ { name = "vscode-json-language-server", except-features = [ "format" ] }, "biome", "tailwindcss-ls"]
+formatter = { command = "biome", args = ["format", "--stdin-file-path=_.json"] }
+auto-format = true
+
+[[language]]
+name = "jsonc"
+formatter = { command = "biome", args = ["format", "--stdin-file-path=_.jsonc"] }
+auto-format = true
+
+#########################################
+
 [[language]]
 name = "typst"
 auto-format = false
@@ -17,10 +75,6 @@ formatter.command = "nixfmt"
 "[" = "]"
 "`" = "`"
 "{" = "}"
-
-[language-server.rust-analyzer.config]
-cargo.allFeatures = true
-check.command = "clippy"
 
 # for clippy development
 # [language-server.rust-analyzer.config.rustc]

@@ -8,6 +8,7 @@ let
 in
 {
   # --- Get rid of the "Bad credentials" error in GitUI
+  programs.nix-ld.enable = true;
 
   # environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString user_id}/ssh-agent";
   # programs.ssh.startAgent = true;
@@ -66,6 +67,13 @@ in
 
   environment = {
     sessionVariables = {
+      # NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
+      # NIX_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+      #   pkgs.glibc # C standard library
+      #   pkgs.zlib
+      #   pkgs.openssl # SSL/TLS
+      #   pkgs.curl
+      # ];
       EDITOR = "hx";
       # it puts into $HOME/go by default
       GOPATH = "$HOME/.go";

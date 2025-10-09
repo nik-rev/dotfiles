@@ -28,6 +28,13 @@
     x11.enable = true;
   };
   home.packages = with pkgs.u; [
+    nodejs
+    biome
+    tailwindcss-language-server
+    typescript-language-server
+    vscode-json-languageserver
+    pnpm
+    gopls
     ## CLI tools
     scooter # mass search and replace
     bat # better than `cat`

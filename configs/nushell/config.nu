@@ -9,7 +9,7 @@ source catppuccin.nu
 # pass all args to zoxide then list contents of the new directory
 def --env --wrapped t [ ...args: string ] {
   z ...$args
-  ^ls --classify --color=always
+  ^ls --classify --reverse --time=mtime --color=always --width 80
 }
 
 # `nix develop` with nushell
@@ -32,35 +32,13 @@ def unspad [] {
   swaymsg gaps right all set 0
 }
 
-# Clone in an ergonomic way
-def --env clone [ $owner, $repo ] {
-  let clone_dir = match $owner {
-      "nik-contrib" => "contrib",
-      "nik-rev" => "projects",
-      _ => "repos"
-  }
-
-  let $repo_dir = $"($env.HOME)/($clone_dir)/($repo)"
-  mkdir $clone_dir
-  gix clone $"git@github.com:($owner)/($repo).git" $repo_dir o> /dev/null
-  cd $repo_dir
-}
-
 $env.path ++= [
     $"($env.home)/.cargo/bin"
 ]
 
-$env.PROMPT_COMMAND_RIGHT = {||
-  let dir = match (do -i { $env.PWD | path relative-to $nu.home-path }) {
-      null => $env.PWD
-      '\' => '~'
-      $relative_pwd => ([~ $relative_pwd] | path join)
-  }
-
-  let path_segment = $"(ansi blue)($dir)(ansi reset)"
-
-  $path_segment | str replace --all (char path_sep) $"(ansi white)(char path_sep) (ansi blue)"
-}
+$env.PROMPT_COMMAND = ""
+$env.PROMPT_INDICATOR = { || $"(ansi purple_italic)($env.PWD | path split | last)(ansi reset)$ " }
+$env.PROMPT_COMMAND_RIGHT = { || }
 
 # ctrl-z to toggle foreground and background
 $env.config.keybindings ++= [
@@ -76,8 +54,7 @@ $env.config.keybindings ++= [
   }
 ]
 
-$env.PROMPT_COMMAND = ""
-
+# disable welcome screen
 $env.config.show_banner = false
 
 # catppuccin compatible colors for ls
@@ -85,45 +62,37 @@ $env.LS_COLORS = (vivid generate catppuccin-mocha)
 
 def --env o [] {
   cd ..
-  ^ls --classify -rt --color=always
+  ^ls --classify --reverse --time=mtime --color=always --width 80
 }
 
 def --env oo [] {
   cd ../..
-  ^ls --classify -rt --color=always
+  ^ls --classify --reverse --time=mtime --color=always --width 80
 }
 
 def --env ooo [] {
   cd ../../..
-  ^ls --classify -rt --color=always
+  ^ls --classify --reverse --time=mtime --color=always --width 80
 }
 
 def --env oooo [] {
   cd ../../../..
-  ^ls --classify -rt --color=always
+  ^ls --classify --reverse --time=mtime --color=always --width 80
 }
 
 def --env ooooo [] {
   cd ../../../../..
-  ^ls --classify -rt --color=always
-}
-
-def --env yy [...args] {
-  let tmp = (mktemp -t "yazi-cwd.XXXXX")
-  yazi ...$args --cwd-file $tmp
-  let cwd = (open $tmp)
-  if $cwd != "" and $cwd != $env.PWD {
-    cd $cwd
-  }
-  rm -fp $tmp
+  ^ls --classify --reverse --time=mtime --color=always --width 80
 }
 
 # toggle primary monitor on/off
 alias "toggle" = swaymsg output eDP-1 toggle 
 alias "c" = cargo
 alias "cat" = bat --style=plain
-alias "e" = ^ls --classify -rt --color=always
+alias "e" = ^ls --classify --reverse --time=mtime --color=always --width 80
 alias "g" = git
+alias "p" = pwd
+alias "i" = t "-"
 alias "icat" = wezterm imgcat
 alias "l" = lazygit
 alias "lg" = lazygit
