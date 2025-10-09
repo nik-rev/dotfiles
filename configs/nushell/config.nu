@@ -85,18 +85,22 @@ def --env ooooo [] {
   ^ls --classify --reverse --time=mtime --color=always --width 80
 }
 
+def p [] {
+  pwd | str replace $env.HOME '~'
+}
+
 # toggle primary monitor on/off
 alias "toggle" = swaymsg output eDP-1 toggle 
 alias "c" = cargo
 alias "cat" = bat --style=plain
 alias "e" = ^ls --classify --reverse --time=mtime --color=always --width 80
 alias "g" = git
-alias "p" = pwd
 alias "i" = t "-"
 alias "icat" = wezterm imgcat
 alias "l" = lazygit
 alias "lg" = lazygit
 alias "n" = hx
+alias "g" = git
 alias "no" = hx .
 alias "nrs" = sudo nixos-rebuild switch
 alias "sn" = sudo -E hx
