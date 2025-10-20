@@ -10,9 +10,9 @@ check.command = "clippy"
 command = "tailwindcss-language-server"
 args = ["--stdio"]
 
-[languagec-server.crates-lsp]
-command = "crates-lsp"
-except-features = ["format"]
+[languagec-server.tombi]
+command = "tombi"
+args = ["lsp"]
 
 # web languages
 #########################################
@@ -72,8 +72,9 @@ formatter.command = "nixfmt"
 
 [[language]]
 name = "toml"
-language-servers = ["crates-lsp", "taplo"]
-formatter = { command = "taplo", args = ["fmt", "-"] }
+language-servers = ["tombi"]
+formatter = { command = "taplo", args = ["format"] }
+auto-format = true
 
 [language.auto-pairs]
 "=" = ";"

@@ -29,7 +29,7 @@
   };
   home.packages = with pkgs.u; [
     nodejs
-    taplo
+    tombi
     biome
     tailwindcss-language-server
     typescript-language-server
