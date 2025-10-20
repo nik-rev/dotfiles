@@ -29,6 +29,7 @@
   };
   home.packages = with pkgs.u; [
     nodejs
+    taplo
     biome
     tailwindcss-language-server
     typescript-language-server
