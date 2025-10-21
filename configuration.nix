@@ -9,6 +9,7 @@ in
 {
   # --- Get rid of the "Bad credentials" error in GitUI
   programs.nix-ld.enable = true;
+  zramSwap.enable = true;
 
   # environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString user_id}/ssh-agent";
   # programs.ssh.startAgent = true;

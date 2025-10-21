@@ -104,7 +104,7 @@ formatter.command = "nixfmt"
 name = "toml"
 language-servers = ["tombi"]
 formatter = { command = "taplo", args = ["format"] }
-auto-format = true
+# auto-format = true
 
 # for clippy development
 # [language-server.rust-analyzer.config.rustc]

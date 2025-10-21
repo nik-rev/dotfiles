@@ -38,8 +38,8 @@
 	plus-style = "syntax #2c3239"
 	syntax-theme = "catppuccin"
 
-[diff]
-	tool = "delta"
+# [diff]
+# 	tool = "delta"
 
 [init]
 	defaultBranch = "main"
