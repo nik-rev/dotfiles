@@ -102,8 +102,8 @@ formatter.command = "nixfmt"
 
 [[language]]
 name = "toml"
-language-servers = ["tombi"]
-formatter = { command = "taplo", args = ["format"] }
+# language-servers = ["tombi"]
+# formatter = { command = "taplo", args = ["format"] }
 # auto-format = true
 
 # for clippy development
