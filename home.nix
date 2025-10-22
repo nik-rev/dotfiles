@@ -28,6 +28,10 @@
     x11.enable = true;
   };
   home.packages = with pkgs.u; [
+    cargo-sweep
+    cargo-clone
+    cargo-outdated
+
     nodejs
     tombi
     biome
