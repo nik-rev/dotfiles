@@ -11,3 +11,9 @@ track=$TRACK_NAME; curl "https://exercism.org/api/v2/tracks/$track/exercises" | 
   jq -r '.exercises[].slug' | \
   xargs -I {} -n1 sh -c "exercism download --track=$track --exercise {} || true"
 ```
+
+Nix needs to know hash of files. Here's how we can get it:
+
+```sh
+nix-prefetch-url --unpack https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F7350/pdfium-v8-linux-x64.tgz
+```
