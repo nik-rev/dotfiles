@@ -113,18 +113,13 @@ def p [] {
   pwd | str replace $nu.home-path '~'
 }
 
-# toggle primary monitor on/off
-alias "toggle" = swaymsg output eDP-1 toggle 
 alias "c" = cargo
 alias "cat" = bat --style=plain
 alias "e" = ls+
 alias "g" = git
 alias "i" = t "-"
-alias "icat" = wezterm imgcat
 alias "l" = lazygit
-alias "lg" = lazygit
 alias "n" = hx
-alias "g" = git
 alias "no" = hx .
 alias "nrs" = sudo nixos-rebuild switch
 alias "sn" = sudo -E hx
