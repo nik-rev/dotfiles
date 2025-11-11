@@ -102,6 +102,7 @@ formatter.command = "nixfmt"
 
 [[language]]
 name = "toml"
+language-servers = []
 # language-servers = ["tombi"]
 # formatter = { command = "taplo", args = ["format"] }
 # auto-format = true
