@@ -1,4 +1,4 @@
-# @dots --path "{config}/wezterm/wezterm.lua"
+-- @dots --path "~/.config/wezterm/wezterm.lua"
 local wezterm = require 'wezterm'
 
 local wezterm = require("wezterm")
@@ -6,7 +6,8 @@ local config = wezterm.config_builder()
 
 config.color_scheme = "Catppuccin Mocha"
 config.font_size = 19
-config.font = wezterm.font("JetBrainsMono NF")
+-- NOTE: JetBrains is the default font in WezTerm
+-- config.font = wezterm.font("JetBrainsMono NF")
 config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "NONE"
 config.automatically_reload_config = false
