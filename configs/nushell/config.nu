@@ -8,7 +8,7 @@ source catppuccin.nu
 # pass all args to zoxide then list contents of the new directory
 def --env --wrapped t [ ...args: string ] {
   z ...$args
-  ^ls --classify --reverse --time=mtime --color=always --width 80
+  ls+
 }
 
 # `nix develop` with nushell
@@ -61,27 +61,31 @@ $env.LS_COLORS = (vivid generate catppuccin-mocha)
 
 def --env o [] {
   cd ..
-  ^ls --classify --reverse --time=mtime --color=always --width 80
+  ls+
 }
 
 def --env oo [] {
   cd ../..
-  ^ls --classify --reverse --time=mtime --color=always --width 80
+  ls+
 }
 
 def --env ooo [] {
   cd ../../..
-  ^ls --classify --reverse --time=mtime --color=always --width 80
+  ls+
 }
 
 def --env oooo [] {
   cd ../../../..
-  ^ls --classify --reverse --time=mtime --color=always --width 80
+  ls+
 }
 
 def --env ooooo [] {
   cd ../../../../..
-  ^ls --classify --reverse --time=mtime --color=always --width 80
+  ls+
+}
+
+def ls+ [] {
+  ls | sort-by modified | grid --separator "  " --color --width 80
 }
 
 def p [] {
@@ -92,7 +96,7 @@ def p [] {
 alias "toggle" = swaymsg output eDP-1 toggle 
 alias "c" = cargo
 alias "cat" = bat --style=plain
-alias "e" = ^ls --classify --reverse --time=mtime --color=always --width 80
+alias "e" = ls+
 alias "g" = git
 alias "i" = t "-"
 alias "icat" = wezterm imgcat
