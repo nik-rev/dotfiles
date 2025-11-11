@@ -32,7 +32,7 @@ def unspad [] {
 }
 
 $env.path ++= [
-    $"($env.home)/.cargo/bin"
+    $"($nu.home-path)/.cargo/bin"
 ]
 
 $env.PROMPT_COMMAND = ""
@@ -85,7 +85,7 @@ def --env ooooo [] {
 }
 
 def p [] {
-  pwd | str replace $env.HOME '~'
+  pwd | str replace $nu.home-path '~'
 }
 
 # toggle primary monitor on/off
