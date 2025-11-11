@@ -1,6 +1,5 @@
 source zoxide.nu
-# carapace _carapace nushell o> configs/nushell/carapace.nu
-source carapace.nu
+source carapace.nu # carapace _carapace nushell o> configs/nushell/carapace.nu
 source catppuccin.nu
 
 # Command for switching directories
@@ -36,7 +35,7 @@ $env.path ++= [
 ]
 
 $env.PROMPT_COMMAND = ""
-$env.PROMPT_INDICATOR = { || $"(ansi purple_italic)($env.PWD | path split | last)(ansi reset)$ " }
+$env.PROMPT_INDICATOR = { || $"(ansi purple_italic)(if $env.PWD == $nu.home-path { "~" } else { $env.PWD | path split | last } )(ansi reset)$ " }
 $env.PROMPT_COMMAND_RIGHT = { || }
 
 # ctrl-z to toggle foreground and background
