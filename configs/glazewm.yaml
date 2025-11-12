@@ -77,83 +77,29 @@ binding_modes:
         bindings: []
 
 keybindings:
-  - commands: ["focus --direction left"]
-    bindings: ["alt+n"]
-  - commands: ["focus --direction right"]
-    bindings: ["alt+o"]
-  - commands: ["focus --direction up"]
-    bindings: ["alt+e"]
-  - commands: ["focus --direction down"]
-    bindings: ["alt+i"]
-
-  - commands: ["move --direction left"]
-    bindings: ["alt+2"]
-  - commands: ["move --direction right"]
-    bindings: ["alt+8"]
-  - commands: ["move --direction up"]
-    bindings: ["alt+1"]
-  - commands: ["move --direction down"]
-    bindings: ["alt+4"]
-
-  - commands: ["resize --width -2%"]
-    bindings: ["alt+l"]
-  - commands: ["resize --width +2%"]
-    bindings: ["alt+j"]
-  - commands: ["resize --height +2%"]
-    bindings: ["alt+u"]
-  - commands: ["resize --height -2%"]
-    bindings: ["alt+y"]
-
-  - commands: ["wm-enable-binding-mode --name resize"]
-    bindings: []
-
-  - commands: ["wm-enable-binding-mode --name pause"]
-    bindings: []
-
-  - commands: ["toggle-tiling-direction"]
-    bindings: ["alt+h"]
-
-  - commands: ["wm-cycle-focus"]
-    bindings: []
-
-  - commands: ["toggle-floating --centered"]
-    bindings: ["alt+q"]
-
-  - commands: ["toggle-tiling"]
-    bindings: ["alt+g"]
-
-  - commands: ["toggle-fullscreen"]
-    bindings: []
-
-  - commands: ["toggle-minimized"]
-    bindings: []
+  - commands: ["shell-exec ferrishot"]
+    bindings: ["alt+m"]
+  - commands: ["shell-exec zed"]
+    bindings: ["alt+s"]
+  - commands: ["shell-exec firefox"]
+    bindings: ["alt+r"]
 
   - commands: ["close"]
     bindings: ["alt+t"]
 
-  - commands: ["wm-exit"]
-    bindings: ["alt+z"]
+  - commands: ["focus --direction left"]
+    bindings: ["alt+n"]
+  - commands: ["focus --direction right"]
+    bindings: ["alt+o"]
 
-  - commands: ["wm-reload-config"]
-    bindings: []
-
-  - commands: ["wm-redraw"]
-    bindings: []
-
-  - commands: ["shell-exec wezterm-gui"]
-    bindings: ["alt+s"]
-  - commands: ["shell-exec firefox"]
-    bindings: ["alt+r"]
-  - commands: ["shell-exec sharex -RectangleLight -s"]
-    bindings: ["alt+k"]
-
-  - commands: ["focus --next-workspace"]
-    bindings: []
-  - commands: ["focus --prev-workspace"]
-    bindings: []
-
-  - commands: ["focus --recent-workspace"]
-    bindings: ["alt+v"]
+  - commands: ["move --direction left"]
+    bindings: ["alt+2"]
+  - commands: ["move --direction down"]
+    bindings: ["alt+4"]
+  - commands: ["move --direction up"]
+    bindings: ["alt+1"]
+  - commands: ["move --direction right"]
+    bindings: ["alt+8"]
 
   - commands: ["focus --workspace 1"]
     bindings: ["alt+b", "f6"]
@@ -164,15 +110,6 @@ keybindings:
   - commands: ["focus --workspace 4"]
     bindings: ["alt+w", "f3"]
 
-  - commands: ["move-workspace --direction left"]
-    bindings: []
-  - commands: ["move-workspace --direction right"]
-    bindings: []
-  - commands: ["move-workspace --direction up"]
-    bindings: []
-  - commands: ["move-workspace --direction down"]
-    bindings: []
-
   - commands: ["move --workspace 1"]
     bindings: ["alt+7"]
   - commands: ["move --workspace 2"]
@@ -181,3 +118,8 @@ keybindings:
     bindings: ["alt+0"]
   - commands: ["move --workspace 4"]
     bindings: ["alt+5"]
+
+  - commands: ["resize --width +10px"]
+    bindings: ["alt+u"]
+  - commands: ["resize --width -10px"]
+    bindings: ["alt+y"]
