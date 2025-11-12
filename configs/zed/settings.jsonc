@@ -1,4 +1,7 @@
 {
+  // Disable automatic updater
+  "auto_update": false,
+  // Use Vim keybindings
   "vim_mode": true,
   // Don't show lightning symbol when there are
   // code actions that we can take
@@ -24,9 +27,7 @@
   "toolbar": {
     "selections_menu": true,
     // Don't show the 3 buttons for buffer search, selection controls and editor controls
-    "quick_actions": false,
-    // Don't show the current symbol we are in
-    "breadcrumbs": false
+    "quick_actions": false
   },
   // Every time the current editor loses focus,
   // the file is automatically saved
@@ -67,6 +68,10 @@
   "telemetry": {
     "diagnostics": false,
     "metrics": false
+  },
+  "languages": {
+    "JSONC": {
+      "format_on_save": "off"
+    }
   }
 }
-
