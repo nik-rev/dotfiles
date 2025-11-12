@@ -1,0 +1,72 @@
+{
+  "vim_mode": true,
+  // Don't show lightning symbol when there are
+  // code actions that we can take
+  "inline_code_actions": false,
+  "tabs": {
+    // Don't show the cross "x" when hovering over tabs
+    "show_close_button": "hidden",
+    // Use different color if there are potential changes to commit
+    "git_status": true
+  },
+  "tab_bar": {
+    // Don't show left/right arrow on the left
+    "show_nav_history_buttons": false,
+    // Don't show the "new", "split pane" and "zoom in" buttons
+    "show_tab_bar_buttons": false
+  },
+  "title_bar": {
+    // Don't ask me to sign in
+    "show_sign_in": false,
+    // Don't alert me about new features
+    "show_onboarding_banner": false
+  },
+  "toolbar": {
+    "selections_menu": true,
+    // Don't show the 3 buttons for buffer search, selection controls and editor controls
+    "quick_actions": false,
+    // Don't show the current symbol we are in
+    "breadcrumbs": false
+  },
+  // Every time the current editor loses focus,
+  // the file is automatically saved
+  "autosave": "on_focus_change",
+  "cursor_shape": "bar",
+  "relative_line_numbers": true,
+  "terminal": {
+    "shell": {
+      // Use nushell as the interactive shell
+      "program": "nu"
+    }
+  },
+  // Disable blinking cursor
+  "cursor_blink": false,
+  "disable_ai": true,
+  "ui_font_features": {
+    // Enable ligatures in the UI
+    "liga": false
+  },
+  "buffer_font_features": {
+    // Enable ligatures when editing code
+    "liga": true
+  },
+  "buffer_font_family": "JetBrains Mono",
+  "ui_font_family": "JetBrains Mono",
+  "ui_font_size": 20.0,
+  "buffer_font_size": 20.0,
+  "theme": "Catppuccin Mocha",
+  "theme_overrides": {
+    "Catppuccin Mocha": {
+      // Don't highlight related content
+      "editor.document_highlight.read_background": "#00000000",
+      // current line number is lavender
+      "editor.active_line_number": "#b4befe"
+    }
+  },
+  // Disable telemetry
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  }
+}
+

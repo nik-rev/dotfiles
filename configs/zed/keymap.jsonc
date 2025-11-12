@@ -1,0 +1,28 @@
+[
+  {
+    "bindings": {
+      "shift-left": "pane::GoBack",
+      "shift-right": "pane::GoForward",
+      "ctrl-shift-tab": "vim::GoToPreviousTab",
+      "ctrl-j": "workspace::ToggleBottomDock",
+      "ctrl-l": "workspace::ToggleLeftDock",
+      "ctrl-tab": "vim::GoToTab"
+    }
+  },
+  {
+    "context": "Editor && mode == full && vim_mode != insert && !renaming",
+    "bindings": {
+      "space c": "vim::ToggleComments",
+      "U": "vim::Redo",
+      "alt-down": "vim::SelectSmallerSyntaxNode",
+      "alt-up": "vim::SelectLargerSyntaxNode",
+      "space k": "editor::Hover",
+      "space h": "editor::BlameHover",
+      "space t": "vim::GoToPreviousTab",
+      "space n": "vim::GoToTab",
+      "space x": "pane::CloseActiveItem",
+      "enter": "workspace::Save"
+    }
+  }
+]
+
