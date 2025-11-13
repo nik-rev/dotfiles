@@ -1,11 +1,65 @@
 {
-  // Disable scrollbar
+  "auto_install_extensions": {
+    "html": true,
+    "catppuccin": true,
+    "toml": true,
+    "git-firefly": true,
+    "scss": true,
+    "sql": true,
+    "ruby": true,
+    "vue": true,
+    "lua": true,
+    "elixir": true,
+    "xml": true,
+    "zig": true,
+    "csharp": true,
+    "astro": true,
+    "swift": true,
+    "dart": true,
+    "prisma": true,
+    "kotlin": true,
+    "biome": true,
+    "graphql": true,
+    "nix": true,
+    "rainbow-csv": true,
+    "ini": true,
+    "gleam": true,
+    "python-requirements": true,
+    "r": true,
+    "haskell": true,
+    "gdscript": true,
+    "scala": true,
+    "julia": true,
+    "powershell": true,
+    "templ": true,
+    "assembly": true,
+    "just": true,
+    "odin": true,
+    "solidity": true,
+    "angular": true,
+    "ocaml": true,
+    "scheme": true,
+    "clojure": true,
+    "nu": true,
+    "erlang": true,
+    "slint": true,
+    "v": true,
+    "fortran": true,
+    "tree-sitter-query": true,
+    "tera": true,
+    "uiua": true,
+    "lean4": true
+  },
+  // Colorful icons
   "icon_theme": "Material Icon Theme",
+  // Don't use system prompts, ever. Zed UI is more integrated and cleaner
   "use_system_path_prompts": false,
   "use_system_prompts": false,
+  // Disable folds
   "gutter": {
     "folds": false
   },
+  // Disable scrollbar
   "scrollbar": {
     "axes": {
       "vertical": false,
