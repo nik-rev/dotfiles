@@ -1,4 +1,6 @@
 {
+  // Disable popup when hovering. Manually hover instead
+  "hover_popover_enabled": false,
   // Disable automatic updater
   "auto_update": false,
   // Use Vim keybindings
