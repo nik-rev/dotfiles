@@ -6,7 +6,8 @@
       "ctrl-shift-tab": "vim::GoToPreviousTab",
       "ctrl-j": "workspace::ToggleBottomDock",
       "ctrl-l": "workspace::ToggleLeftDock",
-      "ctrl-tab": "vim::GoToTab"
+      "ctrl-tab": "vim::GoToTab",
+      "ctrl-r": "projects::OpenRecent"
     }
   },
   {
@@ -25,4 +26,3 @@
     }
   }
 ]
-

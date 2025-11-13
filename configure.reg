@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Control Panel\Accessibility\Keyboard Response]
+# How long a key needs to be held until it begins to repeat
+"AutoRepeatDelay"="200"
+# How long between each keystroke repetition
+"AutoRepeatRate"="50"
+
+[HKEY_CURRENT_USER\Control Panel\Desktop]
+# Enable activating window by hovering over it
+"ActiveWndTrk"="1"
+# Time for a window to activate after a cursor hovers over it
+"ActiveWndTrkTimeout"="0"
+# When a window is activated via cursor hover, do not bring it to the front
+"ActiveWndTrkZorder"="0"
