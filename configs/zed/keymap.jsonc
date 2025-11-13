@@ -4,14 +4,14 @@
       "shift-left": "pane::GoBack",
       "shift-right": "pane::GoForward",
       "ctrl-shift-tab": "vim::GoToPreviousTab",
-      "ctrl-j": "workspace::ToggleBottomDock",
-      "ctrl-l": "workspace::ToggleLeftDock",
       "ctrl-tab": "vim::GoToTab",
+      "ctrl-j": "workspace::ToggleBottomDock",
+      "ctrl-y": "workspace::ToggleLeftDock",
       "ctrl-r": "projects::OpenRecent"
     }
   },
   {
-    "context": "Editor && mode == full && vim_mode != insert && !renaming",
+    "context": "VimControl && !menu",
     "bindings": {
       "space c": "vim::ToggleComments",
       "U": "vim::Redo",
