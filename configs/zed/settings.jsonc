@@ -1,24 +1,33 @@
 {
   // Disable scrollbar
+  "icon_theme": "Material Icon Theme",
+  "use_system_path_prompts": false,
+  "use_system_prompts": false,
+  "gutter": {
+    "folds": false
+  },
   "scrollbar": {
     "axes": {
       "vertical": false,
       "horizontal": false
     }
   },
-  // Enable soft wrap
   "soft_wrap": "editor_width",
-  // Disable popup when hovering. Manually hover instead
-  "hover_popover_enabled": false,
   // Disable automatic updater
+  "hover_popover_enabled": false,
   "auto_update": false,
   // Use Vim keybindings
   "vim_mode": true,
   // Don't show lightning symbol when there are
   // code actions that we can take
   "inline_code_actions": false,
+  "preview_tabs": {
+    "enable_preview_from_code_navigation": true,
+    "enable_preview_from_file_finder": true
+  },
   "tabs": {
     // Don't show the cross "x" when hovering over tabs
+    "file_icons": true,
     "show_close_button": "hidden",
     // Use different color if there are potential changes to commit
     "git_status": true
@@ -28,6 +37,15 @@
     "show_nav_history_buttons": false,
     // Don't show the "new", "split pane" and "zoom in" buttons
     "show_tab_bar_buttons": false
+  },
+  "languages": {
+    "HTML": {
+      "format_on_save": "off",
+      "ensure_final_newline_on_save": false
+    },
+    "JSONC": {
+      "format_on_save": "off"
+    }
   },
   "title_bar": {
     // Don't ask me to sign in
@@ -71,8 +89,6 @@
   "theme": "Catppuccin Mocha",
   "theme_overrides": {
     "Catppuccin Mocha": {
-      // Don't highlight related content
-      "editor.document_highlight.read_background": "#00000000",
       // current line number is lavender
       "editor.active_line_number": "#b4befe"
     }
@@ -81,10 +97,5 @@
   "telemetry": {
     "diagnostics": false,
     "metrics": false
-  },
-  "languages": {
-    "JSONC": {
-      "format_on_save": "off"
-    }
   }
 }

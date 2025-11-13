@@ -1,28 +1,222 @@
 [
   {
     "bindings": {
-      "shift-left": "pane::GoBack",
-      "shift-right": "pane::GoForward",
-      "ctrl-shift-tab": "vim::GoToPreviousTab",
-      "ctrl-tab": "vim::GoToTab",
-      "ctrl-j": "workspace::ToggleBottomDock",
-      "ctrl-y": "workspace::ToggleLeftDock",
-      "ctrl-r": "projects::OpenRecent"
+      "ctrl-+": ["zed::IncreaseBufferFontSize", { "persist": false }],
+      "ctrl-=": ["zed::ResetBufferFontSize", { "persist": false }],
+      "ctrl--": ["zed::DecreaseBufferFontSize", { "persist": false }]
     }
   },
   {
+    "bindings": {
+      // Jump back/forward in history
+      "shift-left": "pane::GoBack",
+      "shift-right": "pane::GoForward",
+
+      // Only use these to make navigation in keyboard mouse mode easier
+      "ctrl-shift-tab": "vim::GoToPreviousTab",
+      "ctrl-tab": "vim::GoToTab",
+
+      "ctrl-r": "projects::OpenRecent",
+      // Make this the action everywhere. By default,
+      // this selects the previuos entry in the file explorer
+      "ctrl-p": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs || vim_operator == helix_next || vim_operator == helix_previous",
+    "bindings": {
+      // Subword allows operating on parts of snake_case or camelCase
+      "r": "vim::Subword",
+      // Subword with the separator included
+      "shift-r": ["vim::Subword", { "ignore_punctuation": true }]
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      // In the file explorer, y/Y to copy path
+      "y": "workspace::CopyRelativePath",
+      "Y": "workspace::CopyPath"
+    }
+  },
+  // "down" key is a whole mode dedicated to multiple selections
+  {
     "context": "VimControl && !menu",
     "bindings": {
+      // Select sub-selections
+      "down s": "vim::HelixSelectRegex",
+      // Split selection on every line
+      "down l": ["editor::SplitSelectionIntoLines", { "keep_selections": true }],
+
+      // Add cursor below/above. `alt` for key repeat
+      "alt-right": "vim::HelixDuplicateBelow",
+      "alt-left": "vim::HelixDuplicateAbove"
+    }
+  },
+  // Additional Vim keybindings
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "shift-up": "editor::MoveLineUp",
+      "shift-down": "editor::MoveLineDown",
+
+      // Toggle comments in selection
       "space c": "vim::ToggleComments",
+      // Toggle an entire comment block
+      "space shift-c": ["workspace::SendKeystrokes", "g c g c"],
+
+      // u/U to Undo/Redo
       "U": "vim::Redo",
-      "alt-down": "vim::SelectSmallerSyntaxNode",
-      "alt-up": "vim::SelectLargerSyntaxNode",
+
+      // Hover
       "space k": "editor::Hover",
       "space h": "editor::BlameHover",
-      "space t": "vim::GoToPreviousTab",
-      "space n": "vim::GoToTab",
-      "space x": "pane::CloseActiveItem",
-      "enter": "workspace::Save"
+
+      // Saving is so common, bind it to tab
+      "tab": "workspace::Save",
+
+      // Yank until end of the line
+      "shift-y": ["workspace::SendKeystrokes", "y $"],
+
+      // Multi-line t,f,T,F motions
+      "f": ["vim::PushFindForward", { "before": false, "multiline": true }],
+      "t": ["vim::PushFindForward", { "before": true, "multiline": true }],
+      "shift-f": ["vim::PushFindBackward", { "after": false, "multiline": true }],
+      "shift-t": ["vim::PushFindBackward", { "after": true, "multiline": true }],
+
+      // Incrementally increase/decrease tree-sitter selection
+      "alt-down": "vim::SelectSmallerSyntaxNode",
+      "alt-up": "vim::SelectLargerSyntaxNode"
+    }
+  },
+  // Use "left"/"right" instead of "["/"]"
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "right d": "editor::GoToDiagnostic",
+      "left d": "editor::GoToPreviousDiagnostic",
+      "right c": "editor::GoToHunk",
+      "left c": "editor::GoToPreviousHunk"
+    }
+  },
+  // Forward/backward motions with `left`/`right` instead of `[`/`]`
+  {
+    "context": "vim_mode == normal || vim_mode == visual || vim_mode == operator",
+    "bindings": {
+      "right right": "vim::NextSectionStart",
+      "right left": "vim::NextSectionEnd",
+      "left left": "vim::PreviousSectionStart",
+      "left right": "vim::PreviousSectionEnd",
+
+      "right m": "vim::NextMethodStart",
+      "right shift-m": "vim::NextMethodEnd",
+      "left m": "vim::PreviousMethodStart",
+      "left shift-m": "vim::PreviousMethodEnd",
+      "left /": "vim::PreviousComment",
+      "right /": "vim::NextComment",
+      "left -": "vim::PreviousLesserIndent",
+      "left +": "vim::PreviousGreaterIndent",
+      "left =": "vim::PreviousSameIndent",
+      "right -": "vim::NextLesserIndent",
+      "right +": "vim::NextGreaterIndent",
+      "right =": "vim::NextSameIndent",
+      "right b": "pane::ActivateNextItem",
+      "left b": "pane::ActivatePreviousItem",
+      "right shift-b": "pane::ActivateLastItem",
+      "left shift-b": ["pane::ActivateItem", 0],
+      "right space": "vim::InsertEmptyLineBelow",
+      "left space": "vim::InsertEmptyLineAbove",
+
+      "left f": "workspace::FollowNextCollaborator",
+      "right f": "workspace::FollowNextCollaborator",
+      "right }": ["vim::UnmatchedForward", { "char": "}" }],
+      "left {": ["vim::UnmatchedBackward", { "char": "{" }],
+      "right )": ["vim::UnmatchedForward", { "char": ")" }],
+      "left (": ["vim::UnmatchedBackward", { "char": "(" }],
+      "left r": "vim::GoToPreviousReference",
+      "right r": "vim::GoToNextReference",
+      // tree-sitter related commands
+      "left x": "vim::SelectLargerSyntaxNode",
+      "right x": "vim::SelectSmallerSyntaxNode",
+    }
+  },
+  // Resize panes. These use `alt`/`ctrl` for auto-repeat
+  {
+    "bindings": {
+      // Increase width
+      "shift-ctrl-l": "vim::ResizePaneRight",
+      // Decrease width
+      "shift-ctrl-h": "vim::ResizePaneLeft",
+      // Decrease height
+      "shift-ctrl-j": "vim::ResizePaneDown",
+      // Increase height
+      "shift-ctrl-k": "vim::ResizePaneUp"
+    }
+  },
+  // Go to next/previous tab. Uses `ctrl` for auto-repeat
+  {
+    "bindings": {
+      "ctrl-t": "vim::GoToPreviousTab",
+      "ctrl-n": "vim::GoToTab",
+      // When using `ctrl-t`/`ctrl-n` it is convenient to be able to
+      // close arbitrary tabs using the same `ctrl` modifier but different key
+      "ctrl-x": "pane::CloseActiveItem"
+    }
+  },
+  // Window management commands. They use `up` because that key is not used anywhere else
+  // `k` is used to go up/down since we're using vim mode everywhere
+  {
+    "context": "!Picker && !Menu",
+    "bindings": {
+      // Focus panel in direction
+      "up h": "workspace::ActivatePaneLeft",
+      "up j": "workspace::ActivatePaneDown",
+      "up k": "workspace::ActivatePaneUp",
+      "up l": "workspace::ActivatePaneRight",
+
+      // Move panel in direction
+      "up shift-h": "workspace::MovePaneLeft",
+      "up shift-j": "workspace::MovePaneDown",
+      "up shift-k": "workspace::MovePaneUp",
+      "up shift-l": "workspace::MovePaneRight",
+
+      // Git panel
+      "up g": "git_panel::ToggleFocus",
+
+      // Terminal
+      "up t": "terminal_panel::ToggleFocus",
+      "up r": "workspace::ToggleBottomDock",
+
+      // File explorer
+      "up e": "project_panel::ToggleFocus",
+      "up a": "workspace::ToggleLeftDock",
+
+      "up s": "pane::CloseActiveItem",
+      "up S": "pane::CloseOtherItems",
+
+      "up f": "pane::CloseItemsToTheLeft",
+      "up c": "pane::CloseItemsToTheRight",
+
+      "up v": "pane::SplitVertical",
+      "up d": "pane::SplitHorizontal",
+
+      "up p": "pane::TogglePinTab",
+
+      "up u": "pane::CloseAllItems",
+      "up i": "workspace::CloseInactiveTabsAndPanes"
+    }
+  },
+  // Create new pane
+  {
+    "context": "Workspace && !Picker && !Menu",
+    "bindings": {
+      "up n": "workspace::NewFile"
+    }
+  },
+  {
+    "context": "Terminal && !Picker && !Menu",
+    "bindings": {
+      "up n": "workspace::NewTerminal"
     }
   }
 ]
