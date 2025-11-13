@@ -46,6 +46,8 @@
   "cursor_shape": "bar",
   "relative_line_numbers": true,
   "terminal": {
+    // Selecting text in the terminal copies it to the clipboard
+    "copy_on_select": true,
     "shell": {
       // Use nushell as the interactive shell
       "program": "nu"
