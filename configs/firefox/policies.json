@@ -1,0 +1,48 @@
+{
+  "policies": {
+    "PasswordManagerEnabled": false,
+    "OfferToSaveLogins": false,
+    "AutofillCreditCardEnabled": false,
+    "DisableFirefoxAccounts": true,
+    "DisableFirefoxStudies": true,
+    "SearchEngines": {
+      "Add": [
+        {
+          "Name": "GitHub Code",
+          "Keyword": "@gh",
+          "URLTemplate": "https://github.com/search?q={searchTerms}&type=code"
+        },
+        {
+          "Name": "GitHub Repos",
+          "Keyword": "@repo",
+          "URLTemplate": "https://github.com/search?q={searchTerms}&type=repositories"
+        },
+        {
+          "Name": "Nixpkgs",
+          "Keyword": "@np",
+          "URLTemplate": "https://search.nixos.org/packages?query={searchTerms}"
+        },
+        {
+          "Name": "Home Manager Options",
+          "Keyword": "@hm",
+          "URLTemplate": "https://home-manager-options.extranix.com/?query={searchTerms}"
+        },
+        {
+          "Name": "Crates.io",
+          "Keyword": "@crates",
+          "URLTemplate": "https://crates.io/crates/{searchTerms}"
+        },
+        {
+          "Name": "Docs.rs",
+          "Keyword": "@crate",
+          "URLTemplate": "https://docs.rs/{searchTerms}"
+        },
+        {
+          "Name": "YouTube",
+          "Keyword": "@yt",
+          "URLTemplate": "https://www.youtube.com/results?search_query={searchTerms}"
+        }
+      ]
+    }
+  }
+}
