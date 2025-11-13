@@ -3,7 +3,7 @@ source carapace.nu # carapace _carapace nushell o> configs/nushell/carapace.nu
 source catppuccin.nu
 
 # Command for switching directories
-# 
+#
 # pass all args to zoxide then list contents of the new directory
 def --env --wrapped t [ ...args: string ] {
   z ...$args
@@ -38,6 +38,8 @@ $env.PROMPT_COMMAND = ""
 $env.PROMPT_INDICATOR = { || $"(ansi purple_italic)(if $env.PWD == $nu.home-path { "~" } else { $env.PWD | path split | last } )(ansi reset)$ " }
 $env.PROMPT_COMMAND_RIGHT = { || }
 
+$env.config.edit_mode = "vi"
+
 # ctrl-z to toggle foreground and background
 $env.config.keybindings ++= [
   {
@@ -54,6 +56,8 @@ $env.config.keybindings ++= [
 
 # disable welcome screen
 $env.config.show_banner = false
+
+$env.cursor_shape.vi_insert = "bar"
 
 # catppuccin compatible colors for ls
 $env.LS_COLORS = (vivid generate catppuccin-mocha)
