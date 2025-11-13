@@ -123,6 +123,7 @@ alias "e" = ls+
 alias "g" = git
 alias "i" = t "-"
 alias "l" = lazygit
+alias "z" = zed -a
 alias "n" = hx
 alias "no" = hx .
 alias "nrs" = sudo nixos-rebuild switch
