@@ -1,4 +1,10 @@
 {
+  // Disable inline blame
+  "git": {
+    "inline_blame": {
+      "enabled": false,
+    }
+  },
   "audio": {
     "experimental.auto_microphone_volume": false
   },

@@ -208,7 +208,6 @@
 
       // Hover
       "space k": "editor::Hover",
-      "space h": "editor::BlameHover",
 
       // Saving is so common, bind it to tab
       "tab": "workspace::Save"
@@ -425,6 +424,16 @@
     "context": "ProjectPanel && not_editing",
     "bindings": {
       "shift-d": "project_panel::RemoveFromProject"
+    }
+  },
+
+  // Git
+  {
+    "context": "VimControl && !Menu",
+    "bindings": {
+      "space g": "git::Blame",
+      "space G": "editor::OpenGitBlameCommit",
+      "space L": "editor::OpenPermalinkToLine"
     }
   }
 
