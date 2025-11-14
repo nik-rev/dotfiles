@@ -65,6 +65,8 @@
   "use_system_path_prompts": false,
   "use_system_prompts": false,
   "gutter": {
+    // Don't show "Play" button for running code
+    "runnables": false,
     // Don't show breakpoint in the gutter
     "breakpoints": false,
     // Disable folds
