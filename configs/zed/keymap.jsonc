@@ -1,11 +1,74 @@
 [
+  // Change font size
   {
     "bindings": {
       "ctrl-+": ["zed::IncreaseBufferFontSize", { "persist": false }],
       "ctrl-=": ["zed::ResetBufferFontSize", { "persist": false }],
       "ctrl--": ["zed::DecreaseBufferFontSize", { "persist": false }]
+      // TODO: Add bindings for `ctrl-mousescrollup` and `ctrl-mousescrolldown`
+      // for changing the font size. Blocked: https://github.com/zed-industries/zed/issues/10647
     }
   },
+
+  // START: Subword motions
+  //
+  // Subword motions are really useful, but regular Vim does not have them.
+  // I want to be able to hold down keys and have these motions repeated, and have them
+  // under easy-to-access keys.
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      // Same as `!` in regular Vim. We override `!`, so we re-assign the functionality instead
+      "space !": "vim::PushShellCommand"
+    }
+  },
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      // Same as `!` in regular Vim. We override `!`, so we re-assign the functionality instead
+      "space !": "vim::ShellCommand"
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      // Same as `'` in regular Vim. We override `'`, so we re-assign the functionality instead
+      "ctrl-`": ["vim::PushJump", { "line": true }]
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      // `^` is rendered obsolete by `_`
+      "^": "vim::NextSubwordStart",
+      "shift-^": ["vim::NextSubwordStart", { "ignore_punctuation": true }],
+
+      // `|` is rendered obsolete by `0`
+      "|": "vim::PreviousSubwordStart",
+      "shift-|": ["vim::PreviousSubwordStart", { "ignore_punctuation": true }],
+
+      // Regular `!` is replaced with `space !`
+      "!": "vim::NextSubwordEnd",
+      "shift-!": ["vim::NextSubwordEnd", { "ignore_punctuation": true }],
+
+      // Regular `'` is replaced with `space ``
+      "'": "vim::PreviousSubwordEnd",
+      "shift-'": ["vim::PreviousSubwordEnd", { "ignore_punctuation": true }]
+    }
+  },
+  // END: Subword motions
+
+  // Subword text object
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs || vim_operator == helix_next || vim_operator == helix_previous",
+    "bindings": {
+      // Subword allows operating on parts of snake_case or camelCase
+      "r": "vim::Subword",
+      // Subword with the separator included
+      "shift-r": ["vim::Subword", { "ignore_punctuation": true }]
+    }
+  },
+
   {
     "bindings": {
       // Jump back/forward in history
@@ -22,23 +85,15 @@
       "ctrl-p": "file_finder::Toggle"
     }
   },
+
+  // Copy file path
   {
-    "context": "vim_operator == a || vim_operator == i || vim_operator == cs || vim_operator == helix_next || vim_operator == helix_previous",
     "bindings": {
-      // Subword allows operating on parts of snake_case or camelCase
-      "r": "vim::Subword",
-      // Subword with the separator included
-      "shift-r": ["vim::Subword", { "ignore_punctuation": true }]
+      "ctrl-y": "workspace::CopyRelativePath",
+      "ctrl-shift-y": "workspace::CopyPath"
     }
   },
-  {
-    "context": "ProjectPanel && not_editing",
-    "bindings": {
-      // In the file explorer, y/Y to copy path
-      "y": "workspace::CopyRelativePath",
-      "Y": "workspace::CopyPath"
-    }
-  },
+
   // "down" key is a whole mode dedicated to multiple selections
   {
     "context": "VimControl && !menu",
@@ -50,46 +105,95 @@
 
       // Add cursor below/above. `alt` for key repeat
       "alt-right": "vim::HelixDuplicateBelow",
-      "alt-left": "vim::HelixDuplicateAbove"
+      "alt-left": "vim::HelixDuplicateAbove",
+
+      // w/W, b/B, e/E all require 1 keystroke and 2 to ignore punctuation,
+      // but ge/gE requires 3 - let's change that. This is replacement for ge/gE
+      "enter": "vim::PreviousWordEnd",
+      "shift-enter": ["vim::PreviousWordEnd", { "ignore_punctuation": true }]
     }
   },
-  // Additional Vim keybindings
+
+  // START: `S` for creating surround instead of `ys`
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      // Surround operator in normal mode
+      "shift-s": "vim::PushAddSurrounds"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
+    "bindings": {
+      // Surround selection in visual mode with `S`
+      "shift-s": "vim::PushAddSurrounds"
+    }
+  },
+  // END: `S` for creating surround instead of `ys`
+
+  // Improvements to the default keymap
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      // Yank until end of the line
+      "shift-y": ["workspace::SendKeystrokes", "y $"],
+      // u/U to Undo/Redo
+      "U": "vim::Redo"
+    }
+  },
+
+  // Multi-line t,f,T,F motions
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "f": ["vim::PushFindForward", { "before": false, "multiline": true }],
+      "t": ["vim::PushFindForward", { "before": true, "multiline": true }],
+      "shift-f": ["vim::PushFindBackward", { "after": false, "multiline": true }],
+      "shift-t": ["vim::PushFindBackward", { "after": true, "multiline": true }]
+    }
+  },
+
+  // Move lines
   {
     "context": "VimControl && !menu",
     "bindings": {
       "shift-up": "editor::MoveLineUp",
-      "shift-down": "editor::MoveLineDown",
+      "shift-down": "editor::MoveLineDown"
+    }
+  },
+
+  // Incrementally increase/decrease tree-sitter selection
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "alt-down": "vim::SelectSmallerSyntaxNode",
+      "alt-up": "vim::SelectLargerSyntaxNode"
+    }
+  },
+
+  // Additional Vim keybindings
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      // Additional tab bindings for ergonomics
+      "space t": "vim::GoToPreviousTab",
+      "space n": "vim::GoToTab",
 
       // Toggle comments in selection
       "space c": "vim::ToggleComments",
       // Toggle an entire comment block
       "space shift-c": ["workspace::SendKeystrokes", "g c g c"],
 
-      // u/U to Undo/Redo
-      "U": "vim::Redo",
-
       // Hover
       "space k": "editor::Hover",
       "space h": "editor::BlameHover",
 
       // Saving is so common, bind it to tab
-      "tab": "workspace::Save",
-
-      // Yank until end of the line
-      "shift-y": ["workspace::SendKeystrokes", "y $"],
-
-      // Multi-line t,f,T,F motions
-      "f": ["vim::PushFindForward", { "before": false, "multiline": true }],
-      "t": ["vim::PushFindForward", { "before": true, "multiline": true }],
-      "shift-f": ["vim::PushFindBackward", { "after": false, "multiline": true }],
-      "shift-t": ["vim::PushFindBackward", { "after": true, "multiline": true }],
-
-      // Incrementally increase/decrease tree-sitter selection
-      "alt-down": "vim::SelectSmallerSyntaxNode",
-      "alt-up": "vim::SelectLargerSyntaxNode"
+      "tab": "workspace::Save"
     }
   },
-  // Use "left"/"right" instead of "["/"]"
+
+  // START: Use "left"/"right" instead of "["/"]"
   {
     "context": "vim_mode == normal",
     "bindings": {
@@ -134,12 +238,28 @@
       "right )": ["vim::UnmatchedForward", { "char": ")" }],
       "left (": ["vim::UnmatchedBackward", { "char": "(" }],
       "left r": "vim::GoToPreviousReference",
-      "right r": "vim::GoToNextReference",
-      // tree-sitter related commands
-      "left x": "vim::SelectLargerSyntaxNode",
-      "right x": "vim::SelectSmallerSyntaxNode",
+      "right r": "vim::GoToNextReference"
     }
   },
+  // END: Use "left"/"right" instead of "["/"]"
+
+  // START: Fix disorienting ctrl-d/ctrl-u
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "ctrl-u": ["action::Sequence", ["project_panel::ScrollUp", "project_panel::ScrollCursorCenter"]],
+      "ctrl-d": ["action::Sequence", ["project_panel::ScrollDown", "project_panel::ScrollCursorCenter"]]
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "ctrl-u": ["action::Sequence", ["vim::ScrollUp", "editor::ScrollCursorCenter"]],
+      "ctrl-d": ["action::Sequence", ["vim::ScrollDown", "editor::ScrollCursorCenter"]]
+    }
+  },
+  // END: Fix disorienting ctrl-d/ctrl-u
+
   // Resize panes. These use `alt`/`ctrl` for auto-repeat
   {
     "bindings": {
@@ -153,6 +273,7 @@
       "shift-ctrl-k": "vim::ResizePaneUp"
     }
   },
+
   // Go to next/previous tab. Uses `ctrl` for auto-repeat
   {
     "bindings": {
@@ -206,7 +327,8 @@
       "up i": "workspace::CloseInactiveTabsAndPanes"
     }
   },
-  // Create new pane
+
+  // START: Create new pane
   {
     "context": "Workspace && !Picker && !Menu",
     "bindings": {
@@ -218,5 +340,41 @@
     "bindings": {
       "up n": "workspace::NewTerminal"
     }
+  },
+  // END: Create new pane
+
+  // Case mode: &. Commands for changing case of text
+  {
+    "context": "VimControl && !Menu",
+    "bindings": {
+      // snake_case
+      "& s": "editor::ConvertToSnakeCase",
+      // kebab-case
+      "& k": "editor::ConvertToKebabCase",
+      // lowercase
+      "& l": "editor::ConvertToLowerCase",
+      // UPPERCASE
+      "& u": "editor::ConvertToUpperCase",
+      // PascalCase
+      "& p": "editor::ConvertToUpperCamelCase",
+      // Sentence case
+      "& S": "editor::ConvertToSentenceCase",
+      // Title Case
+      "& T": "editor::ConvertToTitleCase",
+      // oPPOSITE CASE
+      "& o": "editor::ConvertToOppositeCase",
+    }
   }
+
+  // Free Vim Keybinds:
+  // - `shift-r`, which does "overtype mode" in normal mode, which I've never used. Worth to replace with something more useful
+  // - `shift-k`, which does "hover" but we have that bound to "space k" instead
+  // - `shift-z`, which is a minor mode with keys we never use anyway
+  // - `[`, `shift-[`, `]` and `shift-]` are all free - because we use `left` and `right` for that purpose instead
+  // - `&` and `shift-&` does nothing
+  // - `\` and `shift-\` does nothing
+  // - `shift-tab` does nothing
+  //
+  // - `shift-m`, `shift-l`, `shift-h`, jump to the middle, bottom and top of the screen. But this isn't used that much
+  // - down, which is not bound to anything. Currently use it as a mode for helix keybindings but that can change
 ]

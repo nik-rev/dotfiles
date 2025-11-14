@@ -55,9 +55,13 @@
   // Don't use system prompts, ever. Zed UI is more integrated and cleaner
   "use_system_path_prompts": false,
   "use_system_prompts": false,
-  // Disable folds
   "gutter": {
+    // Don't show breakpoint in the gutter
+    "breakpoints": false,
+    // Disable folds
     "folds": false
+    // TODO: Mouse should not activate breakpoint, but if the breakpoint exists then
+    // we will show it. Zed doesn't have this feature, so we'll have to contribute it
   },
   // Disable scrollbar
   "scrollbar": {
@@ -152,4 +156,8 @@
     "diagnostics": false,
     "metrics": false
   }
+
+  // TODO: Disable cursor movement via mouse click. Zed doesn't have the feature, so we must contribute it
+  //
+  // related: https://www.reddit.com/r/ZedEditor/comments/1i5u0e3/disable_cursor_movement_via_mouse_click/
 }
