@@ -364,6 +364,14 @@
       // oPPOSITE CASE
       "& o": "editor::ConvertToOppositeCase",
     }
+  },
+
+  // netrw extensions
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "ctrl-shift-d": "project_panel::RemoveFromProject"
+    }
   }
 
   // Free Vim Keybinds:
