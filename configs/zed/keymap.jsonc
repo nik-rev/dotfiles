@@ -324,7 +324,7 @@
   // Window management commands. They use `up` because that key is not used anywhere else
   // `k` is used to go up/down since we're using vim mode everywhere
   {
-    "context": "!Picker && !Menu",
+    "context": "!Picker && !Menu && !(vim_mode == insert)",
     "bindings": {
       // Focus panel in direction
       "up h": "workspace::ActivatePaneLeft",
@@ -372,13 +372,13 @@
 
   // START: Create new pane
   {
-    "context": "Workspace && !Picker && !Menu",
+    "context": "Workspace && !Picker && !Menu && !(vim_mode == insert)",
     "bindings": {
       "up g": "workspace::NewFile"
     }
   },
   {
-    "context": "Terminal && !Picker && !Menu",
+    "context": "Terminal && !Picker && !Menu && !(vim_mode == insert)",
     "bindings": {
       "up g": "workspace::NewTerminal"
     }
