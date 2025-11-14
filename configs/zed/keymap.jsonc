@@ -12,7 +12,7 @@
 
   // Automatically trigger intellisense
   {
-    "context": "vim_mode == insert",
+    "context": "vim_mode == insert && !GitPanel",
     "bindings": {
       // When deleting with ctrl-backspace, ctrl-enter to suggest new thing
       // is useful
