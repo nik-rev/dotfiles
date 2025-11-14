@@ -1,4 +1,7 @@
 {
+  "audio": {
+    "experimental.auto_microphone_volume": false
+  },
   "auto_install_extensions": {
     "html": true,
     "catppuccin": true,
@@ -83,12 +86,18 @@
     "enable_preview_from_code_navigation": true,
     "enable_preview_from_file_finder": true
   },
+  "scroll_beyond_last_line": "off",
   "tabs": {
     // Don't show the cross "x" when hovering over tabs
     "file_icons": true,
     "show_close_button": "hidden",
+    // Show icon in tab when the tab has a warning/error
+    "show_diagnostics": "all",
     // Use different color if there are potential changes to commit
     "git_status": true
+  },
+  "status_bar": {
+    "experimental.show": false
   },
   "tab_bar": {
     // Don't show left/right arrow on the left
@@ -107,20 +116,26 @@
   },
   "title_bar": {
     // Don't ask me to sign in
+    "show_user_picture": false,
     "show_sign_in": false,
     // Don't alert me about new features
     "show_onboarding_banner": false
   },
   "toolbar": {
-    "selections_menu": true,
     // Don't show the 3 buttons for buffer search, selection controls and editor controls
-    "quick_actions": false
+    "quick_actions": false,
+    "breadcrumbs": false,
   },
   // Every time the current editor loses focus,
   // the file is automatically saved
   "autosave": "on_focus_change",
   "cursor_shape": "bar",
   "relative_line_numbers": true,
+  "project_panel": {
+    // Hide the root entry when there is only one entry
+    // in the workspace
+    "hide_root": true
+  },
   "terminal": {
     // Selecting text in the terminal copies it to the clipboard
     "copy_on_select": true,
@@ -150,6 +165,10 @@
       // current line number is lavender
       "editor.active_line_number": "#b4befe"
     }
+  },
+  "image_viewer": {
+    // show size in KB, MB
+    "unit": "decimal"
   },
   // Disable telemetry
   "telemetry": {

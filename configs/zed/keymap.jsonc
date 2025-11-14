@@ -10,6 +10,18 @@
     }
   },
 
+  // Automatically trigger intellisense
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      // When deleting with ctrl-backspace, ctrl-enter to suggest new thing
+      // is useful
+      "ctrl-enter": "editor::ShowCompletions",
+      // Second way which might be more ergonomic sometime
+      "shift-enter": "editor::ShowCompletions"
+    }
+  },
+
   // START: Subword motions
   //
   // Subword motions are really useful, but regular Vim does not have them.
@@ -60,7 +72,7 @@
 
   // Subword text object
   {
-    "context": "vim_operator == a || vim_operator == i || vim_operator == cs || vim_operator == helix_next || vim_operator == helix_previous",
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
     "bindings": {
       // Subword allows operating on parts of snake_case or camelCase
       "r": "vim::Subword",
@@ -102,15 +114,25 @@
       "down s": "vim::HelixSelectRegex",
       // Split selection on every line
       "down l": ["editor::SplitSelectionIntoLines", { "keep_selections": true }],
+    }
+  },
 
-      // Add cursor below/above. `alt` for key repeat
-      "alt-right": "vim::HelixDuplicateBelow",
-      "alt-left": "vim::HelixDuplicateAbove",
-
-      // w/W, b/B, e/E all require 1 keystroke and 2 to ignore punctuation,
-      // but ge/gE requires 3 - let's change that. This is replacement for ge/gE
+  // w/W, b/B, e/E all require 1 keystroke and 2 to ignore punctuation,
+  // but ge/gE requires 3 - let's change that. This is replacement for ge/gE
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
       "enter": "vim::PreviousWordEnd",
       "shift-enter": ["vim::PreviousWordEnd", { "ignore_punctuation": true }]
+    }
+  },
+
+  // Add cursor below/above
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "alt-right": "vim::HelixDuplicateBelow",
+      "alt-left": "vim::HelixDuplicateAbove",
     }
   },
 
@@ -131,7 +153,7 @@
   },
   // END: `S` for creating surround instead of `ys`
 
-  // Improvements to the default keymap
+  // More ergonomic/intuitive keybindings
   {
     "context": "VimControl && !menu",
     "bindings": {
@@ -255,7 +277,9 @@
     "context": "VimControl && !menu",
     "bindings": {
       "ctrl-u": ["action::Sequence", ["vim::ScrollUp", "editor::ScrollCursorCenter"]],
-      "ctrl-d": ["action::Sequence", ["vim::ScrollDown", "editor::ScrollCursorCenter"]]
+      "ctrl-d": ["action::Sequence", ["vim::ScrollDown", "editor::ScrollCursorCenter"]],
+      "ctrl-f": ["action::Sequence", ["vim::PageDown", "editor::ScrollCursorCenter"]],
+      "ctrl-b": ["action::Sequence", ["vim::PageUp", "editor::ScrollCursorCenter"]]
     }
   },
   // END: Fix disorienting ctrl-d/ctrl-u
@@ -284,6 +308,20 @@
       "ctrl-x": "pane::CloseActiveItem"
     }
   },
+
+  // Diagnostics pane. "goto errors"
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      // File diagnostics
+      "g e": "diagnostics::DeployCurrentFile",
+      // Workspace diagnostics
+      "g E": "diagnostics::Deploy",
+      // Jump to file
+      "g o": "editor::OpenExcerpts"
+    }
+  },
+
   // Window management commands. They use `up` because that key is not used anywhere else
   // `k` is used to go up/down since we're using vim mode everywhere
   {
@@ -301,30 +339,35 @@
       "up shift-k": "workspace::MovePaneUp",
       "up shift-l": "workspace::MovePaneRight",
 
-      // Git panel
-      "up g": "git_panel::ToggleFocus",
+      // Close tabs
+      "up down": "pane::CloseAllItems",
+      "up up": "pane::CloseOtherItems",
+      "up left": "pane::CloseItemsToTheLeft",
+      "up right": "pane::CloseItemsToTheRight",
+      "up enter": "workspace::CloseInactiveTabsAndPanes",
+      "up s": "pane::CloseActiveItem",
 
-      // Terminal
-      "up t": "terminal_panel::ToggleFocus",
+      // Toggle docks
       "up r": "workspace::ToggleBottomDock",
-
-      // File explorer
-      "up e": "project_panel::ToggleFocus",
       "up a": "workspace::ToggleLeftDock",
 
-      "up s": "pane::CloseActiveItem",
-      "up S": "pane::CloseOtherItems",
+      // Toggle panes
+      "up e": "project_panel::ToggleFocus",
+      "up n": "git_panel::ToggleFocus",
+      "up t": "terminal_panel::ToggleFocus",
+      "up c": "collab_panel::ToggleFocus",
+      "up d": "debug_panel::ToggleFocus",
+      "up space": "editor::ToggleFocus",
 
-      "up f": "pane::CloseItemsToTheLeft",
-      "up c": "pane::CloseItemsToTheRight",
-
-      "up v": "pane::SplitVertical",
-      "up d": "pane::SplitHorizontal",
-
+      // Pin
       "up p": "pane::TogglePinTab",
 
-      "up u": "pane::CloseAllItems",
-      "up i": "workspace::CloseInactiveTabsAndPanes"
+      // Create splits
+      "up v": "pane::SplitVertical",
+      "up V": "pane::SplitHorizontal",
+
+      // Zen mode
+      "up z": "workspace::ToggleCenteredLayout"
     }
   },
 
@@ -332,13 +375,13 @@
   {
     "context": "Workspace && !Picker && !Menu",
     "bindings": {
-      "up n": "workspace::NewFile"
+      "up g": "workspace::NewFile"
     }
   },
   {
     "context": "Terminal && !Picker && !Menu",
     "bindings": {
-      "up n": "workspace::NewTerminal"
+      "up g": "workspace::NewTerminal"
     }
   },
   // END: Create new pane
@@ -362,7 +405,18 @@
       // Title Case
       "& T": "editor::ConvertToTitleCase",
       // oPPOSITE CASE
-      "& o": "editor::ConvertToOppositeCase",
+      "& o": "editor::ConvertToOppositeCase"
+    }
+  },
+
+  // Extra text objects
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+    "bindings": {
+      // r = []
+      // b = ()
+      // s = {}
+      "s": "vim::CurlyBrackets"
     }
   },
 
