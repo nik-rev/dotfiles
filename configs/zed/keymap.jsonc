@@ -370,7 +370,7 @@
   {
     "context": "ProjectPanel && not_editing",
     "bindings": {
-      "ctrl-shift-d": "project_panel::RemoveFromProject"
+      "shift-d": "project_panel::RemoveFromProject"
     }
   }
 
