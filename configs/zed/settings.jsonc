@@ -2,7 +2,7 @@
   // Disable inline blame
   "git": {
     "inline_blame": {
-      "enabled": false,
+      "enabled": false
     }
   },
   "audio": {
@@ -106,6 +106,7 @@
   },
   "status_bar": {
     "experimental.show": false
+    // "experimental.show": true
   },
   "tab_bar": {
     // Don't show left/right arrow on the left
@@ -132,7 +133,7 @@
   "toolbar": {
     // Don't show the 3 buttons for buffer search, selection controls and editor controls
     "quick_actions": false,
-    "breadcrumbs": false,
+    "breadcrumbs": false
   },
   // Every time the current editor loses focus,
   // the file is automatically saved
@@ -171,7 +172,12 @@
   "theme_overrides": {
     "Catppuccin Mocha": {
       // current line number is lavender
-      "editor.active_line_number": "#b4befe"
+      "editor.active_line_number": "#b4befe",
+      "syntax": {
+        "function.special": {
+          "color": "#f5e0dc"
+        }
+      }
     }
   },
   "image_viewer": {
