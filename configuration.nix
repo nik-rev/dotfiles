@@ -1,89 +1,130 @@
+# Edit this configuration file to define what should be installed on
+# your system. Help is available in the configuration.nix(5) man page, on
+# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+
+{ config, lib, pkgs, ... }:
+
 {
-  pkgs,
-  ...
-}:
-let
-  user_id = 1000;
-  username = "e";
-in
-{
-  # --- Get rid of the "Bad credentials" error in GitUI
-  programs.nix-ld.enable = true;
-  # zramSwap.enable = true;
+  environment.systemPackages = with pkgs; [
+    vim
+    cargo-outdated
+    cargo-expand
+    firefox
 
-  # environment.sessionVariables.SSH_AUTH_SOCK = "/run/user/${builtins.toString user_id}/ssh-agent";
-  # programs.ssh.startAgent = true;
+    zed-editor
 
-  # systemd.user.services.ssh-add-key = {
-  #   wantedBy = [ "default.target" ];
-  #   after = [ "ssh-agent.service" ];
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     ExecStartPre = "${pkgs.coreutils-full}/bin/sleep 1";
-  #     ExecStart = [
-  #       "${pkgs.openssh}/bin/ssh-add ${config.users.users.${username}.home}/.ssh/id_ed25519"
-  #     ];
-  #     Restart = "on-failure";
-  #     RestartSec = 1;
-  #   };
-  # };
+    nodejs
+    tombi
+    biome
 
-  # ---
+    vulkan-tools
+    tailwindcss-language-server
+    typescript-language-server
+    vscode-json-languageserver
+    pnpm
+    gopls
+    ## CLI tools
+    scooter # mass search and replace
+    bat # better than `cat`
+    mergiraf # better merge conflicts
+    just # command runner
+    zoxide # better cd
+    nushell # shell
+    ripgrep # find text in files
+    delta # differ
+    ast-grep # grep AST trees
+    yazi # terminal file manager
+    # inputs.wezterm.packages.${pkgs.system}.default # terminal emulator
+    kitty
+    rio # terminal emulator
+    gitui
+    fd # find files
+    bottom # system monitor
+    uutils-coreutils-noprefix # replace the standard GNU tools with Rust coreutils
+    hyperfine # benchmarking tool
+    atuin # shell history
+    onefetch # repository information
+    ouch # compression and decompression
+    termusic # terminal music player
+    serpl # mass search and replace
+    vivid # generates LS_COLORS for directories to look awesome
+    pastel # color utility tool
+    presenterm # markdown terminal slideshow
+    batmon # battery TUI
+    gitoxide # git rewrite in Rust
+    dogedns # dns CLI
+    websocat # websocket CLI
+    rqbit # CLI torrent client
 
-  xdg.portal = {
-    enable = true;
-    config = {
-      sway = {
-        default = [
-          "wlr"
-          "gtk"
-        ];
-      };
-    };
-    xdgOpenUsePortal = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-wlr
-      xdg-desktop-portal-gtk
-    ];
-    config.common.default = "*";
-    wlr.enable = true;
-  };
+    # --- Not written in Rust
+    lazygit # lazygit (git UI)
+    vial # keyboard configurator
+    yt-dlp # download tracks from youtube
+    git
+    gh # GitHub CLI
+    imagemagick # monster CLI command for working with images
+    ffmpeg # monster CLI command for working with videos
+    #gimp # image editor
+    git # vcs
+    slurp # take screenshots (wayland wl-roots)
+    wl-clipboard # screenshots on wayland
+    pciutils # view connected PCI devices
+    grim # copy slurp screenshots to clipboard (wayland wl-roots)
+    pamixer # sound control
+    sof-firmware
+    inkscape # SVG editor
+    zathura # document viewer (e.g. PDF)
+    mpv # video player
+    quickemu # painless virtual machines
+    # ---
 
-  hardware = {
-    # Required for sway to start
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-    };
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-    };
-  };
+    # --- Language or tooling specific
+    clang
+    gnumake
+    typos-lsp
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
+    ## markdown
+    typos # spell checker
+    typos-lsp # spell checker markdown LSP
+
+    ## typst
+    typst # compiler
+    typstyle # formatter
+    tinymist # language server
+
+    ## rust
+    rustup # install everything Rust
+    zola # static site generator
+
+    ## nix
+    nil # language server
+    nixfmt-rfc-style # formatter
+
+    # to be able to view built static websites on localhost
+    live-server
+    racket
+    carapace
   ];
 
-  environment = {
-    sessionVariables = {
-      # NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
-      # NIX_LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
-      #   pkgs.glibc # C standard library
-      #   pkgs.zlib
-      #   pkgs.openssl # SSL/TLS
-      #   pkgs.curl
-      # ];
-      EDITOR = "hx";
-      # it puts into $HOME/go by default
-      GOPATH = "$HOME/.go";
-      # fixes invisible cursors in Sway
-      WLR_NO_HARDWARE_CURSORS = "1";
-    };
-  };
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  ### Fonts
+  nixpkgs.config.allowUnfree = true;
+
+  # Sound
+  services.pipewire = {
+    package = pkgs.u.pipewire;
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  }; 
+
+  users.users.e = {
+    initialPassword = "e";
+    isNormalUser = true;
+    extraGroups = [ "networkmanager" "wheel" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.nushell;
+  };
 
   fonts = {
     packages = with pkgs; [
@@ -101,84 +142,17 @@ in
         emoji = [ "Noto Emoji" ];
       };
     };
-  };
+  }; 
 
-  # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration: https://wiki.nixos.org/wiki/Sway
-  security.polkit.enable = true;
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  users.users.${username} = {
-    initialPassword = "e";
-    uid = user_id;
-    isNormalUser = true;
-    extraGroups = [
-      # allow using `sudo`
-      "wheel"
-      # allow configuring wifi
-      "networkmanager"
-    ];
-    shell = pkgs.u.nushell;
-  };
+  programs.sway.enable = true;
 
-  networking = {
-    firewall.enable = true;
-    networkmanager.enable = true;
-  };
+  # Use latest kernel.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  services = {
-    blueman.enable = true;
-    libinput.enable = true;
-    # adds all executables to /usr/bin to be able to run
-    # various scripts on NixOS
-    envfs.enable = true;
-    # required for Vial (keyboard configurator)
-    udev.extraRules = ''
-      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"
-    '';
-  };
-
-  ### Locale
-
-  time.timeZone = "Europe/London";
-  i18n.defaultLocale = "en_GB.UTF-8";
-
-  ### Sound
-
-  # rtkit is optional but recommended https://wiki.nixos.org/wiki/PipeWire
-  security.rtkit.enable = true;
-  services.pipewire = {
-    package = pkgs.u.pipewire;
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  ### Kernel
-
-  fileSystems."/".options = [
-    "noatime"
-    "nodiratime"
-    "discard"
-  ];
-
-  boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
-    kernelModules = [
-      "btusb"
-      "mt7921e"
-    ];
-    kernelParams = [
-      "quiet"
-    ];
-    loader.efi.canTouchEfiVariables = true;
-    loader.grub = {
-      enable = true;
-      device = "nodev";
-      efiSupport = true;
-    };
-    # see instructions in README for how to configure LUKS encryption
-    initrd.luks.devices.cryptroot.device = "/dev/disk/by-partlabel/root";
-  };
-
-  system.stateVersion = "25.05";
+  networking.networkmanager.enable = true;
 }
+

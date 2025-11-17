@@ -1,3 +1,6 @@
+//! Manually copy this config file to:
+// - Unix: ~/.mozilla/firefox/profiles/<profile>.default/user.js
+
 user_pref("browser.discovery.enabled", false);
 user_pref("general.smoothScroll", true);
 user_pref("signon.autofillForms", false);

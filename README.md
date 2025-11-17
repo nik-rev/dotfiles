@@ -93,3 +93,17 @@ mount /dev/vg/root /mnt
 mkdir -p /mnt/boot
 mount /dev/disk/by-partlabel/boot /mnt/boot
 ```
+
+## Set up Git
+
+Generate key
+
+```
+ssh-keygen -t ed25519
+```
+
+Paste into GitHub
+
+```
+cat ~/.ssh/id_ed25519.pub
+```
