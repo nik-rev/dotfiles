@@ -8,6 +8,12 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
+  hardware.graphics.enable = true;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.latest;
+  hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.powerManagement.enable = true;
+  hardware.nvidia.open = false;
+
   system.stateVersion = "25.05"; # Did you read the comment?
 
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "thunderbolt" "nvme" "usbhid" "uas" "sd_mod" "sdhci_pci" ];
