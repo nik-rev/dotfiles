@@ -152,14 +152,11 @@
   programs.sway.enable = true;
   programs.sway.wrapperFeatures.gtk = true;
 
+  # Automatically log in, since I use full disk encryption
   services.getty = {
     autologinUser = "e";
     autologinOnce = true;
   };
-  # Auto-start sway when launching computer
-  environment.loginShellInit = ''
-      if (tty) == "/dev/tty1" { sway }
-  '';
 
   xdg.portal = {
     enable = true;
