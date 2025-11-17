@@ -1,3 +1,4 @@
+// @dots --path "~/.config/zed/settings.json"
 {
   // Disable inline blame
   "git": {

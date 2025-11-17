@@ -1,3 +1,4 @@
+// @dots --path "~/.config/zed/keymap.json"
 [
   // Change font size
   {

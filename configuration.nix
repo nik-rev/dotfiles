@@ -11,6 +11,8 @@
     cargo-expand
     firefox
 
+    vulkan-tools
+
     zed-editor
 
     nodejs
