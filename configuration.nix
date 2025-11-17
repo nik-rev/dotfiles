@@ -114,7 +114,7 @@
 
   # Sound
   services.pipewire = {
-    package = pkgs.u.pipewire;
+    package = pkgs.pipewire;
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
@@ -132,7 +132,7 @@
     packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       pkgs.nerd-fonts.jetbrains-mono
     ];
     fontconfig = {

@@ -1,30 +1,36 @@
-default_border none
+default_border pixel 1
 default_floating_border none
 focus_wrapping no
 hide_edge_borders smart
-font monospace 0.001
-bar none
+font pango:monospace 0.001
 
 bindsym Mod1+m exec ferrishot
 bindsym Mod1+i exec kitty
 bindsym Mod1+r exec firefox
+
 bindsym Mod1+t kill
-bindsym Mod1+e focus left
+
+bindsym Mod1+n focus left
 bindsym Mod1+o focus right
+
 bindsym Mod1+2 move left
 bindsym Mod1+4 move down
 bindsym Mod1+1 move up
 bindsym Mod1+8 move right
+
 bindsym Mod1+w workspace number 1
 bindsym Mod1+f workspace number 2
 bindsym Mod1+p workspace number 3
 bindsym Mod1+b workspace number 4
+
 bindsym Mod1+5 move container to workspace number 1
 bindsym Mod1+0 move container to workspace number 2
 bindsym Mod1+3 move container to workspace number 3
 bindsym Mod1+7 move container to workspace number 4
+
 bindsym Mod1+u resize grow width 10 px or 10 ppt
 bindsym Mod1+y resize shrink width 10 px or 10 ppt
+
 bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer --increase 5
 bindsym XF86AudioLowerVolume exec --no-startup-id pamixer --decrease 5
 bindsym XF86AudioMute exec --no-startup-id pamixer --toggle-mute
@@ -36,11 +42,10 @@ input type:keyboard {
     repeat_rate 50
 }
 
-client.focused #1e1e2e #cba6f7 #cba6f7 #f5e0dc #cdd6f4
-client.focused_inactive #1e1e2e #181825 #181825 #f5e0dc #cdd6f4
-client.unfocused #1e1e2e #181825 #181825 #f5e0dc #cdd6f4
-client.urgent #1e1e2e #fab387 #fab387 #6c7086 #fab387
-client.placeholder #1e1e2e #181825 #181825 #f5e0dc #cdd6f4
-
-output * bg #1e1e2e solid_color
+client.focused #000000 #000000 #000000 #000000 #cba6f7
+client.focused_inactive #000000 #000000 #000000 #000000 #000000
+client.unfocused #000000 #000000 #000000 #000000 #000000
+client.urgent #000000 #000000 #000000 #000000 #000000
+client.placeholder #000000 #000000 #000000 #000000 #000000
+output * bg #000000 solid_color
 
