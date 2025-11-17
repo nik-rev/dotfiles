@@ -7,6 +7,8 @@
 {
   environment.systemPackages = with pkgs; [
     wl-clipboard
+    nautilus
+    kdePackages.dolphin
 
     vim
     cargo-outdated
@@ -58,7 +60,6 @@
     websocat # websocket CLI
     rqbit # CLI torrent client
 
-    # --- Not written in Rust
     lazygit # lazygit (git UI)
     vial # keyboard configurator
     yt-dlp # download tracks from youtube
@@ -107,6 +108,10 @@
     carapace
   ];
 
+  xdg.mime.defaultApplications = {
+    "inode/directory" = "thunar.desktop";
+  };
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nixpkgs.config.allowUnfree = true;
@@ -149,6 +154,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  programs.thunar.enable = true;
   programs.sway.enable = true;
   programs.sway.wrapperFeatures.gtk = true;
 
