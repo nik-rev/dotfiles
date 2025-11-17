@@ -6,12 +6,12 @@
 
 {
   environment.systemPackages = with pkgs; [
+    wl-clipboard
+
     vim
     cargo-outdated
     cargo-expand
     firefox
-
-    vulkan-tools
 
     zed-editor
 
@@ -62,7 +62,6 @@
     lazygit # lazygit (git UI)
     vial # keyboard configurator
     yt-dlp # download tracks from youtube
-    git
     gh # GitHub CLI
     imagemagick # monster CLI command for working with images
     ffmpeg # monster CLI command for working with videos
@@ -151,6 +150,27 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   programs.sway.enable = true;
+  programs.sway.wrapperFeatures.gtk = true;
+
+  services.getty = {
+    autologinUser = "e";
+    autologinOnce = true;
+  };
+  # Auto-start sway when launching computer
+  environment.loginShellInit = ''
+      if (tty) == "/dev/tty1" { sway }
+  '';
+
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+    ];
+    config.common.default = "*";
+    wlr.enable = true;
+  };
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
