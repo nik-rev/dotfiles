@@ -137,6 +137,7 @@
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-color-emoji
+      jetbrains-mono
       pkgs.nerd-fonts.jetbrains-mono
     ];
     fontconfig = {
