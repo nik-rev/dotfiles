@@ -155,6 +155,10 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Be able to resolve dynamic libraries without working, this is useful
+  # for e.g. language servers downloaded by Zed to work out of the box
+  programs.nix-ld.enable = true;
+
   networking.networkmanager.enable = true;
 }
 
