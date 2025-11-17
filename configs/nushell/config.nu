@@ -117,6 +117,10 @@ def p [] {
   pwd | str replace $nu.home-path '~'
 }
 
+def nrs [] {
+  sudo nixos-rebuild switch --flake ~/dotfiles/#(cat /etc/nixos-device-name)
+}
+
 alias "c" = cargo
 alias "cat" = bat --style=plain
 alias "e" = ls+
@@ -126,6 +130,5 @@ alias "l" = lazygit
 alias "z" = zed -a
 alias "n" = hx
 alias "no" = hx .
-alias "nrs" = sudo nixos-rebuild switch
 alias "sn" = sudo -E hx
 alias "y" = yazi
