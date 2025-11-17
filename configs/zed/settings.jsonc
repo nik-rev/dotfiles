@@ -10,6 +10,7 @@
     "experimental.auto_microphone_volume": false
   },
   "auto_install_extensions": {
+    "material-icon-theme": true,
     "html": true,
     "catppuccin": true,
     "toml": true,
