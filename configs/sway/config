@@ -5,7 +5,7 @@ hide_edge_borders smart
 font pango:monospace 0.001
 
 bindsym Mod1+m exec ferrishot
-bindsym Mod1+i exec kitty
+bindsym Mod1+i exec zeditor
 bindsym Mod1+r exec firefox
 
 bindsym Mod1+t kill
