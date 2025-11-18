@@ -112,10 +112,10 @@
   {
     "context": "VimControl && !menu",
     "bindings": {
-      // // File diagnostics
-      // "g e": "diagnostics::DeployCurrentFile",
-      // // Workspace diagnostics
-      // "g E": "diagnostics::Deploy",
+      // File diagnostics
+      "g t": "diagnostics::DeployCurrentFile",
+      // Workspace diagnostics
+      "g shift-t": "diagnostics::Deploy"
     }
   },
 
@@ -174,13 +174,13 @@
 
   // Create new pane
   {
-    "context": "Workspace && !Picker && !Menu && !(vim_mode == insert && !CommitEditor)",
+    "context": "Workspace && !Picker && !menu && !Menu && !(vim_mode == insert && !CommitEditor)",
     "bindings": {
       "up g": "workspace::NewFile"
     }
   },
   {
-    "context": "Terminal && !Picker && !Menu && !(vim_mode == insert && !CommitEditor)",
+    "context": "Terminal && !Picker && !menu && !Menu && !(vim_mode == insert && !CommitEditor)",
     "bindings": {
       "up g": "workspace::NewTerminal"
     }
@@ -200,6 +200,26 @@
     }
   },
 
+  // Use "S" to add surround instead of "ys".
+  //
+  // Main reason is that "ys" is not available in Visual mode,
+  // and it would be awkward to use "ys" for adding surrounds in normal and "S" in visual
+  // so let's just make it "S" everywhere - since "S" is the same as "cc" anyways
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      // Surround operator in normal mode
+      "shift-s": "vim::PushAddSurrounds"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
+    "bindings": {
+      // Surround selection in visual mode with `S`
+      "shift-s": "vim::PushAddSurrounds"
+    }
+  },
+
   // Go to next/previous tab
   {
     "bindings": {
@@ -213,7 +233,7 @@
   // Window management commands. They use `up` because that key is not used anywhere else
   // `k` is used to go up/down since we're using vim mode everywhere
   {
-    "context": "!Picker && !Menu && !(vim_mode == insert && !CommitEditor)",
+    "context": "!Picker && !menu && !Menu && !(vim_mode == insert && !CommitEditor)",
     "bindings": {
       // Focus panel in direction
       "up h": "workspace::ActivatePaneLeft",
@@ -246,14 +266,13 @@
       "up t": "terminal_panel::ToggleFocus",
       "up c": "collab_panel::ToggleFocus",
       "up space": "debug_panel::ToggleFocus",
-      "up d": "editor::ToggleFocus",
 
       // Pin
       "up p": "pane::TogglePinTab",
 
       // Create splits
       "up v": "pane::SplitVertical",
-      "up V": "pane::SplitHorizontal",
+      "up V": "pane::SplitHorizontal"
     }
   },
 
