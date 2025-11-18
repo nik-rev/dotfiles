@@ -19,87 +19,22 @@
 
   // Manually trigger intellisense
   {
-    "context": "vim_mode == insert && !GitPanel",
+    "context": "vim_mode == insert",
     "bindings": {
-      // When deleting with ctrl-backspace, ctrl-enter to suggest new thing
-      // is useful
-      "ctrl-enter": "editor::ShowCompletions",
-      // Second way which might be more ergonomic sometime
-      "shift-enter": "editor::ShowCompletions"
+      "ctrl-x": "editor::ShowCompletions"
     }
   },
 
-  // START: Subword motions
-  //
-  // Subword motions are really useful, but regular Vim does not have them.
-  // I want to be able to hold down keys and have these motions repeated, and have them
-  // under easy-to-access keys.
-  {
-    "context": "vim_mode == normal",
-    "bindings": {
-      // Same as `!` in regular Vim. We override `!`, so we re-assign the functionality instead
-      "space !": "vim::PushShellCommand"
-    }
-  },
-  {
-    "context": "vim_mode == visual",
-    "bindings": {
-      // Same as `!` in regular Vim. We override `!`, so we re-assign the functionality instead
-      "space !": "vim::ShellCommand"
-    }
-  },
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
-      // Same as `'` in regular Vim. We override `'`, so we re-assign the functionality instead
-      "ctrl-`": ["vim::PushJump", { "line": true }]
-    }
-  },
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
-      // `^` is rendered obsolete by `_`
-      "^": "vim::NextSubwordStart",
-      "ctrl-^": ["vim::NextSubwordStart", { "ignore_punctuation": true }],
-
-      // `|` is rendered obsolete by `0`
-      "|": "vim::PreviousSubwordStart",
-      "ctrl-|": ["vim::PreviousSubwordStart", { "ignore_punctuation": true }],
-
-      // Regular `!` is replaced with `space !`
-      "!": "vim::NextSubwordEnd",
-      "ctrl-!": ["vim::NextSubwordEnd", { "ignore_punctuation": true }],
-
-      // Regular `'` is replaced with `space ``
-      "'": "vim::PreviousSubwordEnd",
-      "ctrl-'": ["vim::PreviousSubwordEnd", { "ignore_punctuation": true }]
-    }
-  },
-  // END: Subword motions
-
+  // Jump back/forward in the jump list
   {
     "bindings": {
-      "ctrl-?": "editor::ToggleSelectedDiffHunks"
-    }
-  },
-
-  // Mouse-only bindings
-  {
-    "bindings": {
-      // Only use these to make navigation in keyboard mouse mode easier
-      "ctrl-shift-tab": "vim::GoToPreviousTab",
-      "ctrl-tab": "vim::GoToTab"
-      // TODO: Add bindings for `ctrl-mousescrollup` and `ctrl-mousescrolldown`
-      // for changing the font size. Blocked: https://github.com/zed-industries/zed/issues/10647
-    }
-  },
-
-  {
-    "bindings": {
-      // Jump back/forward in history
       "shift-left": "pane::GoBack",
-      "shift-right": "pane::GoForward",
+      "shift-right": "pane::GoForward"
+    }
+  },
 
+  {
+    "bindings": {
       // Make this the action everywhere. By default,
       // this selects the previuos entry in the file explorer
       "ctrl-p": "file_finder::Toggle"
@@ -114,27 +49,6 @@
     }
   },
 
-  // // "down" key is a whole mode dedicated to multiple selections
-  // {
-  //   "context": "VimControl && !menu",
-  //   "bindings": {
-  //     // Select sub-selections
-  //     "down s": "vim::HelixSelectRegex",
-  //     // Split selection on every line
-  //     "down l": ["editor::SplitSelectionIntoLines", { "keep_selections": true }]
-  //   }
-  // },
-
-  // w/W, b/B, e/E all require 1 keystroke and 2 to ignore punctuation,
-  // but ge/gE requires 3 - let's change that. This is replacement for ge/gE
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
-      "enter": "vim::PreviousWordEnd",
-      "shift-enter": ["vim::PreviousWordEnd", { "ignore_punctuation": true }]
-    }
-  },
-
   // Add cursor below/above
   {
     "context": "VimControl && !menu",
@@ -144,48 +58,21 @@
     }
   },
 
-  // START: `S` for creating surround instead of `ys`
-  {
-    "context": "vim_mode == normal",
-    "bindings": {
-      // Surround operator in normal mode
-      "shift-s": "vim::PushAddSurrounds"
-    }
-  },
-  {
-    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
-    "bindings": {
-      // Surround selection in visual mode with `S`
-      "shift-s": "vim::PushAddSurrounds"
-    }
-  },
-  // END: `S` for creating surround instead of `ys`
-
-  // More ergonomic/intuitive keybindings
-{
-  "context": "VimControl && !menu",
-  "bindings": {
-    "shift-y": "vim::YankToEndOfLine",
-    // u/U to Undo/Redo
-    "U": "vim::Redo"
-  }
-},
-
-  // START: More ergonomic exchange keybindings
+  // "Y" to yank till end of line. Just like "C" and "D"
   {
     "context": "VimControl && !menu",
     "bindings": {
-      "down": "vim::Exchange"
+      "shift-y": "vim::YankToEndOfLine"
     }
   },
+
+  // "U" to redo, to match with "u" for redo
   {
-    "context": "vim_operator == cx",
+    "context": "VimControl && !menu",
     "bindings": {
-      "down": "vim::CurrentLine",
-      "space": "vim::ClearExchange"
+      "U": "vim::Redo"
     }
   },
-  // START: More ergonomic exchange keybindings
 
   // Multi-line t,f,T,F motions
   {
@@ -201,12 +88,14 @@
     }
   },
 
-  // Move lines
+  // Additional Vim keybindings
   {
     "context": "VimControl && !menu",
     "bindings": {
-      "shift-up": "editor::MoveLineUp",
-      "shift-down": "editor::MoveLineDown"
+      // "g r": "editor::FindAllReferences",
+
+      // Saving is so common, bind it to tab
+      "tab": "workspace::Save"
     }
   },
 
@@ -219,159 +108,105 @@
     }
   },
 
-  // Additional Vim keybindings
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
-      "g r": "editor::FindAllReferences",
-
-      // Hover
-      "space k": "editor::Hover",
-
-      // Saving is so common, bind it to tab
-      "tab": "workspace::Save"
-    }
-  },
-
-  // Comments
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
-      // Toggle comments in selection
-      "space c": "vim::ToggleComments",
-      // Toggle an entire comment block
-      "space shift-c": ["workspace::SendKeystrokes", "g c g c"]
-    }
-  },
-
-  // START: Use "left"/"right" instead of "["/"]"
-  {
-    "context": "vim_mode == normal",
-    "bindings": {
-      "right d": "editor::GoToDiagnostic",
-      "left d": "editor::GoToPreviousDiagnostic",
-      "right c": "editor::GoToHunk",
-      "left c": "editor::GoToPreviousHunk",
-
-      // Go to next/previous error
-      "right s": ["editor::GoToDiagnostic", { "severity": "error" }],
-      "left s": ["editor::GoToPreviousDiagnostic", { "severity": "error" }]
-    }
-  },
-  // Forward/backward motions with `left`/`right` instead of `[`/`]`
-  {
-    "context": "vim_mode == normal || vim_mode == visual || vim_mode == operator",
-    "bindings": {
-      "right right": "vim::NextSectionStart",
-      "right left": "vim::NextSectionEnd",
-      "left left": "vim::PreviousSectionStart",
-      "left right": "vim::PreviousSectionEnd",
-
-      "right m": "vim::NextMethodStart",
-      "right shift-m": "vim::NextMethodEnd",
-      "left m": "vim::PreviousMethodStart",
-      "left shift-m": "vim::PreviousMethodEnd",
-      "left /": "vim::PreviousComment",
-      "right /": "vim::NextComment",
-      "left -": "vim::PreviousLesserIndent",
-      "left +": "vim::PreviousGreaterIndent",
-      "left =": "vim::PreviousSameIndent",
-      "right -": "vim::NextLesserIndent",
-      "right +": "vim::NextGreaterIndent",
-      "right =": "vim::NextSameIndent",
-
-      "right space": "vim::InsertEmptyLineBelow",
-      "left space": "vim::InsertEmptyLineAbove",
-
-      "left f": "workspace::FollowNextCollaborator",
-      "right f": "workspace::FollowNextCollaborator",
-      "right }": ["vim::UnmatchedForward", { "char": "}" }],
-      "left {": ["vim::UnmatchedBackward", { "char": "{" }],
-      "right )": ["vim::UnmatchedForward", { "char": ")" }],
-      "left (": ["vim::UnmatchedBackward", { "char": "(" }],
-      "left r": "vim::GoToPreviousReference",
-      "right r": "vim::GoToNextReference"
-    }
-  },
-  // END: Use "left"/"right" instead of "["/"]"
-
-  // START: Fix disorienting ctrl-d/ctrl-u
-  {
-    "context": "ProjectPanel && not_editing",
-    "bindings": {
-      "ctrl-u": [
-        "action::Sequence",
-        ["project_panel::ScrollUp", "project_panel::ScrollCursorCenter"]
-      ],
-      "ctrl-d": [
-        "action::Sequence",
-        ["project_panel::ScrollDown", "project_panel::ScrollCursorCenter"]
-      ]
-    }
-  },
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
-      "ctrl-u": [
-        "action::Sequence",
-        ["vim::ScrollUp", "editor::ScrollCursorCenter"]
-      ],
-      "ctrl-d": [
-        "action::Sequence",
-        ["vim::ScrollDown", "editor::ScrollCursorCenter"]
-      ],
-      "ctrl-f": [
-        "action::Sequence",
-        ["vim::PageDown", "editor::ScrollCursorCenter"]
-      ],
-      "ctrl-b": [
-        "action::Sequence",
-        ["vim::PageUp", "editor::ScrollCursorCenter"]
-      ]
-    }
-  },
-  // END: Fix disorienting ctrl-d/ctrl-u
-
-  // START: r = replace with yanked
-  //
-  // By default, Vim's "r" replaces a single character, so "r x" replaces the character with "x" and keeps normal mode
-  // Same functionality can be achieved with "s x escape", so we save just a single keystroke.
-  {
-    "context": "VimControl && !menu && !(vim_operator == a || vim_operator == i || vim_operator == cs)",
-    "bindings": {
-      "r": "vim::PushReplaceWithRegister"
-    }
-  },
-  {
-    "context": "vim_mode == visual",
-    "bindings": {
-      "r": ["vim::Paste", { "preserve_clipboard": true }],
-      // "R" in visual mode is idential to "s"
-      // We don't need "r" functionality in normal mode, since "s escape" does the same thing.
-      // However, in visual mode "r" replaces the whole selection with a single character.
-      // so we are safe to instead use "R" for this purpose
-      "shift-r": "vim::PushReplace"
-    }
-  },
-  {
-    "context": "vim_operator == gR",
-    "bindings": {
-      // so "rr" will replace the current line
-      "r": "vim::CurrentLine"
-    }
-  },
-  // END: r = replace with yanked
-
   // Diagnostics pane. "goto errors"
   {
     "context": "VimControl && !menu",
     "bindings": {
-      // File diagnostics
-      "g e": "diagnostics::DeployCurrentFile",
-      // Workspace diagnostics
-      "g E": "diagnostics::Deploy",
+      // // File diagnostics
+      // "g e": "diagnostics::DeployCurrentFile",
+      // // Workspace diagnostics
+      // "g E": "diagnostics::Deploy",
+    }
+  },
+
+  // Multibuffer
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
       // Jump to file
       "g o": "editor::OpenExcerpts"
+    }
+  },
+
+  // Subword text-object
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+    "bindings": {
+      // Subword allows operating on parts of snake_case or camelCase
+      "n": "vim::Subword",
+      // Subword with the separator included
+      "shift-n": ["vim::Subword", { "ignore_punctuation": true }]
+    }
+  },
+
+  // File explorer
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      // end with / to create directory
+      "a": "project_panel::NewFile",
+      "r": "project_panel::Rename",
+      "y": "project_panel::Copy",
+      "x": "project_panel::Cut",
+      // since we can recover from trash, let's not ask for confirmation
+      "d": ["project_panel::Trash", { "skip_prompt": true }],
+      "shift-d": "project_panel::RemoveFromProject",
+      // delete, without option to restore
+      "ctrl-shift-d": "project_panel::Delete",
+      "p": "project_panel::Paste",
+      ".": "project_panel::ToggleHideGitIgnore",
+
+      "t": "workspace::OpenInTerminal",
+
+      // To match "up shift-v"
+      "shift-v": "project_panel::OpenSplitHorizontal",
+
+      // Preview file
+      "s": "project_panel::Open",
+
+      // use "left" and "right" instead of "[" and "]"
+      "right c": "project_panel::SelectNextGitEntry",
+      "left c": "project_panel::SelectPrevGitEntry",
+      "right d": "project_panel::SelectNextDiagnostic",
+      "left d": "project_panel::SelectPrevDiagnostic"
+    }
+  },
+
+  // Create new pane
+  {
+    "context": "Workspace && !Picker && !Menu && !(vim_mode == insert && !CommitEditor)",
+    "bindings": {
+      "up g": "workspace::NewFile"
+    }
+  },
+  {
+    "context": "Terminal && !Picker && !Menu && !(vim_mode == insert && !CommitEditor)",
+    "bindings": {
+      "up g": "workspace::NewTerminal"
+    }
+  },
+
+  // Resize panes. These use `alt`/`ctrl` for auto-repeat
+  {
+    "bindings": {
+      // Increase width
+      "shift-ctrl-l": "vim::ResizePaneRight",
+      // Decrease width
+      "shift-ctrl-h": "vim::ResizePaneLeft",
+      // Decrease height
+      "shift-ctrl-j": "vim::ResizePaneDown",
+      // Increase height
+      "shift-ctrl-k": "vim::ResizePaneUp"
+    }
+  },
+
+  // Go to next/previous tab
+  {
+    "bindings": {
+      "ctrl-t": "vim::GoToPreviousTab",
+      "ctrl-n": "vim::GoToTab",
+      "ctrl-shift-t": ["pane::ActivateItem", 0],
+      "ctrl-shift-n": "pane::ActivateLastItem"
     }
   },
 
@@ -410,8 +245,8 @@
       "up n": "git_panel::ToggleFocus",
       "up t": "terminal_panel::ToggleFocus",
       "up c": "collab_panel::ToggleFocus",
-      "up d": "debug_panel::ToggleFocus",
-      "up space": "editor::ToggleFocus",
+      "up space": "debug_panel::ToggleFocus",
+      "up d": "editor::ToggleFocus",
 
       // Pin
       "up p": "pane::TogglePinTab",
@@ -419,103 +254,59 @@
       // Create splits
       "up v": "pane::SplitVertical",
       "up V": "pane::SplitHorizontal",
-
-      // Zen mode
-      "up z": "workspace::ToggleCenteredLayout"
     }
   },
 
-  // START: Create new pane
+  // Use "left"/"right" instead of "["/"]"
   {
-    "context": "Workspace && !Picker && !Menu && !(vim_mode == insert && !CommitEditor)",
+    "context": "vim_mode == normal",
     "bindings": {
-      "up g": "workspace::NewFile"
-    }
-  },
-  {
-    "context": "Terminal && !Picker && !Menu && !(vim_mode == insert && !CommitEditor)",
-    "bindings": {
-      "up g": "workspace::NewTerminal"
-    }
-  },
-  // END: Create new pane
+      "right d": "editor::GoToDiagnostic",
+      "left d": "editor::GoToPreviousDiagnostic",
+      "right c": "editor::GoToHunk",
+      "left c": "editor::GoToPreviousHunk",
 
-  // Resize panes. These use `alt`/`ctrl` for auto-repeat
-  {
-    "bindings": {
-      // Increase width
-      "shift-ctrl-l": "vim::ResizePaneRight",
-      // Decrease width
-      "shift-ctrl-h": "vim::ResizePaneLeft",
-      // Decrease height
-      "shift-ctrl-j": "vim::ResizePaneDown",
-      // Increase height
-      "shift-ctrl-k": "vim::ResizePaneUp"
+      // Go to next/previous error
+      "right s": ["editor::GoToDiagnostic", { "severity": "error" }],
+      "left s": ["editor::GoToPreviousDiagnostic", { "severity": "error" }]
     }
   },
-
-  // Go to next/previous tab. Uses auto-repeatable shortcuts
   {
+    "context": "vim_mode == normal || vim_mode == visual || vim_mode == operator",
     "bindings": {
-      "ctrl-t": "vim::GoToPreviousTab",
-      "ctrl-n": "vim::GoToTab",
-      "ctrl-shift-t": "pane::ActivateLastItem",
-      "ctrl-shift-n": ["pane::ActivateItem", 0]
-    }
-  },
+      "right right": "vim::NextSectionStart",
+      "right left": "vim::NextSectionEnd",
+      "left left": "vim::PreviousSectionStart",
+      "left right": "vim::PreviousSectionEnd",
 
-  // Case mode: &. Commands for changing case of text
-  {
-    "context": "VimControl && !Menu",
-    "bindings": {
-      // snake_case
-      "& s": "editor::ConvertToSnakeCase",
-      // kebab-case
-      "& k": "editor::ConvertToKebabCase",
-      // lowercase
-      "& l": "editor::ConvertToLowerCase",
-      // UPPERCASE
-      "& u": "editor::ConvertToUpperCase",
-      // PascalCase
-      "& p": "editor::ConvertToUpperCamelCase",
-      // Sentence case
-      "& S": "editor::ConvertToSentenceCase",
-      // Title Case
-      "& T": "editor::ConvertToTitleCase"
-      // NOTE: Opposite case is accessed via "&"
-    }
-  },
+      "right m": "vim::NextMethodStart",
+      "right shift-m": "vim::NextMethodEnd",
+      "left m": "vim::PreviousMethodStart",
+      "left shift-m": "vim::PreviousMethodEnd",
 
-  // Extra text objects
-  {
-    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
-    "bindings": {
-      // r = []
-      // b = ()
-      // s = {}
-      "s": "vim::CurlyBrackets",
-      // Subword allows operating on parts of snake_case or camelCase
-      "n": "vim::Subword",
-      // Subword with the separator included
-      "shift-n": ["vim::Subword", { "ignore_punctuation": true }]
-    }
-  },
+      "left /": "vim::PreviousComment",
+      "right /": "vim::NextComment",
 
-  // netrw extensions
-  {
-    "context": "ProjectPanel && not_editing",
-    "bindings": {
-      "d": "project_panel::RemoveFromProject"
-    }
-  },
+      "left -": "vim::PreviousLesserIndent",
+      "left +": "vim::PreviousGreaterIndent",
+      "left =": "vim::PreviousSameIndent",
+      "right -": "vim::NextLesserIndent",
+      "right +": "vim::NextGreaterIndent",
+      "right =": "vim::NextSameIndent",
 
-  // Git
-  {
-    "context": "VimControl && !Menu",
-    "bindings": {
-      "space g": "git::Blame",
-      "space G": "editor::OpenGitBlameCommit",
-      "epace L": "editor::OpenPermalinkToLine"
+      "right space": "vim::InsertEmptyLineBelow",
+      "left space": "vim::InsertEmptyLineAbove",
+
+      "left f": "workspace::FollowNextCollaborator",
+      "right f": "workspace::FollowNextCollaborator",
+
+      "right }": ["vim::UnmatchedForward", { "char": "}" }],
+      "left {": ["vim::UnmatchedBackward", { "char": "{" }],
+      "right )": ["vim::UnmatchedForward", { "char": ")" }],
+      "left (": ["vim::UnmatchedBackward", { "char": "(" }],
+
+      "left r": "vim::GoToPreviousReference",
+      "right r": "vim::GoToNextReference"
     }
   }
 
@@ -526,6 +317,8 @@
   // - `[`, `shift-[`, `]` and `shift-]` are all free - because we use `left` and `right` for that purpose instead
   // - `\` and `shift-\` does nothing
   // - `shift-tab` does nothing
+  // - "^" is rendered obsolete by "_"
+  // - "|" is rendered obsolete by "0"
   //
   // - `shift-m`, `shift-l`, `shift-h`, jump to the middle, bottom and top of the screen. But this isn't used that much
 ]
