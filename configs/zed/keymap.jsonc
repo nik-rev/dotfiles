@@ -1,90 +1,125 @@
 // @dots --path "~/.config/zed/keymap.json"
 [
-  // Change font size
   {
     "bindings": {
+      // Change font size
       "ctrl-+": ["zed::IncreaseBufferFontSize", { "persist": false }],
       "ctrl-=": ["zed::ResetBufferFontSize", { "persist": false }],
-      "ctrl--": ["zed::DecreaseBufferFontSize", { "persist": false }]
-    }
-  },
+      "ctrl--": ["zed::DecreaseBufferFontSize", { "persist": false }],
 
-  // In the terminal, this activates commands search - disable so that it won't conflict
-  {
-    "context": "Terminal",
-    "bindings": {
-      "ctrl-r": null
-    }
-  },
+      // In the terminal, this activates commands search - disable so that it won't conflict
+      "ctrl-r": null,
 
-  // Manually trigger intellisense
-  {
-    "context": "vim_mode == insert",
-    "bindings": {
-      "ctrl-x": "editor::ShowCompletions"
-    }
-  },
-
-  // Jump back/forward in the jump list
-  {
-    "bindings": {
+      // Jump back/forward in the jump list
       "shift-left": "pane::GoBack",
-      "shift-right": "pane::GoForward"
-    }
-  },
+      "shift-right": "pane::GoForward",
 
-  {
-    "bindings": {
       // Make this the action everywhere. By default,
-      // this selects the previuos entry in the file explorer
-      "ctrl-p": "file_finder::Toggle"
-    }
-  },
+      // this selects the previous entry in the file explorer
+      "ctrl-p": "file_finder::Toggle",
 
-  // Copy file path
-  {
-    "bindings": {
       "ctrl-y": "workspace::CopyRelativePath",
-      "ctrl-shift-y": "workspace::CopyPath"
-    }
-  },
+      "ctrl-shift-y": "workspace::CopyPath",
 
-  // Add cursor below/above
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
-      "alt-right": "vim::HelixDuplicateBelow",
-      "alt-left": "vim::HelixDuplicateAbove"
-    }
-  },
+      // Resize panes. These use `alt`/`ctrl` for auto-repeat
+      "shift-ctrl-l": "vim::ResizePaneRight",
+      "shift-ctrl-h": "vim::ResizePaneLeft",
+      "shift-ctrl-j": "vim::ResizePaneDown",
+      "shift-ctrl-k": "vim::ResizePaneUp",
 
-  // "Y" to yank till end of line. Just like "C" and "D"
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
-      "shift-y": "vim::YankToEndOfLine"
-    }
-  },
+      // Go to next/previous tab
+      "ctrl-t": "vim::GoToPreviousTab",
+      "ctrl-n": "vim::GoToTab",
+      "ctrl-shift-t": ["pane::ActivateItem", 0],
+      "ctrl-shift-n": "pane::ActivateLastItem",
 
-  // "U" to redo, to match with "u" for redo
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
-      "U": "vim::Redo"
-    }
-  },
+      // "ctrl-w" should do nothing by itself, as by default Zed binds it to close the
+      // active window: this frequently causes current window to be closed accidentally due
+      // to key timeout
+      "ctrl-w": null,
 
-  // Multi-line t,f,T,F motions
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
-      "f": ["vim::PushFindForward", { "before": false, "multiline": true }],
-      "t": ["vim::PushFindForward", { "before": true, "multiline": true }],
-      "shift-f": [
-        "vim::PushFindBackward",
-        { "after": false, "multiline": true }
-      ],
-      "shift-t": ["vim::PushFindBackward", { "after": true, "multiline": true }]
+      // "ctrl" + double-tap "w" is so much easier to type than "ctrl" + "q"
+      "ctrl-w w": "pane::CloseActiveItem",
+      "ctrl-w ctrl-w": "pane::CloseActiveItem",
+
+      // Pin
+      "ctrl-w p": "pane::TogglePinTab",
+      "ctrl-w ctrl-p": "pane::TogglePinTab",
+
+      // Close
+      "ctrl-w up": "pane::CloseOtherItems",
+      "ctrl-w ctrl-up": "pane::CloseOtherItems",
+      "ctrl-w left": "pane::CloseItemsToTheLeft",
+      "ctrl-w ctrl-left": "pane::CloseItemsToTheLeft",
+      "ctrl-w right": "pane::CloseItemsToTheRight",
+      "ctrl-w ctrl-right": "pane::CloseItemsToTheRight",
+      "ctrl-w f": "workspace::CloseAllDocks",
+      "ctrl-w ctrl-f": "workspace::CloseAllDocks",
+
+      // Toggle focus
+      "ctrl-w t": "terminal_panel::ToggleFocus",
+      "ctrl-w ctrl-t": "terminal_panel::ToggleFocus",
+      "ctrl-w e": "project_panel::ToggleFocus",
+      "ctrl-w ctrl-e": "project_panel::ToggleFocus",
+      "ctrl-w m": "git_panel::ToggleFocus",
+      "ctrl-w ctrl-m": "git_panel::ToggleFocus",
+      "ctrl-w shift-f": "collab_panel::ToggleFocus",
+      "ctrl-w ctrl-shift-f": "collab_panel::ToggleFocus",
+
+      // Toggle dock
+      "ctrl-w u": "workspace::ToggleBottomDock",
+      "ctrl-w ctrl-u": "workspace::ToggleBottomDock",
+      "ctrl-w y": "workspace::ToggleLeftDock",
+      "ctrl-w ctrl-y": "workspace::ToggleLeftDock",
+
+      // New terminal
+      "ctrl-w i": "workspace::NewTerminal",
+      "ctrl-w ctrl-i": "workspace::NewTerminal",
+      "ctrl-w shift-i": "workspace::NewCenterTerminal",
+      "ctrl-w ctrl-shift-i": "workspace::NewCenterTerminal",
+
+      // Window related commands (ctrl-w) that are the same as default Vim,
+      // but make them available everywhere (for example in the terminal)
+      "ctrl-w h": "workspace::ActivatePaneLeft",
+      "ctrl-w ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-w l": "workspace::ActivatePaneRight",
+      "ctrl-w ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-w k": "workspace::ActivatePaneUp",
+      "ctrl-w ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-w j": "workspace::ActivatePaneDown",
+      "ctrl-w ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-w shift-left": "workspace::SwapPaneLeft",
+      "ctrl-w ctrl-shift-left": "workspace::SwapPaneLeft",
+      "ctrl-w shift-right": "workspace::SwapPaneRight",
+      "ctrl-w ctrl-shift-right": "workspace::SwapPaneRight",
+      "ctrl-w shift-up": "workspace::SwapPaneUp",
+      "ctrl-w ctrl-shift-up": "workspace::SwapPaneUp",
+      "ctrl-w shift-down": "workspace::SwapPaneDown",
+      "ctrl-w ctrl-shift-down": "workspace::SwapPaneDown",
+      "ctrl-w shift-h": "workspace::MovePaneLeft",
+      "ctrl-w ctrl-shift-h": "workspace::MovePaneLeft",
+      "ctrl-w shift-l": "workspace::MovePaneRight",
+      "ctrl-w ctrl-shift-l": "workspace::MovePaneRight",
+      "ctrl-w shift-k": "workspace::MovePaneUp",
+      "ctrl-w ctrl-shift-k": "workspace::MovePaneUp",
+      "ctrl-w shift-j": "workspace::MovePaneDown",
+      "ctrl-w ctrl-shift-j": "workspace::MovePaneDown",
+      "ctrl-w =": "vim::ResetPaneSizes",
+      "ctrl-w ctrl-=": "vim::ResetPaneSizes",
+      "ctrl-w v": "pane::SplitVertical",
+      "ctrl-w ctrl-v": "pane::SplitVertical",
+      "ctrl-w s": "pane::SplitHorizontal",
+      "ctrl-w ctrl-s": "pane::SplitHorizontal",
+      "ctrl-w a": "pane::CloseAllItems",
+      "ctrl-w ctrl-a": "pane::CloseAllItems",
+      "ctrl-w o": "workspace::CloseInactiveTabsAndPanes",
+      "ctrl-w ctrl-o": "workspace::CloseInactiveTabsAndPanes",
+      "ctrl-w n": "workspace::NewFileSplitHorizontal",
+      "ctrl-w ctrl-n": "workspace::NewFileSplitHorizontal",
+
+      // New file
+      "ctrl-w shift-n": "workspace::NewFileSplitVertical",
+      "ctrl-w shift-ctrl-n": "workspace::NewFileSplitVertical"
     }
   },
 
@@ -92,39 +127,68 @@
   {
     "context": "VimControl && !menu",
     "bindings": {
-      // "g r": "editor::FindAllReferences",
+      "g r": "editor::FindAllReferences",
 
       // Saving is so common, bind it to tab
-      "tab": "workspace::Save"
-    }
-  },
+      "tab": "workspace::Save",
 
-  // Incrementally increase/decrease tree-sitter selection
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
+      // Incrementally increase/decrease tree-sitter selection
       "alt-down": "vim::SelectSmallerSyntaxNode",
-      "alt-up": "vim::SelectLargerSyntaxNode"
-    }
-  },
+      "alt-up": "vim::SelectLargerSyntaxNode",
 
-  // Diagnostics pane. "goto errors"
-  {
-    "context": "VimControl && !menu",
-    "bindings": {
       // File diagnostics
       "g t": "diagnostics::DeployCurrentFile",
       // Workspace diagnostics
-      "g shift-t": "diagnostics::Deploy"
+      "g shift-t": "diagnostics::Deploy",
+
+      // Jump to file in multibuffers
+      "g o": "editor::OpenExcerpts",
+
+      // Commands under "g" mode prefixed with "ctrl-w" will open
+      // in a split
+      "ctrl-w g d": "editor::GoToDefinitionSplit",
+      "ctrl-w g shift-d": "editor::GoToDeclarationSplit",
+      "ctrl-w g y": "editor::GoToTypeDefinitionSplit",
+      "ctrl-w g shift-i": "editor::GoToImplementationSplit",
+      "ctrl-w g o": "editor::OpenExcerptsSplit",
+
+      // Multi-line t,f,T,F motions
+      "f": ["vim::PushFindForward", { "before": false, "multiline": true }],
+      "t": ["vim::PushFindForward", { "before": true, "multiline": true }],
+      "shift-f": [
+        "vim::PushFindBackward",
+        { "after": false, "multiline": true }
+      ],
+      "shift-t": ["vim::PushFindBackward", { "after": true, "multiline": true }],
+
+      // "U" to redo, to match with "u" for redo
+      "U": "vim::Redo",
+
+      "shift-y": "vim::YankToEndOfLine",
+
+      // Add cursor below/above
+      "alt-right": "vim::HelixDuplicateBelow",
+      "alt-left": "vim::HelixDuplicateAbove"
     }
   },
 
-  // Multibuffer
+  // Use "S" to add surround instead of "ys".
+  //
+  // Main reason is that "ys" is not available in Visual mode,
+  // and it would be awkward to use "ys" for adding surrounds in normal and "S" in visual
+  // so let's just make it "S" everywhere - since "S" is the same as "cc" anyways
   {
-    "context": "VimControl && !menu",
+    "context": "vim_mode == normal",
     "bindings": {
-      // Jump to file
-      "g o": "editor::OpenExcerpts"
+      // Surround operator in normal mode
+      "shift-s": "vim::PushAddSurrounds"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
+    "bindings": {
+      // Surround selection in visual mode with `S`
+      "shift-s": "vim::PushAddSurrounds"
     }
   },
 
@@ -136,6 +200,23 @@
       "n": "vim::Subword",
       // Subword with the separator included
       "shift-n": ["vim::Subword", { "ignore_punctuation": true }]
+    }
+  },
+
+  // Go to next/previous error
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "] s": ["editor::GoToDiagnostic", { "severity": "error" }],
+      "[ s": ["editor::GoToPreviousDiagnostic", { "severity": "error" }]
+    }
+  },
+
+  // Manually trigger intellisense
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "ctrl-x": "editor::ShowCompletions"
     }
   },
 
@@ -170,174 +251,5 @@
       "right d": "project_panel::SelectNextDiagnostic",
       "left d": "project_panel::SelectPrevDiagnostic"
     }
-  },
-
-  // Create new pane
-  {
-    "context": "Workspace && !Picker && !menu && !Menu && !(vim_mode == insert && !CommitEditor)",
-    "bindings": {
-      "up g": "workspace::NewFile"
-    }
-  },
-  {
-    "context": "Terminal && !Picker && !menu && !Menu && !(vim_mode == insert && !CommitEditor)",
-    "bindings": {
-      "up g": "workspace::NewTerminal"
-    }
-  },
-
-  // Resize panes. These use `alt`/`ctrl` for auto-repeat
-  {
-    "bindings": {
-      // Increase width
-      "shift-ctrl-l": "vim::ResizePaneRight",
-      // Decrease width
-      "shift-ctrl-h": "vim::ResizePaneLeft",
-      // Decrease height
-      "shift-ctrl-j": "vim::ResizePaneDown",
-      // Increase height
-      "shift-ctrl-k": "vim::ResizePaneUp"
-    }
-  },
-
-  // Use "S" to add surround instead of "ys".
-  //
-  // Main reason is that "ys" is not available in Visual mode,
-  // and it would be awkward to use "ys" for adding surrounds in normal and "S" in visual
-  // so let's just make it "S" everywhere - since "S" is the same as "cc" anyways
-  {
-    "context": "vim_mode == normal",
-    "bindings": {
-      // Surround operator in normal mode
-      "shift-s": "vim::PushAddSurrounds"
-    }
-  },
-  {
-    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
-    "bindings": {
-      // Surround selection in visual mode with `S`
-      "shift-s": "vim::PushAddSurrounds"
-    }
-  },
-
-  // Go to next/previous tab
-  {
-    "bindings": {
-      "ctrl-t": "vim::GoToPreviousTab",
-      "ctrl-n": "vim::GoToTab",
-      "ctrl-shift-t": ["pane::ActivateItem", 0],
-      "ctrl-shift-n": "pane::ActivateLastItem"
-    }
-  },
-
-  // Window management commands. They use `up` because that key is not used anywhere else
-  // `k` is used to go up/down since we're using vim mode everywhere
-  {
-    "context": "!Picker && !menu && !Menu && !(vim_mode == insert && !CommitEditor)",
-    "bindings": {
-      // Focus panel in direction
-      "up h": "workspace::ActivatePaneLeft",
-      "up j": "workspace::ActivatePaneDown",
-      "up k": "workspace::ActivatePaneUp",
-      "up l": "workspace::ActivatePaneRight",
-
-      // Move panel in direction
-      "up shift-h": "workspace::MovePaneLeft",
-      "up shift-j": "workspace::MovePaneDown",
-      "up shift-k": "workspace::MovePaneUp",
-      "up shift-l": "workspace::MovePaneRight",
-
-      // Close tabs
-      "up down": "pane::CloseAllItems",
-      "up up": "pane::CloseOtherItems",
-      "up left": "pane::CloseItemsToTheLeft",
-      "up right": "pane::CloseItemsToTheRight",
-      "up enter": "workspace::CloseInactiveTabsAndPanes",
-      "up s": "pane::CloseActiveItem",
-      "up escape": "workspace::CloseAllDocks",
-
-      // Toggle docks
-      "up r": "workspace::ToggleBottomDock",
-      "up a": "workspace::ToggleLeftDock",
-
-      // Toggle panes
-      "up e": "project_panel::ToggleFocus",
-      "up n": "git_panel::ToggleFocus",
-      "up t": "terminal_panel::ToggleFocus",
-      "up c": "collab_panel::ToggleFocus",
-      "up space": "debug_panel::ToggleFocus",
-
-      // Pin
-      "up p": "pane::TogglePinTab",
-
-      // Create splits
-      "up v": "pane::SplitVertical",
-      "up V": "pane::SplitHorizontal"
-    }
-  },
-
-  // Use "left"/"right" instead of "["/"]"
-  {
-    "context": "vim_mode == normal",
-    "bindings": {
-      "right d": "editor::GoToDiagnostic",
-      "left d": "editor::GoToPreviousDiagnostic",
-      "right c": "editor::GoToHunk",
-      "left c": "editor::GoToPreviousHunk",
-
-      // Go to next/previous error
-      "right s": ["editor::GoToDiagnostic", { "severity": "error" }],
-      "left s": ["editor::GoToPreviousDiagnostic", { "severity": "error" }]
-    }
-  },
-  {
-    "context": "vim_mode == normal || vim_mode == visual || vim_mode == operator",
-    "bindings": {
-      "right right": "vim::NextSectionStart",
-      "right left": "vim::NextSectionEnd",
-      "left left": "vim::PreviousSectionStart",
-      "left right": "vim::PreviousSectionEnd",
-
-      "right m": "vim::NextMethodStart",
-      "right shift-m": "vim::NextMethodEnd",
-      "left m": "vim::PreviousMethodStart",
-      "left shift-m": "vim::PreviousMethodEnd",
-
-      "left /": "vim::PreviousComment",
-      "right /": "vim::NextComment",
-
-      "left -": "vim::PreviousLesserIndent",
-      "left +": "vim::PreviousGreaterIndent",
-      "left =": "vim::PreviousSameIndent",
-      "right -": "vim::NextLesserIndent",
-      "right +": "vim::NextGreaterIndent",
-      "right =": "vim::NextSameIndent",
-
-      "right space": "vim::InsertEmptyLineBelow",
-      "left space": "vim::InsertEmptyLineAbove",
-
-      "left f": "workspace::FollowNextCollaborator",
-      "right f": "workspace::FollowNextCollaborator",
-
-      "right }": ["vim::UnmatchedForward", { "char": "}" }],
-      "left {": ["vim::UnmatchedBackward", { "char": "{" }],
-      "right )": ["vim::UnmatchedForward", { "char": ")" }],
-      "left (": ["vim::UnmatchedBackward", { "char": "(" }],
-
-      "left r": "vim::GoToPreviousReference",
-      "right r": "vim::GoToNextReference"
-    }
   }
-
-  // Free Vim Keybinds:
-  // - `shift-r`, which does "overtype mode" in normal mode, which I've never used. Worth to replace with something more useful
-  // - `shift-k`, which does "hover" but we have that bound to "space k" instead
-  // - `shift-z`, which is a minor mode with keys we never use anyway
-  // - `[`, `shift-[`, `]` and `shift-]` are all free - because we use `left` and `right` for that purpose instead
-  // - `\` and `shift-\` does nothing
-  // - `shift-tab` does nothing
-  // - "^" is rendered obsolete by "_"
-  // - "|" is rendered obsolete by "0"
-  //
-  // - `shift-m`, `shift-l`, `shift-h`, jump to the middle, bottom and top of the screen. But this isn't used that much
 ]

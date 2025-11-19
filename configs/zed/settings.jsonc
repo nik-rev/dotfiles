@@ -7,6 +7,7 @@
     }
   },
   "audio": {
+    "experimental.rodio_audio": true,
     "experimental.auto_microphone_volume": false
   },
   "auto_install_extensions": {
