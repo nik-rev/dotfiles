@@ -127,7 +127,7 @@ alias "e" = ls+
 alias "g" = git
 alias "i" = t "-"
 alias "l" = lazygit
-alias "z" = zed -a
+alias "z" = ^(if $nu.os-info.family == "windows" { "zed" } else { "zeditor" }) -a
 alias "n" = hx
 alias "no" = hx .
 alias "sn" = sudo -E hx
