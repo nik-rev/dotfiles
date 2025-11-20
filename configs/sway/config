@@ -38,7 +38,9 @@ bindsym XF86MonBrightnessUp = "exec --no-startup-id lumina set +5%
 bindsym XF86MonBrightnessDown = "exec --no-startup-id lumina set -5%
 
 input type:keyboard {
+    # Once a key is held for 200 seconds, it will begin to repeat
     repeat_delay 200
+    # When a key is repeated, repeat it 50 times a second - every 20ms
     repeat_rate 50
 }
 
@@ -48,4 +50,3 @@ client.unfocused #000000 #000000 #000000 #000000 #000000
 client.urgent #000000 #000000 #000000 #000000 #000000
 client.placeholder #000000 #000000 #000000 #000000 #000000
 output * bg #000000 solid_color
-
