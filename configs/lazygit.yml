@@ -1,4 +1,8 @@
 # @dots --path "{config}/lazygit/config.yml"
+#
+# Locations:
+#
+# - Linux: ~/.config/
 git:
   paging:
     colorArg: always
@@ -6,7 +10,7 @@ git:
 gui:
   animateExplosion: false
   commitHashLength: 0
-  nerdFontsVersion: '3'
+  nerdFontsVersion: "3"
   quitOnTopLevelReturn: true
   showBottomLine: false
   showCommandLog: false
@@ -16,25 +20,25 @@ gui:
   statusPanelView: allBranchesLog
   theme:
     activeBorderColor:
-    - '#cba6f7'
-    - bold
+      - "#cba6f7"
+      - bold
     authorColors:
-      '*': '#b4befe'
+      "*": "#b4befe"
     cherryPickedCommitBgColor:
-    - '#45475a'
+      - "#45475a"
     cherryPickedCommitFgColor:
-    - '#cba6f7'
+      - "#cba6f7"
     defaultFgColor:
-    - '#cdd6f4'
+      - "#cdd6f4"
     inactiveBorderColor:
-    - '#a6adc8'
+      - "#a6adc8"
     optionsTextColor:
-    - '#89b4fa'
+      - "#89b4fa"
     searchingActiveBorderColor:
-    - '#f9e2af'
+      - "#f9e2af"
     selectedLineBgColor:
-    - '#313244'
+      - "#313244"
     unstagedChangesColor:
-    - '#f38ba8'
+      - "#f38ba8"
 update:
   method: never

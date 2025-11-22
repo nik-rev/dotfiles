@@ -2,6 +2,11 @@
 input = "configs"
 output = "{config_dir}"
 
+[dir."configs/nushell"]
+windows = "~/Library/Application Support/nushell"
+linux = "~/.config/nushell"
+windows = "~/AppData/Roaming/nushell"
+
 [[link]]
 url = "https://raw.githubusercontent.com/catppuccin/nushell/05987d258cb765a881ee1f2f2b65276c8b379658/themes/catppuccin_mocha.nu"
 path = "configs/nushell/catppuccin.nu"

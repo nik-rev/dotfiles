@@ -1,4 +1,6 @@
-# @dots --path "{home}/.glzr/glazewm/config.yaml"
+# Locations:
+#
+# - Windows: ~/.glzr/glazewm/config.yaml
 general:
   startup_commands: []
   focus_follows_cursor: false

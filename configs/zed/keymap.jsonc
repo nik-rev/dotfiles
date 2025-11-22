@@ -1,4 +1,7 @@
-// @dots --path "~/.config/zed/keymap.json"
+// Locations:
+//
+// - Unix: ~/.config/zed/keymap.json
+// - Windows: ~/AppData/Roaming/Zed/keymap.json
 [
   {
     "bindings": {

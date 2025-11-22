@@ -1,4 +1,7 @@
-// @dots --path "~/.config/zed/settings.json"
+// Locations:
+//
+// - Unix: ~/.config/zed/settings.json
+// - Windows: ~/AppData/Roaming/Zed/settings.json
 {
   // Disable inline blame
   "git": {
