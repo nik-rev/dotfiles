@@ -1,0 +1,23 @@
+[unstable]
+# Allows using the `cranelift` codegen backend, which provides much faster
+# compilation speeds in development mode
+# 
+# `rustc_codegen_cranelift` repo: https://github.com/rust-lang/rustc_codegen_cranelift
+codegen-backend = true
+
+[target.x86_64-pc-windows-msvc]
+# Faster linker on Windows than the default `link.exe`
+linker = "rust-lld.exe"
+
+[profile.dev]
+# Use `cranelift` backend instead of the `llvm` while developing, for faster compile speeds
+codegen-backend = "cranelift"
+# Don't include debug information. This is especially valuable for those who don't use debuggers,
+# and can significantly increase compilation speeds. If using a debugger, setting just
+# `debug = 1` # will also improve compile times while sacrificing less
+debug = 0
+strip = "symbols"
+
+[build]
+# Rust parallel frontend for further compilation speed increases
+rustflags = ["-Z", "threads=8"]
