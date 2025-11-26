@@ -1,8 +1,4 @@
-# @dots --path "{config}/lazygit/config.yml"
-#
-# Locations:
-#
-# - Linux: ~/.config/
+# path: #/lazygit/config.yml
 git:
   paging:
     colorArg: always

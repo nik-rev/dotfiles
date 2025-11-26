@@ -1,7 +1,5 @@
-// Locations:
-//
-// - Unix: ~/.config/zed/keymap.json
-// - Windows: ~/AppData/Roaming/Zed/keymap.json
+// path.unix: #/zed/keymap.json
+// path.windows: #/Zed/keymap.json
 [
   {
     "bindings": {

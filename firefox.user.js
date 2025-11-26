@@ -2,7 +2,6 @@
 //
 // - Linux: ~/.mozilla/firefox/profiles/*/user.js
 // - Mac: ~/Library/Application Support/Firefox/Profiles/*/user.js
-// - Windows: ~/AppData/Roaming/Mozilla/Firefox/Profiles/*/user.js
 
 user_pref("browser.discovery.enabled", false);
 user_pref("general.smoothScroll", true);

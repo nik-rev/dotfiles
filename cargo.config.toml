@@ -1,7 +1,8 @@
+# path: ~/.cargo/config.toml
 [unstable]
 # Allows using the `cranelift` codegen backend, which provides much faster
 # compilation speeds in development mode
-# 
+#
 # `rustc_codegen_cranelift` repo: https://github.com/rust-lang/rustc_codegen_cranelift
 codegen-backend = true
 
