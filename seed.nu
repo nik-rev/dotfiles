@@ -1,91 +1,55 @@
-# These dirs will be put into the "#" folder, and their individual files
-# won't be seeded
-const seed_dirs = [nushell helix bat presenterm]
-
 # Directory where all config files are. This is available via "#", analogous for "~" for the home directory
-const config_dir = $nu.default-config-dir | path dirname
+const c = $nu.default-config-dir | path dirname
 
-# Resolves a path to its absolute location.
-#
-# "~" is like always the home directory, "#" is the config directory (e.g. ".config" on Linux)
-def resolve-path [file: any] {
-    if ($file | str starts-with "~") {
-        $file | str replace "~" $nu.home-path
-    } else if ($file | str starts-with "#") {
-        $file | str replace "#" $config_dir
-    } else {
-        $file
-    }
+const zed = if $nu.os-info.name == "windows" { "Zed" } else { "zed" }
+let firefox_profile = match $nu.os-info.name {
+    "linux" => "~/.mozilla/firefox"
+    "macos" => $"($c)/Firefox/Profiles"
+    "windows" => $"($c)/Mozilla/Firefox/Profiles"
+}
+let firefox_profile = ls $firefox_profile | first | get name
+let firefox_policies = match $nu.os-info.family {
+    "windows" => "~/scoop/apps/firefox/current"
+    "unix" => "/etc/firefox/policies"
+}
+let glazewm_path = if $nu.os-info.name == "windows" { "~/.glzr/glazewm/config.yaml" }
+
+let paths = {
+    alacritty.toml: $"($c)/alacritty/alacritty.toml"
+    cargo.config.toml: ~/.cargo/config.toml
+    git.config: $"($c)/git/config"
+    gitui.theme.ron: $"($c)/gitui/theme.ron"
+    glazewm.yaml: $glazewm_path
+    kitty.conf: $"($c)/kitty/kitty.conf"
+    lazygit.yml: $"($c)/lazygit/config.yml"
+    rio.toml: $"($c)/rio/config.toml"
+    sway.config: $"($c)/sway/config"
+    wezterm.lua: $"($c)/wezterm/wezterm.lua"
+    firefox.user.js: $"($firefox_profile)/user.js"
+    firefox.policies.json: $"($firefox_policies)/policies.json"
+    yazi.toml: $"($c)/yazi/yazi.toml"
+    yazi.theme.toml: $"($c)/yazi/theme.toml"
+    zed.settings.jsonc: $"($c)/($zed)/settings.json"
+    zed.keymap.jsonc: $"($c)/($zed)/keymap.json"
+    bat: $"($c)/bat"
+    nushell: $"($c)/nushell"
+    presenterm: $"($c)/presenterm"
+    helix: $"($c)/helix"
 }
 
-# Given contents of a file, reads all "path:" directives and decides
-# where in the file system this file will be placed
-def path-for-file [file: string] {
-    mut path = null;
-    for line in ($file | lines) {
-        let extracted = extract-path $line
-        if $extracted == null {
-            break
-        } else {
-            $path = $extracted
-        }
-    }
-    if $path == null {
-        null
-    } else {
-        resolve-path $path
-    }
+$paths
+| items { |src, dest|
+    let src = $"($env.FILE_PWD)/($src)" | path join | path expand
+    let dest = $dest | path expand
+    [$src $dest]
 }
-
-# Extracts path from a line.
-#
-# "path.linux: ~/path"
-# => "~/path" [ON LINUX]
-# => null [NOT ON LINUX]
-#
-# "path: ~/path"
-# => "~/path"
-#
-# "something else"
-# => null
-def extract-path [value: string] {
-   let result = $value | parse --regex '^.*path(?:\.(?<target>.*))?: (?<path>.*)$'
-   if ($result | is-empty) {
-       return null;
-   }
-   let result = $result | get 0
-   let path = $result.path
-   if ($path | is-empty) {
-       return null
-   }
-   match $result.target {
-       "windows" if $nu.os-info.name == "windows" => $path
-       "linux" if $nu.os-info.name == "linux" => $path
-       "macos" if $nu.os-info.name == "macos" => $path
-       "unix" if $nu.os-info.family == "unix" => $path
-       null => $path
-       _ => null
-   }
-}
-
-# All files in the `dotfiles` dir that will be seeded to their locations
-let all_files = ls ($"**/*" | into glob)
-    # Select only files
-    | where type == file
-    # Get all the files as a list, rather than a table
-    | get name
-    # Any directory that we'll manually seed will be filtered
-    | where {
-        |file| not (
-            $seed_dirs | any {
-                |dir| $file | str starts-with $dir
-            }
-        )
+| par-each { |paths|
+    let src = $paths.0
+    let dest = $paths.1
+    if $dest == null {
+        return
     }
-    | each {{
-        src: ([$env.FILE_PWD $in] | path join)
-        dst: (path-for-file (open --raw $in))
-    }}
-    | where dst != null
-
-$all_files
+    mkdir ($dest | path dirname)
+    cp -r $src $dest
+}
+| ignore

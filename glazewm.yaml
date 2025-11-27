@@ -1,4 +1,3 @@
-# path.windows: ~/.glzr/glazewm/config.yaml
 general:
   startup_commands: []
   focus_follows_cursor: false

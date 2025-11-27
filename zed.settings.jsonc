@@ -1,5 +1,3 @@
-// path.unix: #/zed/settings.json
-// path.windows: #/Zed/settings.json
 {
   // Disable inline blame
   "git": {

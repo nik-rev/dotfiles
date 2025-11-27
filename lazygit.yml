@@ -1,4 +1,3 @@
-# path: #/lazygit/config.yml
 git:
   paging:
     colorArg: always

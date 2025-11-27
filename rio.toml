@@ -1,4 +1,3 @@
-# path: #/rio/config.toml
 confirm-before-quit = false
 use-fork = false
 [[bindings.keys]]
