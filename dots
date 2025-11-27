@@ -1,3 +1,5 @@
+#!/usr/bin/env nu
+
 # Directory where all config files are. This is available via "#", analogous for "~" for the home directory
 const c = $nu.default-config-dir | path dirname
 
