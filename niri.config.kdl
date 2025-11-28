@@ -1,46 +1,14 @@
-// This config is in the KDL format: https://kdl.dev
-// "/-" comments out the following node.
-// Check the wiki for a full description of the configuration:
-// https://yalter.github.io/niri/Configuration:-Introduction
-
-// Input device configuration.
-// Find the full list of options on the wiki:
-// https://yalter.github.io/niri/Configuration:-Input
 input {
     keyboard {
-	repeat-delay 200
-	repeat-rate 50
+	    repeat-delay 200
+	    repeat-rate 50
     }
     focus-follows-mouse
 }
 
-// Settings that influence how windows are positioned and sized.
-// Find more information on the wiki:
-// https://yalter.github.io/niri/Configuration:-Layout
 layout {
     background-color "#000000"
     center-focused-column "never"
-
-    // You can customize the widths that "switch-preset-column-width" (Alt+R) toggles between.
-    preset-column-widths {
-        // Proportion sets the width as a fraction of the output width, taking gaps into account.
-        // For example, you can perfectly fit four windows sized "proportion 0.25" on an output.
-        // The default preset widths are 1/3, 1/2 and 2/3 of the output.
-        proportion 0.33333
-        proportion 0.5
-        proportion 0.66667
-
-        // Fixed sets the width in logical pixels exactly.
-        // fixed 1920
-    }
-
-    // You can also customize the heights that "switch-preset-window-height" (Alt+Shift+R) toggles between.
-    // preset-window-heights { }
-
-    // You can change the default width of the new windows.
-    default-column-width { proportion 0.5; }
-    // If you leave the brackets empty, the windows themselves will decide their initial width.
-    // default-column-width {}
 
     // By default focus ring and border are rendered as a solid background rectangle
     // behind windows. That is, they will show up through semitransparent windows.
@@ -65,18 +33,6 @@ layout {
 	width 2
         active-color "#cba6f7"
         inactive-color "#000000"
-    }
-
-    // Struts shrink the area occupied by windows, similarly to layer-shell panels.
-    // You can think of them as a kind of outer gaps. They are set in logical pixels.
-    // Left and right struts will cause the next window to the side to always be visible.
-    // Top and bottom struts will simply add outer gaps in addition to the area occupied by
-    // layer-shell panels and regular gaps.
-    struts {
-        // left 64
-        // right 64
-        // top 64
-        // bottom 64
     }
 }
 
@@ -152,7 +108,7 @@ binds {
     //Alt+J     { focus-window-down; }
     //Alt+K     { focus-window-up; }
     //Alt+L     { focus-column-right; }
-    
+
     Alt+N { focus-column-left; }
     Alt+E { focus-window-down; }
     //Alt+I { focus-window-up; }
