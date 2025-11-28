@@ -90,6 +90,11 @@
   "auto_update": false,
   // Use Vim keybindings
   "vim_mode": true,
+  "languages": {
+    "Rust": {
+      "format_on_save": "on"
+    },
+  },
   // Don't show lightning symbol when there are
   // code actions that we can take
   "inline_code_actions": false,
@@ -117,15 +122,6 @@
     // Don't show the "new", "split pane" and "zoom in" buttons
     "show_tab_bar_buttons": false
   },
-  "languages": {
-    "HTML": {
-      "format_on_save": "off",
-      "ensure_final_newline_on_save": false
-    },
-    "JSONC": {
-      "format_on_save": "off"
-    }
-  },
   "title_bar": {
     // Don't ask me to sign in
     "show_user_picture": false,
@@ -142,7 +138,7 @@
   // the file is automatically saved
   "autosave": "on_focus_change",
   "cursor_shape": "bar",
-  "relative_line_numbers": true,
+  "relative_line_numbers": "enabled",
   "project_panel": {
     // Hide the root entry when there is only one entry
     // in the workspace
@@ -161,7 +157,7 @@
   "disable_ai": true,
   "ui_font_features": {
     // Enable ligatures in the UI
-    "liga": false
+    "liga": true
   },
   "buffer_font_features": {
     // Enable ligatures when editing code
@@ -191,7 +187,10 @@
   "telemetry": {
     "diagnostics": false,
     "metrics": false
-  }
+  },
+  // Disable automatic editor formatting.
+  "format_on_save": "off",
+  "ensure_final_newline_on_save": false
 
   // TODO: Disable cursor movement via mouse click. Zed doesn't have the feature, so we must contribute it
   //

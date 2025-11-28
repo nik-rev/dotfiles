@@ -2,7 +2,10 @@
 
 const c = $nu.default-config-dir | path dirname
 
-const zed = if $nu.os-info.name == "windows" { "Zed" } else { "zed" }
+const LINUX = $nu.os-info.name == "linux"
+const WINDOWS = $nu.os-info.name == "windows"
+
+const zed = if $WINDOWS { "Zed" } else { "zed" }
 let firefox_profile = match $nu.os-info.name {
     "linux" => $"($nu.home-path)/.mozilla/firefox"
     "macos" => $"($c)/Firefox/Profiles"
@@ -21,7 +24,7 @@ let paths = {
     cargo.config.toml: ~/.cargo/config.toml
     git.config: $"($c)/git/config"
     gitui.theme.ron: $"($c)/gitui/theme.ron"
-    glazewm.yaml: (if $nu.os-info.name == "windows" { "~/.glzr/glazewm/config.yaml" })
+    glazewm.yaml: (if $WINDOWS { "~/.glzr/glazewm/config.yaml" })
     kitty.conf: $"($c)/kitty/kitty.conf"
     lazygit.yml: $"($c)/lazygit/config.yml"
     rio.toml: $"($c)/rio/config.toml"
@@ -33,13 +36,14 @@ let paths = {
     yazi.theme.toml: $"($c)/yazi/theme.toml"
     zed.settings.jsonc: $"($c)/($zed)/settings.json"
     zed.keymap.jsonc: $"($c)/($zed)/keymap.json"
-    autologin.conf: (if $SUDO and $nu.os-info.name == "linux" { "/etc/systemd/system/getty@tty1.service.d/autologin.conf" })
+    autologin.conf: (if $SUDO and $LINUX { "/etc/systemd/system/getty@tty1.service.d/autologin.conf" })
     bat: $"($c)/bat"
     nushell: $"($c)/nushell"
     presenterm: $"($c)/presenterm"
     helix: $"($c)/helix"
-    bash.profile: (if $nu.os-info.name == "linux" { "~/.bash_profile" })
-    niri.config.kdl: (if $nu.os-info.name == "linux" { $"($c)/niri/config.kdl" })
+    bash.profile: (if $LINUX { "~/.bash_profile" })
+    niri.config.kdl: (if $LINUX { $"($c)/niri/config.kdl" })
+    xdg-desktop-portal-termfilechooser.config: (if $LINUX { $"($c)/xdg-desktop-portal-termfilechooser/config" })
 }
 
 $paths

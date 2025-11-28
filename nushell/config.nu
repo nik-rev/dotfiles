@@ -62,6 +62,8 @@ $env.cursor_shape.vi_insert = "bar"
 # catppuccin compatible colors for ls
 $env.LS_COLORS = (vivid generate catppuccin-mocha)
 
+$env.RUST_LOG = "ERROR"
+
 def --env o [] {
   cd ..
   ls+
@@ -121,6 +123,7 @@ def nrs [] {
   sudo -E nu ~/dotfiles/dots
 }
 
+alias "paru" = paru --bottomup
 alias "c" = cargo
 alias "cat" = bat --style=plain
 alias "e" = ls+

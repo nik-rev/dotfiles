@@ -70,11 +70,21 @@ animations {
 window-rule {
     geometry-corner-radius 0
     clip-to-geometry true
-    // This app-id regular expression will work for both:
-    // - host Firefox (app-id is "firefox")
-    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
+}
+
+window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
+}
+
+// Dialogs window rule
+window-rule {
+    match app-id="confirm"
+    match app-id="xdg-desktop-portal-gtk"
+
+    open-floating true
+    default-column-width { proportion 0.45; }
+    default-window-height { proportion 0.45; }
 }
 
 overview { backdrop-color "#000000"; }
