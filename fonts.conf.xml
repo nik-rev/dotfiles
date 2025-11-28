@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+    <!--Disable bold for specific fonts-->
+    <match target="pattern">
+        <test qual="any" name="family">
+            <string>unscii</string>
+            <!--<string>pxplus ibm vga8</string>-->
+            <!-- <string>monospace</string> -->
+        </test>
+        <test name="weight" compare="more">
+            <const>medium</const>
+        </test>
+        <edit name="weight" mode="assign" binding="same">
+            <!-- Disable bold  -->
+            <const>medium</const>
+            <!-- Enable bold  -->
+            <!-- <const>bold</const> -->
+        </edit>
+    </match>
+
+    <!--Change monospace font globally-->
+    <match target="pattern">
+        <test name="family" qual="any">
+            <string>monospace</string>
+        </test>
+        <edit binding="strong" mode="prepend" name="family">
+            <string>JetBrainsMono</string>
+        </edit>
+    </match>
+
+    <!--Change serif font globally-->
+    <alias>
+        <family>serif</family>
+        <prefer>
+            <family>JetBrainsMono</family>
+        </prefer>
+    </alias>
+
+    <!--Change sans-serif font globally-->
+    <alias>
+        <family>sans-serif</family>
+        <prefer>
+            <family>JetBrainsMono</family>
+        </prefer>
+    </alias>
+</fontconfig>
