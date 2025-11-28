@@ -1,3 +1,17 @@
+# Set up Git
+
+Generate SSH key:
+
+```sh
+ssh-keygen -t ed25519
+```
+
+View the public key:
+
+```sh
+cat ~/.ssh/id_ed25519.pub
+```
+
 # Cross-platform
 
 firefox
@@ -8,7 +22,7 @@ bat
 just
 zoxide
 ripgrep
-delta [pacman: git-delta]
+delta (pacman: git-delta)
 hyperfine
 vivid
 lazygit
@@ -25,6 +39,9 @@ nodejs
 vulkan-intel (for Intel + Zed)
 nautilus
 openssh
+
+# Fonts (pacman)
+
 noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts
