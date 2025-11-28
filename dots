@@ -14,6 +14,8 @@ let firefox_policies = match $nu.os-info.family {
     "unix" => "/etc/firefox/policies"
 }
 
+const SUDO = false
+
 let paths = {
     alacritty.toml: $"($c)/alacritty/alacritty.toml"
     cargo.config.toml: ~/.cargo/config.toml
@@ -26,12 +28,12 @@ let paths = {
     sway.config: $"($c)/sway/config"
     wezterm.lua: $"($c)/wezterm/wezterm.lua"
     firefox.user.js: $"($firefox_profile)/user.js"
-    firefox.policies.json: $"($firefox_policies)/policies.json"
+    firefox.policies.json: (if $SUDO { $"($firefox_policies)/policies.json" })
     yazi.toml: $"($c)/yazi/yazi.toml"
     yazi.theme.toml: $"($c)/yazi/theme.toml"
     zed.settings.jsonc: $"($c)/($zed)/settings.json"
     zed.keymap.jsonc: $"($c)/($zed)/keymap.json"
-    autologin.conf: (if $nu.os-info.name == "linux" { "/etc/systemd/system/getty@tty1.service.d/autologin.conf" })
+    autologin.conf: (if $SUDO and $nu.os-info.name == "linux" { "/etc/systemd/system/getty@tty1.service.d/autologin.conf" })
     bat: $"($c)/bat"
     nushell: $"($c)/nushell"
     presenterm: $"($c)/presenterm"
@@ -51,7 +53,7 @@ $paths
     let src = $paths.0
     let dest = $paths.1
     mkdir ($dest | path dirname)
-    sudo rm -rf $dest
+    rm -rf $dest
     cp -r $src $dest
 }
 | ignore

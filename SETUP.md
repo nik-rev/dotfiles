@@ -29,6 +29,8 @@ lazygit
 mpv
 carapace-bin
 
+sccache
+
 # Cross-platform, language-specific
 
 rust

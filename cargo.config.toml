@@ -1,10 +1,13 @@
-# path: ~/.cargo/config.toml
 [unstable]
 # Allows using the `cranelift` codegen backend, which provides much faster
 # compilation speeds in development mode
 #
 # `rustc_codegen_cranelift` repo: https://github.com/rust-lang/rustc_codegen_cranelift
 codegen-backend = true
+
+[target.x86_64-unknown-linux-gnu]
+linker = "clang"
+rustflags = ["-Clink-arg=--ld-path=wild"]
 
 [target.x86_64-pc-windows-msvc]
 # Faster linker on Windows than the default `link.exe`
@@ -22,3 +25,4 @@ strip = "symbols"
 [build]
 # Rust parallel frontend for further compilation speed increases
 rustflags = ["-Z", "threads=8"]
+rustc-wrapper = "sccache"
