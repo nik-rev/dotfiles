@@ -118,7 +118,7 @@ def p [] {
 }
 
 def nrs [] {
-  sudo nixos-rebuild switch --flake ~/dotfiles/#(cat /etc/nixos-device-name)
+  sudo -E nu ~/dotfiles/dots
 }
 
 alias "c" = cargo

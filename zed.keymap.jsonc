@@ -31,15 +31,14 @@
       "ctrl-n": "vim::GoToTab",
       "ctrl-shift-t": ["pane::ActivateItem", 0],
       "ctrl-shift-n": "pane::ActivateLastItem",
+      
+      // close active item
+      "ctrl-q": "pane::CloseActiveItem",
 
       // "ctrl-w" should do nothing by itself, as by default Zed binds it to close the
       // active window: this frequently causes current window to be closed accidentally due
       // to key timeout
       "ctrl-w": null,
-
-      // "ctrl" + double-tap "w" is so much easier to type than "ctrl" + "q"
-      "ctrl-w w": "pane::CloseActiveItem",
-      "ctrl-w ctrl-w": "pane::CloseActiveItem",
 
       // Pin
       "ctrl-w p": "pane::TogglePinTab",
@@ -64,6 +63,9 @@
       "ctrl-w ctrl-m": "git_panel::ToggleFocus",
       "ctrl-w shift-f": "collab_panel::ToggleFocus",
       "ctrl-w ctrl-shift-f": "collab_panel::ToggleFocus",
+      "ctrl-w w": "editor::ToggleFocus",
+      "ctrl-w ctrl-w": "editor::ToggleFocus",
+
 
       // Toggle dock
       "ctrl-w u": "workspace::ToggleBottomDock",

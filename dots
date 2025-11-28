@@ -4,23 +4,22 @@ const c = $nu.default-config-dir | path dirname
 
 const zed = if $nu.os-info.name == "windows" { "Zed" } else { "zed" }
 let firefox_profile = match $nu.os-info.name {
-    "linux" => "~/.mozilla/firefox"
+    "linux" => $"($nu.home-path)/.mozilla/firefox"
     "macos" => $"($c)/Firefox/Profiles"
     "windows" => $"($c)/Mozilla/Firefox/Profiles"
 }
-let firefox_profile = ls $firefox_profile | first | get name
+let firefox_profile = if ($firefox_profile | path exists) { ls $firefox_profile | where { $in.name | str ends-with ".default-release" } | first | get name }
 let firefox_policies = match $nu.os-info.family {
     "windows" => "~/scoop/apps/firefox/current"
     "unix" => "/etc/firefox/policies"
 }
-let glazewm_path = if $nu.os-info.name == "windows" { "~/.glzr/glazewm/config.yaml" }
 
 let paths = {
     alacritty.toml: $"($c)/alacritty/alacritty.toml"
     cargo.config.toml: ~/.cargo/config.toml
     git.config: $"($c)/git/config"
     gitui.theme.ron: $"($c)/gitui/theme.ron"
-    glazewm.yaml: $glazewm_path
+    glazewm.yaml: (if $nu.os-info.name == "windows" { "~/.glzr/glazewm/config.yaml" })
     kitty.conf: $"($c)/kitty/kitty.conf"
     lazygit.yml: $"($c)/lazygit/config.yml"
     rio.toml: $"($c)/rio/config.toml"
@@ -32,13 +31,17 @@ let paths = {
     yazi.theme.toml: $"($c)/yazi/theme.toml"
     zed.settings.jsonc: $"($c)/($zed)/settings.json"
     zed.keymap.jsonc: $"($c)/($zed)/keymap.json"
+    autologin.conf: (if $nu.os-info.name == "linux" { "/etc/systemd/system/getty@tty1.service.d/autologin.conf" })
     bat: $"($c)/bat"
     nushell: $"($c)/nushell"
     presenterm: $"($c)/presenterm"
     helix: $"($c)/helix"
+    bash.profile: (if $nu.os-info.name == "linux" { "~/.bash_profile" })
+    niri.config.kdl: (if $nu.os-info.name == "linux" { $"($c)/niri/config.kdl" })
 }
 
 $paths
+| compact
 | items { |src, dest|
     let src = $"($env.FILE_PWD)/($src)" | path join | path expand
     let dest = $dest | path expand
@@ -47,10 +50,8 @@ $paths
 | par-each { |paths|
     let src = $paths.0
     let dest = $paths.1
-    if $dest == null {
-        return
-    }
     mkdir ($dest | path dirname)
+    sudo rm -rf $dest
     cp -r $src $dest
 }
 | ignore
