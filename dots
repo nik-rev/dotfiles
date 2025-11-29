@@ -37,6 +37,7 @@ let paths = {
     zed.settings.jsonc: $"($c)/($zed)/settings.json"
     zed.keymap.jsonc: $"($c)/($zed)/keymap.json"
     autologin.conf: (if $SUDO and $LINUX { "/etc/systemd/system/getty@tty1.service.d/autologin.conf" })
+    glide.ts: $"($c)/glide/glide.ts"
     bat: $"($c)/bat"
     nushell: $"($c)/nushell"
     presenterm: $"($c)/presenterm"
