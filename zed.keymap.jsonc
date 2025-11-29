@@ -1,6 +1,10 @@
 [
   {
     "bindings": {
+      // Same as default, but in global context. So when we are for example in "Project Search",
+      // this keybind will work
+      "ctrl-6": "pane::AlternateFile",
+
       // Change font size
       "ctrl-+": ["zed::IncreaseBufferFontSize", { "persist": false }],
       "ctrl-=": ["zed::ResetBufferFontSize", { "persist": false }],
@@ -29,11 +33,14 @@
       // Go to next/previous tab
       "ctrl-t": "vim::GoToPreviousTab",
       "ctrl-n": "vim::GoToTab",
+
+      // Go to first tab
       "ctrl-shift-t": ["pane::ActivateItem", 0],
+      // Go to last tab
       "ctrl-shift-n": "pane::ActivateLastItem",
-      
+
       // close active item
-      "ctrl-q": "pane::CloseActiveItem",
+      "ctrl-s": "pane::CloseActiveItem",
 
       // "ctrl-w" should do nothing by itself, as by default Zed binds it to close the
       // active window: this frequently causes current window to be closed accidentally due
@@ -165,11 +172,36 @@
       // "U" to redo, to match with "u" for redo
       "U": "vim::Redo",
 
+      // Replace selection: This is essentially "vp" but bound to a single key
+      "up": "vim::PushReplaceWithRegister",
+
+      // Toggle selection mode for the current diff hunk
+      "down": "editor::ToggleSelectedDiffHunks",
+
       "shift-y": "vim::YankToEndOfLine",
 
       // Add cursor below/above
       "alt-right": "vim::HelixDuplicateBelow",
       "alt-left": "vim::HelixDuplicateAbove"
+    }
+  },
+
+  // Bindings for search
+  {
+    "context": "!Terminal && Pane",
+    "bindings": {
+      "ctrl-r c": "search::ToggleCaseSensitive",
+      "ctrl-r ctrl-c": "search::ToggleCaseSensitive",
+      "ctrl-r w": "search::ToggleWholeWord",
+      "ctrl-r ctrl-w": "search::ToggleWholeWord",
+      "ctrl-r t": "search::ToggleRegex",
+      "ctrl-r ctrl-t": "search::ToggleRegex",
+      "ctrl-r r": "search::ToggleReplace",
+      "ctrl-r ctrl-r": "search::ToggleReplace",
+      "ctrl-r s": "search::ToggleSelection",
+      "ctrl-r ctrl-s": "search::ToggleSelection",
+      "ctrl-r a": "search::ReplaceAll",
+      "ctrl-r ctrl-a": "search::ReplaceAll"
     }
   },
 

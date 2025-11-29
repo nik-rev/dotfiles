@@ -89,6 +89,13 @@ def --env ooooo [] {
   ls+
 }
 
+def z [
+    --reuse (-r), # Re-use existing window, replacing its workspace
+    ...paths: path
+] {
+   ^(if $nu.os-info.family == "windows" { "zed" } else { "zeditor" }) -a ...$paths
+}
+
 def ls+ [
   --all (-a), # Show hidden files
   --long (-l), # Get all available columns for each entry (slower; columns are platform-dependent)
@@ -130,8 +137,4 @@ alias "e" = ls+
 alias "g" = git
 alias "i" = t "-"
 alias "l" = lazygit
-alias "z" = ^(if $nu.os-info.family == "windows" { "zed" } else { "zeditor" }) -a
-alias "n" = hx
-alias "no" = hx .
-alias "sn" = sudo -E hx
 alias "y" = yazi
