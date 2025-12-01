@@ -94,7 +94,16 @@
   "languages": {
     "Rust": {
       "format_on_save": "on"
-    },
+    }
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "check": {
+          "command": "clippy"
+        }
+      }
+    }
   },
   // Don't show lightning symbol when there are
   // code actions that we can take
