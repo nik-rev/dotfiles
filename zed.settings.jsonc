@@ -9,6 +9,7 @@
     "experimental.rodio_audio": true,
     "experimental.auto_microphone_volume": false
   },
+  "sticky_scroll": { "enabled": true },
   "auto_install_extensions": {
     "kdl": true,
     "material-icon-theme": true,

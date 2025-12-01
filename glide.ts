@@ -27,6 +27,8 @@ const default_search_engine = search_engines.google;
     false,
   );
   glide.prefs.set("browser.compactmode.show", false)
+  // Disable "Alt" key from toggling top menu
+  glide.prefs.set("ui.key.menuAccessKeyFocuses", false)
   glide.o.hint_size = "14px";
 
   // PREF: disable login manager

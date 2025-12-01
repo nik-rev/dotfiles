@@ -1,9 +1,6 @@
 [unstable]
-# Allows using the `cranelift` codegen backend, which provides much faster
-# compilation speeds in development mode
-#
-# `rustc_codegen_cranelift` repo: https://github.com/rust-lang/rustc_codegen_cranelift
 codegen-backend = true
+feature-unification = true
 
 [target.x86_64-unknown-linux-gnu]
 linker = "clang"
@@ -16,13 +13,23 @@ linker = "rust-lld.exe"
 [profile.dev]
 # Use `cranelift` backend instead of the `llvm` while developing, for faster compile speeds
 codegen-backend = "cranelift"
-# Don't include debug information. This is especially valuable for those who don't use debuggers,
-# and can significantly increase compilation speeds. If using a debugger, setting just
-# `debug = 1` # will also improve compile times while sacrificing less
-debug = 0
+# Don't include debug information.
+debug = false
+# Strip everything
 strip = "symbols"
+
+# Separate profile just for debugging with a debugger, once in a blue moon
+[profile.debug]
+inherits = "dev"
+debug = true
+strip = "none"
 
 [build]
 # Rust parallel frontend for further compilation speed increases
 rustflags = ["-Z", "threads=8"]
 rustc-wrapper = "sccache"
+
+[resolver]
+# reuse more dependency builds by ensuring the same set of dependency features
+# are activated, independent of which package you are currently building and testing.
+feature-unification = "workspace"

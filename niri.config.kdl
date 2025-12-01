@@ -92,7 +92,7 @@ overview { backdrop-color "#000000"; }
 binds {
     Alt+M { spawn "ferrishot"; }
     Alt+I { spawn "zeditor"; }
-    Alt+R { spawn "firefox"; }
+    Alt+R { spawn "glide-bin"; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
