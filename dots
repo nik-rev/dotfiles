@@ -23,6 +23,7 @@ let paths = {
     alacritty.toml: $"($c)/alacritty/alacritty.toml"
     cargo.config.toml: ~/.cargo/config.toml
     git.config: $"($c)/git/config"
+    git.attributes: $"($c)/git/attributes"
     gitui.theme.ron: $"($c)/gitui/theme.ron"
     glazewm.yaml: (if $WINDOWS { "~/.glzr/glazewm/config.yaml" })
     kitty.conf: $"($c)/kitty/kitty.conf"

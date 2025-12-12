@@ -6,7 +6,7 @@ source catppuccin.nu
 #
 # pass all args to zoxide then list contents of the new directory
 def --env --wrapped t [ ...args: string ] {
-  z ...$args
+  __zoxide_z ...$args
   ls+
 }
 

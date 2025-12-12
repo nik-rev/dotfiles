@@ -37,6 +37,10 @@ const default_search_engine = search_engines.google;
   // PREF: disable address and credit card manager
   glide.prefs.set("extensions.formautofill.addresses.enabled", false);
   glide.prefs.set("extensions.formautofill.creditCards.enabled", false);
+  // When pressing F11, does not do full screen but hides the title bar and search bar
+  // A sort of "zen mode", if you will.
+  // from: https://superuser.com/questions/1568072/hide-navigation-bar-in-firefox
+  //glide.prefs.set("full-screen-api.ignore-widgets", true);
 }
 
 const ALL_MODES: GlideMode[] = ["normal", "visual", "insert", "op-pending", "command"]

@@ -91,8 +91,14 @@
   "auto_update": false,
   // Use Vim keybindings
   "vim_mode": true,
+  // Disable language servers by default, except explicitly allowed languages
+  "enable_language_server": false,
+  // Disable automatic editor formatting.
+  "format_on_save": "off",
+  "ensure_final_newline_on_save": false,
   "languages": {
     "Rust": {
+      "enable_language_server": true,
       "format_on_save": "on"
     }
   },
@@ -198,9 +204,6 @@
     "diagnostics": false,
     "metrics": false
   },
-  // Disable automatic editor formatting.
-  "format_on_save": "off",
-  "ensure_final_newline_on_save": false
 
   // TODO: Disable cursor movement via mouse click. Zed doesn't have the feature, so we must contribute it
   //

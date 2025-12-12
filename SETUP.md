@@ -28,6 +28,7 @@ vivid
 lazygit
 mpv
 carapace-bin
+mergiraf
 
 sccache
 
