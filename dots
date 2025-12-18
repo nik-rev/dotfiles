@@ -37,13 +37,14 @@ let paths = {
     yazi.theme.toml: $"($c)/yazi/theme.toml"
     zed.settings.jsonc: $"($c)/($zed)/settings.json"
     zed.keymap.jsonc: $"($c)/($zed)/keymap.json"
-    autologin.conf: (if $SUDO and $LINUX { "/etc/systemd/system/getty@tty1.service.d/autologin.conf" })
+    #autologin.conf: (if $SUDO and $LINUX { "/etc/systemd/system/getty@tty1.service.d/autologin.conf" })
     glide.ts: $"($c)/glide/glide.ts"
     bat: $"($c)/bat"
     nushell: $"($c)/nushell"
     presenterm: $"($c)/presenterm"
     helix: $"($c)/helix"
-    bash.profile: (if $LINUX { "~/.bash_profile" })
+    bottom.toml: $"($c)/bottom/bottom.toml"
+    #bash.profile: (if $LINUX { "~/.bash_profile" })
     niri.config.kdl: (if $LINUX { $"($c)/niri/config.kdl" })
     xdg-desktop-portal-termfilechooser.config: (if $LINUX { $"($c)/xdg-desktop-portal-termfilechooser/config" })
 }

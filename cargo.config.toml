@@ -12,7 +12,7 @@ linker = "rust-lld.exe"
 
 [profile.dev]
 # Use `cranelift` backend instead of the `llvm` while developing, for faster compile speeds
-codegen-backend = "cranelift"
+#codegen-backend = "cranelift"
 # Don't include debug information.
 debug = false
 # Strip everything
