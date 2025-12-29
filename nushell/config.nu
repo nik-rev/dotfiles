@@ -62,6 +62,8 @@ $env.cursor_shape.vi_insert = "bar"
 # catppuccin compatible colors for ls
 $env.LS_COLORS = (vivid generate catppuccin-mocha)
 
+$env.EDITOR = "vim"
+
 $env.RUST_LOG = "ERROR"
 
 def --env o [] {
