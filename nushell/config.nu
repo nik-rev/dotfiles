@@ -22,17 +22,6 @@ $env.config.completions.external.completer = {|spans|
 # Print the command that had a non-zero exit code in pipe
 $env.config.display_errors.exit_code = true
 
-# for recording videos in a 16 * 9 resolution on a monitor of a different resolution
-def spad [] {
-  swaymsg gaps left all set 440
-  swaymsg gaps right all set 440
-}
-
-def unspad [] {
-  swaymsg gaps left all set 0
-  swaymsg gaps right all set 0
-}
-
 # The prompt
 $env.PROMPT_COMMAND = { || $"(ansi purple_italic)(if $env.PWD == $nu.home-path { "~" } else { $env.PWD | path split | last } )(ansi reset)" }
 # A prompt which can appear on the right side of the terminal
@@ -162,6 +151,17 @@ $env.path ++= [
     $"($nu.home-path)/.cargo/bin"
 ]
 $env.RUST_LOG = "ERROR"
+
+# for recording videos in a 16 * 9 resolution on a monitor of a different resolution
+def spad [] {
+  swaymsg gaps left all set 440
+  swaymsg gaps right all set 440
+}
+
+def unspad [] {
+  swaymsg gaps left all set 0
+  swaymsg gaps right all set 0
+}
 
 alias "paru" = paru --bottomup
 alias "c" = cargo
