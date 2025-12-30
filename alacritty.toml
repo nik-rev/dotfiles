@@ -1,6 +1,11 @@
 [terminal]
 shell = "nu"
 
+[[keyboard.bindings]]
+key = "M"
+mods = "Control"
+action = "ToggleViMode"
+
 [colors.primary]
 background = "#1e1e2e"
 foreground = "#cdd6f4"
