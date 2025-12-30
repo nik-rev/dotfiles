@@ -44,12 +44,12 @@ $env.PROMPT_INDICATOR_VI_NORMAL = $env.PROMPT_INDICATOR
 # Vi-insert mode indicator
 $env.PROMPT_INDICATOR_VI_INSERT = $env.PROMPT_INDICATOR
 
-# ctrl-z to toggle foreground and background
 $env.config.keybindings ++= [
+  # ctrl-z to toggle foreground and background
   {
-    name: "unfreeze",
+    name: unfreeze,
     modifier: control,
-    keycode: "char_z",
+    keycode: char_z,
     event: {
       send: executehostcommand,
       cmd: "job unfreeze"

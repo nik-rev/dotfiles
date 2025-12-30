@@ -182,7 +182,11 @@
 
       // Add cursor below/above
       "alt-right": "vim::HelixDuplicateBelow",
-      "alt-left": "vim::HelixDuplicateAbove"
+      "alt-left": "vim::HelixDuplicateAbove",
+
+      // Respect wrapped lines
+      "j": ["vim::Down", { "display_lines": true }],
+      "k": ["vim::Up", { "display_lines": true }]
     }
   },
 

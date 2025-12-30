@@ -1,5 +1,5 @@
 # downloaded from:
-# https://raw.githubusercontent.com/catppuccin/nushell/05987d258cb765a881ee1f2f2b65276c8b379658/themes/catppuccin_mocha.nu
+# https://github.com/catppuccin/nushell/blob/main/themes/catppuccin_mocha.nu
 let theme = {
   rosewater: "#f5e0dc"
   flamingo: "#f2cdcd"
@@ -99,7 +99,7 @@ $env.config.color_config = {
       $theme.mauve
     }
   }
-  date: {|| (date now) - $in |
+  datetime: {|| (date now) - $in |
     if $in < 1day {
       $theme.teal
     } else if $in < 1wk {
