@@ -1,3 +1,6 @@
+// Add keybindings for:
+//
+// editor::FileHistory
 {
   "languages": {
     "Rust": {

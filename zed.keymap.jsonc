@@ -10,10 +10,10 @@
       "ctrl-=": ["zed::ResetBufferFontSize", { "persist": false }],
       "ctrl--": ["zed::DecreaseBufferFontSize", { "persist": false }],
 
-      // In the terminal, this activates commands search - disable so that it won't conflict
-      "ctrl-r": null,
-
       // Jump back/forward in the jump list
+      //
+      // Global because we need them when we're not in Vim mode, e.g.
+      // when we are in the "Project Search"
       "shift-left": "pane::GoBack",
       "shift-right": "pane::GoForward",
 
@@ -21,6 +21,7 @@
       // this selects the previous entry in the file explorer
       "ctrl-p": "file_finder::Toggle",
 
+      // These are under "ctrl" because they are useful e.g. in the Terminal
       "ctrl-y": "workspace::CopyRelativePath",
       "ctrl-shift-y": "workspace::CopyPath",
 
@@ -135,14 +136,15 @@
   {
     "context": "VimControl && !menu",
     "bindings": {
-      "g r": "editor::FindAllReferences",
-
       // Saving is so common, bind it to tab
       "tab": "workspace::Save",
 
       // Incrementally increase/decrease tree-sitter selection
       "alt-down": "vim::SelectSmallerSyntaxNode",
       "alt-up": "vim::SelectLargerSyntaxNode",
+
+      // Goto References
+      "g r": "editor::FindAllReferences",
 
       // File diagnostics
       "g t": "diagnostics::DeployCurrentFile",
@@ -169,9 +171,6 @@
       ],
       "shift-t": ["vim::PushFindBackward", { "after": true, "multiline": true }],
 
-      // "U" to redo, to match with "u" for redo
-      "U": "vim::Redo",
-
       // Replace selection: This is essentially "vp" but bound to a single key
       // It also doesn't change the clipboard
       "up": "vim::PushReplaceWithRegister",
@@ -179,23 +178,31 @@
       // Toggle selection mode for the current diff hunk
       "down": "editor::ToggleSelectedDiffHunks",
 
+      // To match "D" and "C"
       "shift-y": "vim::YankToEndOfLine",
 
       // Add cursor below/above
       "alt-right": "vim::HelixDuplicateBelow",
       "alt-left": "vim::HelixDuplicateAbove",
 
-      // Respect wrapped lines
+      // Motions that respect wrapped lines
       "j": ["vim::Down", { "display_lines": true }],
       "k": ["vim::Up", { "display_lines": true }],
       "$": ["vim::EndOfLine", { "display_lines": true }],
       "_": ["vim::FirstNonWhitespace", { "display_lines": true }],
       "0": ["vim::StartOfLine", { "display_lines": true }],
 
-      // Manipulate hunks
-      "down t": "editor::ToggleSelectedDiffHunks",
-      "down s": "git::ToggleStaged",
-      "down r": "git::Restore",
+      // Keybindings to manipulate hunks. These are the same as in Helix mode
+      "g o": "editor::ToggleSelectedDiffHunks",
+      "g shift-o": "git::ToggleStaged",
+      "g shift-r": "git::Restore",
+      "g u": "git::StageAndNext",
+      "g shift-u": "git::UnstageAndNext",
+
+      // Manipulate selections (TODO: better keybinds)
+      "left s": "vim::HelixSelectRegex",
+      "left l": ["editor::SplitSelectionIntoLines", { "keep_selections": true }],
+      "left c": "vim::HelixCollapseSelection",
     }
   },
 
@@ -203,18 +210,18 @@
   {
     "context": "!Terminal && Pane",
     "bindings": {
-      "ctrl-r c": "search::ToggleCaseSensitive",
-      "ctrl-r ctrl-c": "search::ToggleCaseSensitive",
-      "ctrl-r w": "search::ToggleWholeWord",
-      "ctrl-r ctrl-w": "search::ToggleWholeWord",
-      "ctrl-r t": "search::ToggleRegex",
-      "ctrl-r ctrl-t": "search::ToggleRegex",
-      "ctrl-r r": "search::ToggleReplace",
-      "ctrl-r ctrl-r": "search::ToggleReplace",
-      "ctrl-r s": "search::ToggleSelection",
-      "ctrl-r ctrl-s": "search::ToggleSelection",
-      "ctrl-r a": "search::ReplaceAll",
-      "ctrl-r ctrl-a": "search::ReplaceAll"
+      "ctrl-c c": "search::ToggleCaseSensitive",
+      "ctrl-c ctrl-c": "search::ToggleCaseSensitive",
+      "ctrl-c w": "search::ToggleWholeWord",
+      "ctrl-c ctrl-w": "search::ToggleWholeWord",
+      "ctrl-c t": "search::ToggleRegex",
+      "ctrl-c ctrl-t": "search::ToggleRegex",
+      "ctrl-c r": "search::ToggleReplace",
+      "ctrl-c ctrl-r": "search::ToggleReplace",
+      "ctrl-c s": "search::ToggleSelection",
+      "ctrl-c ctrl-s": "search::ToggleSelection",
+      "ctrl-c a": "search::ReplaceAll",
+      "ctrl-c ctrl-a": "search::ReplaceAll"
     }
   },
 
@@ -310,5 +317,12 @@
       "right d": "project_panel::SelectNextDiagnostic",
       "left d": "project_panel::SelectPrevDiagnostic"
     }
-  }
+  },
+
+  {
+    "context": "GitPanel > Editor && vim_mode == normal",
+    "bindings": {
+      "escape": "git_panel::FocusChanges"
+    },
+  },
 ]
