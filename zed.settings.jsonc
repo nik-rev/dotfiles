@@ -1,4 +1,30 @@
 {
+  "languages": {
+    "Rust": {
+      "enable_language_server": true,
+      "format_on_save": "on"
+    },
+    "Nu": {
+      "enable_language_server": true,
+      // off for now, re-visit when `nufmt` is better
+      "format_on_save": "off",
+      "formatter": {
+        "external": {
+          "command": "nufmt",
+          "arguments": ["--stdin"]
+        }
+      }
+    }
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "check": {
+          "command": "clippy"
+        }
+      }
+    }
+  },
   // Disable inline blame
   "git": {
     "inline_blame": {
@@ -96,21 +122,6 @@
   // Disable automatic editor formatting.
   "format_on_save": "off",
   "ensure_final_newline_on_save": false,
-  "languages": {
-    "Rust": {
-      "enable_language_server": true,
-      "format_on_save": "on"
-    }
-  },
-  "lsp": {
-    "rust-analyzer": {
-      "initialization_options": {
-        "check": {
-          "command": "clippy"
-        }
-      }
-    }
-  },
   // Don't show lightning symbol when there are
   // code actions that we can take
   "inline_code_actions": false,
