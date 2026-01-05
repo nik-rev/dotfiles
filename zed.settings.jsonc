@@ -45,8 +45,6 @@
   "sticky_scroll": {
     "enabled": false
   },
-  // Colorful icons
-  "icon_theme": "Material Icon Theme",
   // Don't use system prompts, ever. Zed UI is more integrated and cleaner
   "use_system_path_prompts": false,
   "use_system_prompts": false,
@@ -63,14 +61,13 @@
   "soft_wrap": "editor_width",
   // Disable automatic updater
   "hover_popover_enabled": false,
-  "auto_update": false,
+
   // Use Vim keybindings
   "vim_mode": true,
   // Disable language servers by default, except explicitly allowed languages
   "enable_language_server": false,
   // Disable automatic editor formatting.
   "format_on_save": "off",
-  "ensure_final_newline_on_save": false,
   // Don't show lightning symbol when there are
   // code actions that we can take
   "inline_code_actions": false,
@@ -88,7 +85,8 @@
     // Use different color if there are potential changes to commit
     "git_status": true
   },
-  // Hide the status bar. The only reason why I'd need it
+  // Hide the status bar. The only reason why I'd need it is to check status of the language server,
+  // because the editor otherwise doesn't provide that capability
   "status_bar": {
     "experimental.show": false
   },
@@ -131,6 +129,7 @@
 
   // Theme
   "theme": "Catppuccin Mocha",
+  "icon_theme": "Material Icon Theme",
   "theme_overrides": {
     "Catppuccin Mocha": {
       // current line number is lavender
@@ -169,6 +168,9 @@
     "diagnostics": false,
     "metrics": false
   },
+
+  // Disable automatic updates
+  "auto_update": false,
 
   // Add support for many languages
   "auto_install_extensions": {
