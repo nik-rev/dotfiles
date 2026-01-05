@@ -173,6 +173,7 @@
       "U": "vim::Redo",
 
       // Replace selection: This is essentially "vp" but bound to a single key
+      // It also doesn't change the clipboard
       "up": "vim::PushReplaceWithRegister",
 
       // Toggle selection mode for the current diff hunk
@@ -224,11 +225,15 @@
       "shift-s": "vim::PushAddSurrounds"
     }
   },
+
+  // Visual mode bindings
   {
     "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
     "bindings": {
       // Surround selection in visual mode with `S`
-      "shift-s": "vim::PushAddSurrounds"
+      "shift-s": "vim::PushAddSurrounds",
+      // Like "p" but doesn't change the clipboard
+      "up": ["vim::Paste", { "preserve_clipboard": true }]
     }
   },
 
@@ -263,6 +268,8 @@
   {
     "context": "Terminal",
     "bindings": {
+      // NOTE: This is currently bugged.
+      // The terminal doesn't redraw when using vim motions
       "ctrl-m": "terminal::ToggleViMode"
     }
   },
