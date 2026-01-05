@@ -90,24 +90,39 @@
   "status_bar": {
     "experimental.show": false
   },
+
+  // Contains a list of open buffers
   "tab_bar": {
     // Don't show left/right arrow on the left
     "show_nav_history_buttons": false,
     // Don't show the "new", "split pane" and "zoom in" buttons
     "show_tab_bar_buttons": false
   },
+
+  // Bar at the very top, with operating system decorations
   "title_bar": {
     // Don't ask me to sign in
     "show_user_picture": false,
+    // Hide the "Sign In" button
     "show_sign_in": false,
     // Don't alert me about new features
-    "show_onboarding_banner": false
+    "show_onboarding_banner": false,
+    // Hide the chevron in the top-right corner, with the user avatar
+    "show_user_menu": false,
+    // Hide name of project
+    "show_project_items": false,
+    // Hide name of branch that we are working on
+    "show_branch_name": false,
   },
+
+  // Disable this toolbar. Disabling those 2 options hides it as there's nothing to show
   "toolbar": {
     // Don't show the 3 buttons for buffer search, selection controls and editor controls
     "quick_actions": false,
+    // Don't show breadcrumbs, i.e. where in the file we are AST-wise
     "breadcrumbs": false
   },
+
   // Every time the current editor loses focus,
   // the file is automatically saved
   "autosave": "on_focus_change",
@@ -142,6 +157,9 @@
       }
     }
   },
+
+  // Open dashboard when opening zed again, instead of just opening the last project
+  "restore_on_startup": "launchpad",
 
   // Fonts
   "buffer_font_family": "Fira Mono",
@@ -225,6 +243,10 @@
     "tera": true,
     "uiua": true,
     "lean4": true
+  },
+
+  "session": {
+    "trust_all_worktrees": true
   },
 
   // TODO: Disable cursor movement via mouse click. Zed doesn't have the feature, so we must contribute it
