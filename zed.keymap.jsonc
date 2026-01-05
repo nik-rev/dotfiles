@@ -171,12 +171,9 @@
       ],
       "shift-t": ["vim::PushFindBackward", { "after": true, "multiline": true }],
 
-      // Replace selection: This is essentially "vp" but bound to a single key
-      // It also doesn't change the clipboard
+      // Replace object with yanked: "vp" but bound to a single key
+      // and doesn't replace contents with whatever we removed
       "up": "vim::PushReplaceWithRegister",
-
-      // Toggle selection mode for the current diff hunk
-      "down": "editor::ToggleSelectedDiffHunks",
 
       // To match "D" and "C"
       "shift-y": "vim::YankToEndOfLine",
@@ -191,18 +188,23 @@
       "$": ["vim::EndOfLine", { "display_lines": true }],
       "_": ["vim::FirstNonWhitespace", { "display_lines": true }],
       "0": ["vim::StartOfLine", { "display_lines": true }],
+      // Motions that don't respect wrapped line
+      "g j": "vim::Down",
+      "g k": "vim::Up",
+      "g $": "vim::EndOfLine",
+      "g _": "vim::FirstNonWhitespace",
+      "g 0": "vim::StartOfLine",
 
-      // Keybindings to manipulate hunks. These are the same as in Helix mode
-      "g o": "editor::ToggleSelectedDiffHunks",
-      "g shift-o": "git::ToggleStaged",
+      // View hunk diff
+      "g h": "editor::ToggleSelectedDiffHunks",
+      // Toggle if hunk is staged
+      "g shift-h": "git::ToggleStaged",
+      // Restore hunk to what it was before the change
       "g shift-r": "git::Restore",
-      "g u": "git::StageAndNext",
-      "g shift-u": "git::UnstageAndNext",
 
-      // Manipulate selections (TODO: better keybinds)
-      "left s": "vim::HelixSelectRegex",
-      "left l": ["editor::SplitSelectionIntoLines", { "keep_selections": true }],
-      "left c": "vim::HelixCollapseSelection",
+      // Manipulate selections
+      "g l": "vim::HelixSelectRegex",
+      "g shift-l": ["editor::SplitSelectionIntoLines", { "keep_selections": true }],
     }
   },
 
