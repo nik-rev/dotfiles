@@ -283,7 +283,8 @@
     "context": "Terminal",
     "bindings": {
       // NOTE: This is currently bugged.
-      // The terminal doesn't redraw when using vim motions
+      // The terminal doesn't redraw when using vim motions:
+      // https://github.com/zed-industries/zed/pull/44870
       "ctrl-m": "terminal::ToggleViMode"
     }
   },
@@ -321,9 +322,11 @@
     }
   },
 
+  // Git Panel
   {
     "context": "GitPanel > Editor && vim_mode == normal",
     "bindings": {
+      // There's no default keybinding to focus back to changes
       "escape": "git_panel::FocusChanges"
     },
   },
