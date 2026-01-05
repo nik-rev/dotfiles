@@ -2,7 +2,16 @@
   "languages": {
     "Rust": {
       "enable_language_server": true,
-      "format_on_save": "on"
+      "format_on_save": "on",
+      "sticky_scroll": {
+        "enabled": true
+      }
+    },
+    "JSON": {
+      "enable_language_server": true
+    },
+    "JSONC": {
+      "enable_language_server": true
     },
     "Nu": {
       "enable_language_server": true,
@@ -31,11 +40,137 @@
       "enabled": false
     }
   },
-  "audio": {
-    "experimental.rodio_audio": true,
-    "experimental.auto_microphone_volume": false
+  // Don't show context when scrolling.
+  // Requires explicit opt-in per language
+  "sticky_scroll": {
+    "enabled": false
   },
-  "sticky_scroll": { "enabled": true },
+  // Colorful icons
+  "icon_theme": "Material Icon Theme",
+  // Don't use system prompts, ever. Zed UI is more integrated and cleaner
+  "use_system_path_prompts": false,
+  "use_system_prompts": false,
+  "gutter": {
+    // Don't show "Play" button for running code
+    "runnables": false,
+    // Don't show breakpoint in the gutter
+    "breakpoints": false,
+    // Disable folds
+    "folds": false
+    // TODO: Mouse should not activate breakpoint, but if the breakpoint exists then
+    // we will show it. Zed doesn't have this feature, so we'll have to contribute it
+  },
+  "soft_wrap": "editor_width",
+  // Disable automatic updater
+  "hover_popover_enabled": false,
+  "auto_update": false,
+  // Use Vim keybindings
+  "vim_mode": true,
+  // Disable language servers by default, except explicitly allowed languages
+  "enable_language_server": false,
+  // Disable automatic editor formatting.
+  "format_on_save": "off",
+  "ensure_final_newline_on_save": false,
+  // Don't show lightning symbol when there are
+  // code actions that we can take
+  "inline_code_actions": false,
+  "preview_tabs": {
+    "enable_keep_preview_on_code_navigation": true,
+    "enable_preview_from_file_finder": true
+  },
+  "scroll_beyond_last_line": "off",
+  "tabs": {
+    // Don't show the cross "x" when hovering over tabs
+    "file_icons": true,
+    "show_close_button": "hidden",
+    // Show icon in tab when the tab has a warning/error
+    "show_diagnostics": "all",
+    // Use different color if there are potential changes to commit
+    "git_status": true
+  },
+  // Hide the status bar. The only reason why I'd need it
+  "status_bar": {
+    "experimental.show": false
+  },
+  "tab_bar": {
+    // Don't show left/right arrow on the left
+    "show_nav_history_buttons": false,
+    // Don't show the "new", "split pane" and "zoom in" buttons
+    "show_tab_bar_buttons": false
+  },
+  "title_bar": {
+    // Don't ask me to sign in
+    "show_user_picture": false,
+    "show_sign_in": false,
+    // Don't alert me about new features
+    "show_onboarding_banner": false
+  },
+  "toolbar": {
+    // Don't show the 3 buttons for buffer search, selection controls and editor controls
+    "quick_actions": false,
+    "breadcrumbs": false
+  },
+  // Every time the current editor loses focus,
+  // the file is automatically saved
+  "autosave": "on_focus_change",
+  "cursor_shape": "bar",
+  "relative_line_numbers": "enabled",
+  "project_panel": {
+    // Hide the root entry when there is only one entry
+    // in the workspace
+    "hide_root": true
+  },
+  "terminal": {
+    // Selecting text in the terminal copies it to the clipboard
+    "copy_on_select": true,
+    "shell": {
+      // Use nushell as the interactive shell
+      "program": "nu"
+    }
+  },
+
+  // Theme
+  "theme": "Catppuccin Mocha",
+  "theme_overrides": {
+    "Catppuccin Mocha": {
+      // current line number is lavender
+      "editor.active_line_number": "#b4befe",
+      "syntax": {
+        // "mauve" macros
+        "function.special": {
+          "color": "#f5e0dc"
+        }
+      }
+    }
+  },
+
+  // Fonts
+  "buffer_font_family": "Fira Mono",
+  "ui_font_family": "Fira Mono",
+  "ui_font_size": 20.0,
+  "buffer_font_size": 20.0,
+
+  // Disable blinking cursor
+  "cursor_blink": false,
+
+  // Disable scrollbar
+  "scrollbar": {
+    "axes": {
+      "vertical": false,
+      "horizontal": false
+    }
+  },
+
+  // Disable AI
+  "disable_ai": true,
+
+  // Disable telemetry
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+
+  // Add support for many languages
   "auto_install_extensions": {
     "kdl": true,
     "material-icon-theme": true,
@@ -88,132 +223,6 @@
     "tera": true,
     "uiua": true,
     "lean4": true
-  },
-  // Colorful icons
-  "icon_theme": "Material Icon Theme",
-  // Don't use system prompts, ever. Zed UI is more integrated and cleaner
-  "use_system_path_prompts": false,
-  "use_system_prompts": false,
-  "gutter": {
-    // Don't show "Play" button for running code
-    "runnables": false,
-    // Don't show breakpoint in the gutter
-    "breakpoints": false,
-    // Disable folds
-    "folds": false
-    // TODO: Mouse should not activate breakpoint, but if the breakpoint exists then
-    // we will show it. Zed doesn't have this feature, so we'll have to contribute it
-  },
-  // Disable scrollbar
-  "scrollbar": {
-    "axes": {
-      "vertical": false,
-      "horizontal": false
-    }
-  },
-  "soft_wrap": "editor_width",
-  // Disable automatic updater
-  "hover_popover_enabled": false,
-  "auto_update": false,
-  // Use Vim keybindings
-  "vim_mode": true,
-  // Disable language servers by default, except explicitly allowed languages
-  "enable_language_server": false,
-  // Disable automatic editor formatting.
-  "format_on_save": "off",
-  "ensure_final_newline_on_save": false,
-  // Don't show lightning symbol when there are
-  // code actions that we can take
-  "inline_code_actions": false,
-  "preview_tabs": {
-    "enable_keep_preview_on_code_navigation": true,
-    "enable_preview_from_file_finder": true
-  },
-  "scroll_beyond_last_line": "off",
-  "tabs": {
-    // Don't show the cross "x" when hovering over tabs
-    "file_icons": true,
-    "show_close_button": "hidden",
-    // Show icon in tab when the tab has a warning/error
-    "show_diagnostics": "all",
-    // Use different color if there are potential changes to commit
-    "git_status": true
-  },
-  "status_bar": {
-    "experimental.show": false
-    // "experimental.show": true
-  },
-  "tab_bar": {
-    // Don't show left/right arrow on the left
-    "show_nav_history_buttons": false,
-    // Don't show the "new", "split pane" and "zoom in" buttons
-    "show_tab_bar_buttons": false
-  },
-  "title_bar": {
-    // Don't ask me to sign in
-    "show_user_picture": false,
-    "show_sign_in": false,
-    // Don't alert me about new features
-    "show_onboarding_banner": false
-  },
-  "toolbar": {
-    // Don't show the 3 buttons for buffer search, selection controls and editor controls
-    "quick_actions": false,
-    "breadcrumbs": false
-  },
-  // Every time the current editor loses focus,
-  // the file is automatically saved
-  "autosave": "on_focus_change",
-  "cursor_shape": "bar",
-  "relative_line_numbers": "enabled",
-  "project_panel": {
-    // Hide the root entry when there is only one entry
-    // in the workspace
-    "hide_root": true
-  },
-  "terminal": {
-    // Selecting text in the terminal copies it to the clipboard
-    "copy_on_select": true,
-    "shell": {
-      // Use nushell as the interactive shell
-      "program": "nu"
-    }
-  },
-  // Disable blinking cursor
-  "cursor_blink": false,
-  "disable_ai": true,
-  "ui_font_features": {
-    // Enable ligatures in the UI
-    "liga": true
-  },
-  "buffer_font_features": {
-    // Enable ligatures when editing code
-    "liga": true
-  },
-  "buffer_font_family": "JetBrains Mono",
-  "ui_font_family": "JetBrains Mono",
-  "ui_font_size": 20.0,
-  "buffer_font_size": 20.0,
-  "theme": "Catppuccin Mocha",
-  "theme_overrides": {
-    "Catppuccin Mocha": {
-      // current line number is lavender
-      "editor.active_line_number": "#b4befe",
-      "syntax": {
-        "function.special": {
-          "color": "#f5e0dc"
-        }
-      }
-    }
-  },
-  "image_viewer": {
-    // show size in KB, MB
-    "unit": "decimal"
-  },
-  // Disable telemetry
-  "telemetry": {
-    "diagnostics": false,
-    "metrics": false
   },
 
   // TODO: Disable cursor movement via mouse click. Zed doesn't have the feature, so we must contribute it

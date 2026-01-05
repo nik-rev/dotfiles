@@ -186,7 +186,10 @@
 
       // Respect wrapped lines
       "j": ["vim::Down", { "display_lines": true }],
-      "k": ["vim::Up", { "display_lines": true }]
+      "k": ["vim::Up", { "display_lines": true }],
+      "$": ["vim::EndOfLine", { "display_lines": true }],
+      "_": ["vim::FirstNonWhitespace", { "display_lines": true }],
+      "0": ["vim::StartOfLine", { "display_lines": true }],
     }
   },
 
@@ -297,3 +300,4 @@
     }
   }
 ]
+
