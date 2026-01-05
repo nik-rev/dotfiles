@@ -191,6 +191,11 @@
       "$": ["vim::EndOfLine", { "display_lines": true }],
       "_": ["vim::FirstNonWhitespace", { "display_lines": true }],
       "0": ["vim::StartOfLine", { "display_lines": true }],
+
+      // Manipulate hunks
+      "down t": "editor::ToggleSelectedDiffHunks",
+      "down s": "git::ToggleStaged",
+      "down r": "git::Restore",
     }
   },
 
@@ -307,4 +312,3 @@
     }
   }
 ]
-

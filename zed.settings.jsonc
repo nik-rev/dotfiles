@@ -91,6 +91,10 @@
     "experimental.show": false
   },
 
+  "git_panel": {
+    "tree_view": true
+  },
+
   // Contains a list of open buffers
   "tab_bar": {
     // Don't show left/right arrow on the left
