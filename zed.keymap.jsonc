@@ -5,6 +5,9 @@
       // this keybind will work
       "ctrl-6": "pane::AlternateFile",
 
+      // By default it just quits. But we have window manager commands for that
+      "ctrl-q": null,
+
       // Change font size
       "ctrl-+": ["zed::IncreaseBufferFontSize", { "persist": false }],
       "ctrl-=": ["zed::ResetBufferFontSize", { "persist": false }],

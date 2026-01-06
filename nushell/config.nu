@@ -1,6 +1,8 @@
 source zoxide.nu
 source catppuccin.nu
 
+use std/clip [copy]
+
 # Enable completions for external commands (ones that aren't built-in)
 $env.config.completions.external.enable = true
 
