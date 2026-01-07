@@ -189,6 +189,58 @@ def "pass copy" [
     job spawn { sleep 30sec; "" | copy } | ignore
 }
 
+def "pass login" [] {
+    pass-cli login --interactive
+}
+
+# Copies input to clipboard, clears after 30 seconds
+def temp-copy []: string -> nothing {
+    $in | copy
+    job spawn {
+        sleep 30sec
+        "" | copy
+    } | ignore
+}
+
+def "pass new login" [
+    website: string
+    username?: string
+    --title (-t): string
+    --email (-e): string
+    --vault (-v): string = "logins"
+    --password-length: int = 64
+    --url (-l): list<string> = []
+] {
+    let title = $title | default $website
+    let title = if $username == null { $title } else { $"($title)+($username)" }
+    let email = if $username == null and $email == null {
+        $"($website)@422221.xyz"
+    } else if $username != null and $email == null {
+        $"($website)+($username)@422221.xyz"
+    }
+
+    let item_id = (^pass-cli item create login
+        --vault-name $vault
+        --title $title
+        ...(if $username == null { [] } else { [--username $username] })
+        ...(if $email == null { [] } else { [--email $email] })
+        --generate-password=$"($password_length),uppercase,symbols"
+        ...($url | each { $"--url ($in)" })
+    )
+
+    ^pass-cli item view --item-id $item_id --vault-name $vault --output json
+        | from json
+        | get item.content.content.Login.password
+        | temp-copy
+
+    {
+        vault: $vault
+        title: $title
+        username: $username
+        email: $email
+    } | compact --empty
+}
+
 def p [] {
     let items = pass vault list --output json
         | from json
@@ -223,13 +275,7 @@ def p [] {
     let username = $login.username?
     let email = $login.email?
 
-    job spawn {
-        # Copy password to clipboard
-        $login.password | first | copy
-        # Reset clipboard after 30 seconds
-        sleep 30sec
-        "" | copy
-    }
+    $login.password | temp-copy
 
     { username: $username email: $email } | update cells { $in | first } | compact --empty
 }
