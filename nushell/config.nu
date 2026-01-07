@@ -3,7 +3,7 @@ source catppuccin.nu
 
 use std/clip copy
 use std bench
-use iter intersperse
+use std/iter intersperse
 use std repeat
 
 # Enable completions for external commands (ones that aren't built-in)
@@ -23,9 +23,6 @@ $env.config.completions.external.completer = {|spans|
       } else {$value}
     }
 }
-
-# Print the command that had a non-zero exit code in pipe
-$env.config.display_errors.exit_code = true
 
 # The prompt
 $env.PROMPT_COMMAND = { || $"(ansi purple_italic)(if $env.PWD == $nu.home-path { "~" } else { $env.PWD | path split | last } )(ansi reset)" }
@@ -58,8 +55,8 @@ $env.config.show_banner = false
 $env.config.edit_mode = "vi"
 
 $env.config.cursor_shape = {
-    emacs: line,
-    vi_insert: line,
+    emacs: line
+    vi_insert: line
     vi_normal: block
 }
 
@@ -67,6 +64,8 @@ $env.config.cursor_shape = {
 $env.LS_COLORS = (vivid generate catppuccin-mocha)
 
 $env.EDITOR = "vim"
+
+# Commands for going to parent directories
 
 def --env o [] {
   cd ..
@@ -134,9 +133,9 @@ def ls+ [
   ) | sort-by modified | grid --separator "  " --color --width 80
 }
 
-def p [] {
-  pwd | str replace $nu.home-path '~'
-}
+# def pwd [] {
+#   alias pwd = pwd | str replace $nu.home-path '~'
+# }
 
 def nrs [] {
   sudo -E nu ~/dotfiles/dots
@@ -154,6 +153,7 @@ def --wrapped ns [ ...args: string ] {
 
 $env.path ++= [
     $"($nu.home-path)/.cargo/bin"
+    $"($nu.home-path)/.local/bin"
 ]
 $env.RUST_LOG = "ERROR"
 
@@ -168,11 +168,68 @@ def unspad [] {
   swaymsg gaps right all set 0
 }
 
-alias "paru" = paru --bottomup
-alias "c" = cargo
-alias "cat" = bat --style=plain
-alias "e" = ls+
-alias "g" = git
-alias "i" = t "-"
-alias "l" = lazygit
-alias "y" = yazi
+alias paru = paru --bottomup
+alias c = cargo
+alias cat = bat --style=plain
+alias e = ls+
+alias g = git
+alias i = t "-"
+alias l = lazygit
+alias y = yazi
+alias pass = pass-cli
+
+def "pass copy" [
+    vault: string
+    item: string
+    field?: string = "password"
+] {
+    # Copy field to clipboard
+    pass item view $"pass://($vault)/($item)/($field)" | copy
+    # Reset clipboard after 30 seconds
+    job spawn { sleep 30sec; "" | copy } | ignore
+}
+
+def p [] {
+    let items = pass vault list --output json
+        | from json
+        | get vaults
+        | par-each {
+            let vault_name = $in.name
+            pass item list $vault_name --output json
+                | from json
+                | get items
+                | each { $in | insert vault_name $vault_name }
+        }
+        | flatten
+
+    let choice = $items | each --flatten {
+        let title = $in.content.title
+        let login = $in.content.content.Login?
+        if ($login == null) { return [] }
+        let email = $login.email? | if ($in == null or $in == "") { "" } else { $" | ($in)" }
+        let username = $login.username? | if ($in == null or $in == "") { "" } else { $" | ($in)" }
+
+        [$"($title)($email)($username)\t($in.content.item_uuid)"]
+    }
+    | str join "\n"
+    | sk --delimiter="\t" --with-nth=1 --nth=1
+
+    # The last element is the UUID
+    let choice_uuid = $choice | str substring (($choice | str index-of "\t") + 1)..
+
+    let selected = $items | where content.item_uuid == $choice_uuid
+
+    let login = $selected.content.content.Login?
+    let username = $login.username?
+    let email = $login.email?
+
+    job spawn {
+        # Copy password to clipboard
+        $login.password | first | copy
+        # Reset clipboard after 30 seconds
+        sleep 30sec
+        "" | copy
+    }
+
+    { username: $username email: $email } | update cells { $in | first } | compact --empty
+}
