@@ -1,5 +1,6 @@
 source zoxide.nu
 source catppuccin.nu
+source atuin.nu
 
 use std/clip copy
 use std bench
@@ -203,16 +204,16 @@ def temp-copy []: string -> nothing {
 }
 
 def "pass new login" [
+    title: string
     website: string
     username?: string
-    --title (-t): string
     --email (-e): string
     --vault (-v): string = "logins"
     --password-length: int = 64
     --url (-l): list<string> = []
 ] {
-    let title = $title | default $website
     let title = if $username == null { $title } else { $"($title)+($username)" }
+
     let email = if $username == null and $email == null {
         $"($website)@422221.xyz"
     } else if $username != null and $email == null {
@@ -228,10 +229,19 @@ def "pass new login" [
         ...($url | each { $"--url ($in)" })
     )
 
-    ^pass-cli item view --item-id $item_id --vault-name $vault --output json
-        | from json
-        | get item.content.content.Login.password
-        | temp-copy
+    job spawn {
+        # Copy password to clipboard
+        ^pass-cli item view --item-id $item_id --vault-name $vault --output json
+            | from json
+            | get item.content.content.Login.password
+            | temp-copy
+
+        # Add creation date
+        (^pass-cli item update
+            --item-id $item_id
+            --vault-name $vault
+            --field created=(date now | format date "%+"))
+    }
 
     {
         vault: $vault

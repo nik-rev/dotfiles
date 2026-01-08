@@ -1,0 +1,18 @@
+style = "compact"
+inline_height = 20
+invert = true
+# Put the search bar at the top
+# invert = true
+# Hide help menu
+show_help = false
+prefers_reduced_motion = true
+filter_mode = "directory"
+# Configure whether or not to show tabs for search and inspect
+show_tabs = false
+# Configures whether or not to automatically check for updates
+update_check = false
+# Use Ctrl-0 .. Ctrl-9 instead of Alt-0 .. Alt-9 UI shortcuts
+ctrl_n_shortcuts = true
+
+[theme]
+name = "catppuccin"
