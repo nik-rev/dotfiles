@@ -251,6 +251,13 @@ def "pass new login" [
     } | compact --empty
 }
 
+def "atuin login" [] {
+   (^atuin login
+       --username (pass item view --vault-name login --item-title atuin --field Username)
+       --password (pass item view --vault-name login --item-title atuin --field Password)
+       --key (pass item view --vault-name login --item-title atuin --field key))
+}
+
 def p [] {
     let items = pass vault list --output json
         | from json
@@ -285,7 +292,7 @@ def p [] {
     let username = $login.username?
     let email = $login.email?
 
-    $login.password | temp-copy
+    $login.password | first | temp-copy
 
     { username: $username email: $email } | update cells { $in | first } | compact --empty
 }
