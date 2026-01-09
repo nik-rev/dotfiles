@@ -8,3 +8,7 @@ others are more complex, like using a directory called `Zed` rather than `zed` o
 
 These rules become increasingly hard to follow with a dedicated general-purpose binary for managing dotfiles,
 but given a specialized script it becomes very simple.
+
+# Linux Fonts
+
+This repository contains a bunch of fonts for a working system: <https://github.com/hazelshantz/Font-Collection/tree/main>
