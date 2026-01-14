@@ -12,6 +12,19 @@ View the public key:
 cat ~/.ssh/id_ed25519.pub
 ```
 
+# Swappiness
+
+The default value of [swappiness] is too high (60), to change it to the recommended 10:
+
+```sh
+sudo -E vim /etc/sysctl.conf
+# add this line: vm.swappiness=10
+sudo sysctl --load=/etc/sysctl.conf
+# now, reboot
+```
+
+[swappiness]: https://askubuntu.com/questions/157793/why-is-swap-being-used-even-though-i-have-plenty-of-free-ram
+
 # Cross-platform
 
 firefox
