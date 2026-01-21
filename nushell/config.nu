@@ -28,7 +28,7 @@ $env.config.completions.external.completer = {|spans|
 }
 
 # The prompt
-$env.PROMPT_COMMAND = { || $"(ansi purple_italic)(if $env.PWD == $nu.home-path { "~" } else { $env.PWD | path split | last } )(ansi reset)" }
+$env.PROMPT_COMMAND = { || $"(ansi purple_italic)(if $env.PWD == $nu.home-dir { "~" } else { $env.PWD | path split | last } )(ansi reset)" }
 # A prompt which can appear on the right side of the terminal
 $env.PROMPT_COMMAND_RIGHT = { || }
 # Emacs mode indicator
@@ -137,7 +137,7 @@ def ls+ [
 }
 
 # def pwd [] {
-#   alias pwd = pwd | str replace $nu.home-path '~'
+#   alias pwd = pwd | str replace $nu.home-dir '~'
 # }
 
 def nrs [] {
@@ -155,8 +155,8 @@ def --wrapped ns [ ...args: string ] {
 }
 
 $env.path ++= [
-    $"($nu.home-path)/.cargo/bin"
-    $"($nu.home-path)/.local/bin"
+    $"($nu.home-dir)/.cargo/bin"
+    $"($nu.home-dir)/.local/bin"
 ]
 $env.RUST_LOG = "ERROR"
 

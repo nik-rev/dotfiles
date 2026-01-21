@@ -7,7 +7,7 @@ const WINDOWS = $nu.os-info.name == "windows"
 
 const zed = if $WINDOWS { "Zed" } else { "zed" }
 let firefox_profile = match $nu.os-info.name {
-    "linux" => $"($nu.home-path)/.mozilla/firefox"
+    "linux" => $"($nu.home-dir)/.mozilla/firefox"
     "macos" => $"($c)/Firefox/Profiles"
     "windows" => $"($c)/Mozilla/Firefox/Profiles"
 }
