@@ -180,6 +180,8 @@ alias i = t "-"
 alias l = lazygit
 alias y = yazi
 alias pass = pass-cli
+alias linoffice = ~/.local/bin/linoffice/linoffice.sh
+alias word = ~/.local/bin/linoffice/linoffice.sh word
 
 def "pass copy" [
     vault: string
