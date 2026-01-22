@@ -2,6 +2,7 @@
 //
 // editor::FileHistory
 {
+  "inlay_hints": { "enabled": true },
   "languages": {
     "Rust": {
       "enable_language_server": true,
