@@ -9,6 +9,8 @@ use std repeat
 # When printing any kind of link in the terminal, make it openable in Zed
 alias rg = ^rg --hyperlink-format="zed://file{path}:{line}:{column}"
 
+$env.config.error_style = "short"
+
 # Enable completions for external commands (ones that aren't built-in)
 $env.config.completions.external.enable = true
 
