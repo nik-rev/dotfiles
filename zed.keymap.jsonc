@@ -17,8 +17,8 @@
       //
       // Global because we need them when we're not in Vim mode, e.g.
       // when we are in the "Project Search"
-      "shift-left": "pane::GoBack",
-      "shift-right": "pane::GoForward",
+      "shift-left": "pane::GoToOlderTag",
+      "shift-right": "pane::GoToNewerTag",
 
       // Make this the action everywhere. By default,
       // this selects the previous entry in the file explorer
@@ -316,12 +316,6 @@
 
       // Preview file
       "s": "project_panel::Open",
-
-      // use "left" and "right" instead of "[" and "]"
-      "right c": "project_panel::SelectNextGitEntry",
-      "left c": "project_panel::SelectPrevGitEntry",
-      "right d": "project_panel::SelectNextDiagnostic",
-      "left d": "project_panel::SelectPrevDiagnostic"
     }
   },
 

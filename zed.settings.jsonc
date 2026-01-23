@@ -104,7 +104,9 @@
     // Don't show left/right arrow on the left
     "show_nav_history_buttons": false,
     // Don't show the "new", "split pane" and "zoom in" buttons
-    "show_tab_bar_buttons": false
+    "show_tab_bar_buttons": false,
+    // Separate row for pinned tabs
+    "show_pinned_tabs_in_separate_row": true,
   },
 
   // Bar at the very top, with operating system decorations
