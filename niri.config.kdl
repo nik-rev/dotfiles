@@ -3,7 +3,7 @@ input {
 	    repeat-delay 200
 	    repeat-rate 50
 		xkb {
-			layout "us,ru(phonetic)"
+			layout "us,ru"
 
 			options "grp:alt_shift_toggle"
         }
