@@ -2,7 +2,6 @@ input {
     keyboard {
 	    repeat-delay 200
 	    repeat-rate 50
-
 		xkb {
 			layout "us,ru(phonetic)"
 
@@ -15,7 +14,6 @@ input {
 layout {
     background-color "#000000"
     center-focused-column "never"
-
     // By default focus ring and border are rendered as a solid background rectangle
     // behind windows. That is, they will show up through semitransparent windows.
     // This is because windows using client-side decorations can have an arbitrary shape.
@@ -114,7 +112,7 @@ binds {
     // or do a four-finger swipe up on a touchpad.
     //Alt+O repeat=false { toggle-overview; }
 
-    Alt+T { close-window; }
+    Super+T { close-window; }
 
     //Alt+Left  { focus-column-left; }
     //Alt+Down  { focus-window-down; }
@@ -125,10 +123,10 @@ binds {
     //Alt+K     { focus-window-up; }
     //Alt+L     { focus-column-right; }
 
-    Alt+N { focus-column-left; }
-    Alt+E { focus-window-down; }
+    Super+N { focus-column-left; }
+    Super+E { focus-window-down; }
     //Alt+I { focus-window-up; }
-    Alt+O { focus-column-right; }
+    Super+O { focus-column-right; }
 
     //Alt+Ctrl+Left  { move-column-left; }
     //Alt+Ctrl+Down  { move-window-down; }
@@ -195,18 +193,18 @@ binds {
    // Alt+Shift+U         { move-workspace-down; }
     //Alt+Shift+I         { move-workspace-up; }
 
-    Alt+W { focus-workspace 1; }
-    Alt+F { focus-workspace 2; }
-    Alt+P { focus-workspace 3; }
-    Alt+B { focus-workspace 4; }
+    Super+W { focus-workspace 1; }
+    Super+F { focus-workspace 2; }
+    Super+P { focus-workspace 3; }
+    Super+B { focus-workspace 4; }
 
-    Alt+5 { move-window-to-workspace 1; }
-    Alt+0 { move-window-to-workspace 2; }
-    Alt+3 { move-window-to-workspace 3; }
-    Alt+1 { move-window-to-workspace 4; }
+    Super+5 { move-window-to-workspace 1; }
+    Super+0 { move-window-to-workspace 2; }
+    Super+3 { move-window-to-workspace 3; }
+    Super+1 { move-window-to-workspace 4; }
 
     // mirrors Ctrl-6 from Vim
-    Alt+6 { focus-window-previous; }
+    Super+6 { focus-window-previous; }
 
     // Alternatively, there are commands to move just a single window:
     // Alt+Ctrl+1 { move-window-to-workspace 1; }
@@ -250,11 +248,11 @@ binds {
     // * adjust width as a percentage of screen width: "-10%" or "+10%"
     // Pixel sizes use logical, or scaled, pixels. I.e. on an output with scale 2.0,
     // set-column-width "100" will make the column occupy 200 physical screen pixels.
-    Alt+U { set-window-width "+10"; }
-    Alt+Y { set-window-width "-10"; }
+    Super+U { set-window-width "+10"; }
+    Super+Y { set-window-width "-10"; }
 
-    Alt+C { expand-column-to-available-width; }
-    Alt+Ctrl+F { fullscreen-window; }
+    Super+C { expand-column-to-available-width; }
+    Super+Ctrl+F { fullscreen-window; }
 
     // Finer height adjustments when in column with other windows.
     //Alt+Shift+Minus { set-window-height "-10%"; }
