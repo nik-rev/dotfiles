@@ -139,8 +139,8 @@
   {
     "context": "VimControl && !menu",
     "bindings": {
-      // Saving is so common, bind it to tab
-      "tab": "workspace::Save",
+      // Saving is so common, bind it to enter
+      "enter": "workspace::Save",
 
       // Incrementally increase/decrease tree-sitter selection
       "alt-down": "vim::SelectSmallerSyntaxNode",

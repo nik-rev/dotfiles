@@ -11,6 +11,10 @@
         "enabled": true
       }
     },
+    "Slint": {
+      "enable_language_server": true,
+      "format_on_save": "on",
+    },
     "JSON": {
       "enable_language_server": true
     },
@@ -92,7 +96,7 @@
   // Hide the status bar. The only reason why I'd need it is to check status of the language server,
   // because the editor otherwise doesn't provide that capability
   "status_bar": {
-    "experimental.show": false
+    "experimental.show": true
   },
 
   "git_panel": {
