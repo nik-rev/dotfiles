@@ -133,11 +133,16 @@ glide.keymaps.set(
   }),
 );
 
-glide.keymaps.set(ALL_MODES, "<C-t>", "tab_prev")
-glide.keymaps.set(ALL_MODES, "<C-n>", "tab_next")
-glide.keymaps.set(ALL_MODES, "<C-s>", "tab_close")
-glide.keymaps.set(VIM_CONTROL, "<S-left>", "back")
-glide.keymaps.set(VIM_CONTROL, "<S-right>", "forward")
+glide.keymaps.set(ALL_MODES, "<C-t>", "tab_prev") // en
+glide.keymaps.set(ALL_MODES, "<C-е>", "tab_prev") // ru
+glide.keymaps.set(ALL_MODES, "<C-n>", "tab_next") // en
+glide.keymaps.set(ALL_MODES, "<C-т>", "tab_next") // ru
+glide.keymaps.set(ALL_MODES, "<C-s>", "tab_close") // en
+glide.keymaps.set(ALL_MODES, "<C-ы>", "tab_close") // ru
+glide.keymaps.set(VIM_CONTROL, "<C-e>", "back") // en
+glide.keymaps.set(VIM_CONTROL, "<C-у>", "back") // ru
+glide.keymaps.set(VIM_CONTROL, "<C-i>", "forward") // en
+glide.keymaps.set(VIM_CONTROL, "<C-ш>", "forward") // ru
 
 glide.keymaps.set(ALL_MODES, "<C-w><C-n>", "tab_new")
 glide.keymaps.set(ALL_MODES, "<C-w>n", "tab_new")

@@ -10,7 +10,6 @@ input {
 	}
     focus-follows-mouse
 }
-
 layout {
     background-color "#000000"
     center-focused-column "never"

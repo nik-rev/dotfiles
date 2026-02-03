@@ -5,14 +5,12 @@
  * SPDX-License-Identifier: MIT
  */
 
-// NOTE: don't forget to configure CONFIG_ZMK_POINTING=y
-
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/pointing.h>
 
-// layers
+// layer names
 
 #define LAYER_DEFAULT  0
 #define LAYER_SYMBOLS  1
@@ -72,4 +70,4 @@
                         status = "reserved";
                 };
         };
-}
+};

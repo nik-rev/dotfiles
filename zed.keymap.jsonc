@@ -17,8 +17,8 @@
       //
       // Global because we need them when we're not in Vim mode, e.g.
       // when we are in the "Project Search"
-      "shift-left": "pane::GoBack",
-      "shift-right": "pane::GoForward",
+      "ctrl-e": "pane::GoBack",
+      "ctrl-i": "pane::GoForward",
 
       // Make this the action everywhere. By default,
       // this selects the previous entry in the file explorer
