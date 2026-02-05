@@ -211,6 +211,15 @@
     }
   },
 
+  {
+    "context": "VimControl && VimCount",
+    "bindings": {
+      // We overwrite the "0" keybind to respect visual lines, which will break
+      // counted jumps - so fix it by assigning to a number
+      "0": ["vim::Number", 0],
+    },
+  },
+
   // Bindings for search
   {
     "context": "!Terminal && Pane",
