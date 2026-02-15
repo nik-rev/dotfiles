@@ -24,41 +24,40 @@
                 default_layer {
                         display-name = "default";
                         bindings = <
-   &kp Z        &kp Q        &kp W &kp F              &kp P          &kp B         &kp J            &kp L              &kp U     &kp Y     &kp TAB          &kp DOWN
-   &kp ESC      &kp A        &kp R &kp S              &kp T          &kp G         &kp M            &kp N              &kp E     &kp I     &kp O            &kp ENTER
-   &kp LEFT_ALT &kp LEFT_GUI &kp X &kp C              &kp D          &kp V         &kp K            &kp H              &kp COMMA &kp DOT   &kp LEFT_CONTROL &kp UP
-                                   &to LAYER_SYMBOLS  &kp LEFT_SHIFT &kp SPACE     &mo LAYER_MOUSE  &mo LAYER_SYMBOLS  &kp BACKSPACE
+   &none        &kp Q        &kp W &kp F              &kp P          &kp B         &kp J            &kp L              &kp U     &kp Y     &kp DOWN         &none
+   &kp A        &mo 2        &kp R &kp S              &kp T          &kp G         &kp M            &kp N              &kp E     &kp I     &mo 1            &kp O
+   &kp Z        &kp ESCAPE   &kp X &kp C              &kp D          &kp V         &kp K            &kp H              &kp LEFT  &kp RIGHT &kp ENTER        &kp UP
+                                   &kp BACKSPACE &kp LEFT_SHIFT &kp SPACE     &kp LEFT_GUI  &kp LEFT_CONTROL  &kp LEFT_ALT
                         >;
                 };
 
                 lower_layer {
                         display-name = "symbols";
                         bindings = <
-   &kp TILDE     &kp N9            &kp N5               &kp N0           &kp N3       &kp N7             &kp N6                &kp N2      &kp N1          &kp N4       &kp N8           &kp CARET
-   &kp AMPERSAND &kp LEFT_BRACKET  &kp LEFT_PARENTHESES &kp LEFT_BRACE   &kp COLON    &kp UNDERSCORE     &kp PIPE              &kp EQUAL   &kp EXCLAMATION &kp QUESTION &kp SINGLE_QUOTE &kp ASTERISK
-   &kp BACKSLASH &kp RIGHT_BRACKET &kp PLUS             &kp MINUS        &kp HASH     &kp RIGHT_BRACE    &kp RIGHT_PARENTHESES &kp PERCENT &kp SEMICOLON   &kp DOLLAR   &kp AT           &kp SLASH
-                          	       &kp GRAVE            &kp LEFT_CONTROL &kp DOUBLE_QUOTES               &trans                &trans      &trans
+   &none         &none             &kp N9               &kp N5           &kp N0       &kp N3                   &kp N2                &kp N1      &kp N4          &kp N8            &none            &none
+   &kp AMPERSAND &kp LEFT_BRACKET  &kp LEFT_PARENTHESES &kp LEFT_BRACE   &kp COLON    &kp N7                   &kp N6                &kp EQUAL   &kp COMMA       &kp DOT           &trans           &none
+   &none         &kp RIGHT_BRACKET &kp PLUS             &kp MINUS        &kp HASH     &kp RIGHT_BRACE          &kp RIGHT_PARENTHESES &kp PERCENT &kp SEMICOLON   &kp GREATER_THAN  &none
+                          	       &kp CAPSLOCK         &kp LEFT_SHIFT   &kp PAGE_DOWN               &kp PAGE_UP                &kp LEFT_CONTROL      &kp LEFT_ALT
                         >;
                 };
 
                 extras_layer {
                         display-name = "extras";
                         bindings = <
-   &kp F12      &kp F10           &kp F6     &kp F1   &kp F4        &kp F8               &kp F7               &kp F3      &kp F2    &kp F5          &kp F9           &kp F11
-   &kp trans    &kp C_VOLUME_DOWN &kp DELETE &kp LEFT &kp HOME      &kp CAPSLOCK         &kp C_MUTE           &kp END     &kp RIGHT &kp PRINTSCREEN &kp C_VOLUME_UP  &kp trans
-   &sk LEFT_ALT &sk LEFT_GUI      &trans     &trans   &kp PAGE_DOWN &kp C_BRIGHTNESS_DEC &kp C_BRIGHTNESS_INC &kp PAGE_UP &trans    &trans          &sk LEFT_CONTROL &trans
-   &trans &trans      &trans        &kp LEFT_ALT   &kp LEFT_CONTROL &trans             &trans         &kp LEFT_CONTROL &kp LEFT_SHIFT &trans         &trans          &trans
-                                    &trans         &trans           &trans             &trans         &trans           &trans
+   &none  &none   &mo 3           &kp GRAVE     &kp EXCLAMATION  &kp TILDE           &kp UNDERSCORE  &kp QUESTION       &kp SINGLE_QUOTE  &kp PIPE        &none            &none
+   &none  &trans  &msc SCRL_DOWN  &msc SCRL_UP  &msc LCLCK       &msc MCLCK          &kp TAB         &mmv MOVE_LEFT     &mmv MOVE_UP      &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &kp ASTERISK
+   &none  &none   &kp LESS_THAN   &kp DOLLAR    &kp SLASH        &kp CARET           &msc RCLCK      &kp DOUBLE_QUOTES  &kp HOME          &kp END         &kp AT           &none
+                                                             &kp BACKSLASH    &kp LEFT_SHIFT  &msc SCRL_LEFT     &msc SCRL_RIGHT  &kp LEFT_CONTROL  &kp LEFT_ALT
                         >;
                 };
 
                 mouse_layer {
                         display-name = "mouse";
                         bindings = <
-   &trans &trans      &trans        &kp LEFT_SHIFT &trans           &trans             &trans            &trans           &kp LEFT_SHIFT &trans         &trans          &trans
-   &trans &kp PAGE_UP &kp PAGE_DOWN &msc SCRL_DOWN &msc SCRL_UP     &msc SCRL_RIGHT    &msc SCRL_LEFT    &mmv MOVE_LEFT   &mmv MOVE_UP   &mmv MOVE_DOWN &mmv MOVE_RIGHT &trans
-   &trans &trans      &trans        &kp LEFT_ALT   &kp LEFT_CONTROL &trans             &trans            &kp LEFT_CONTROL &kp LEFT_SHIFT &trans         &trans          &trans
-                          	        &none          &mkb RCLK        &mkb LCLK          &to LAYER_DEFAULT &mkb MCLK        &trans
+   &trans  &trans  &trans  &bt BT_CLR  &bt BT_SEL 1  &bt BT_SEL 2          &kp F1      &kp F2             &kp F3           &kp F4                &kp F5                &kp F6
+   &trans  &trans  &trans  &bt BT_PRV  &bt BT_NXT    &bt BT_SEL 3          &kp F7      &kp F8             &kp F9           &kp F10               &kp F11               &kp F12
+   &trans  &trans  &trans  &trans      &bt BT_SEL 5  &bt BT_SEL 4          &kp C_MUTE  &kp C_VOLUME_DOWN  &kp C_VOLUME_UP  &kp C_BRIGHTNESS_DEC  &kp C_BRIGHTNESS_INC  &kp PRINTSCREEN
+                          	        &trans  &kp LEFT_SHIFT  &kp LEFT_CONTROL  &kp LEFT_GUI  &kp LEFT_CONTROL  &kp LEFT_ALT
                         >;
                 };
 
