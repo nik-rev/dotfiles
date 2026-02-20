@@ -178,6 +178,12 @@
         "token_modifiers": ["defaultLibrary"],
         "font_weight": "bold"
       },
+      // because by default it will color all local variables in the standard library
+      // as being built-in
+      {
+        "token_type": "variable",
+        "style": ["variable"],
+      },
       {
         "token_type": "enum",
         "token_modifiers": ["declaration"],
@@ -234,8 +240,8 @@
   "restore_on_startup": "launchpad",
 
   // Fonts
-  "buffer_font_family": "JetBrains Mono",
-  "ui_font_family": "JetBrains Mono",
+  "buffer_font_family": "Fira Mono",
+  "ui_font_family": "Fira Mono",
   "ui_font_size": 20.0,
   "buffer_font_size": 20.0,
 
