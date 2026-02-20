@@ -3,14 +3,14 @@
 // editor::FileHistory
 {
   "inlay_hints": { "enabled": true },
+  // Disable LSP highlighting of word when hovering.
+  // This is a hack, thanks: https://github.com/zed-industries/zed/issues/6843#issuecomment-2543120502
+  "lsp_highlight_debounce": 999999999999999999,
   "languages": {
     "Rust": {
       "enable_language_server": true,
       "format_on_save": "on",
       "semantic_tokens": "combined",
-      "sticky_scroll": {
-        "enabled": true
-      }
     },
     "Slint": {
       "enable_language_server": true,
@@ -52,7 +52,7 @@
   // Don't show context when scrolling.
   // Requires explicit opt-in per language
   "sticky_scroll": {
-    "enabled": false
+    "enabled": true
   },
   // Don't use system prompts, ever. Zed UI is more integrated and cleaner
   "use_system_path_prompts": false,
@@ -164,7 +164,11 @@
     "semantic_token_rules": [
       {
         "token_type": "lifetime",
-        "foreground_color": "#74c7ec",
+        "style": ["label"],
+      },
+      {
+        "token_modifiers": ["mutable"],
+        "underline": "#45475a" // surface 1
       },
       {
         "token_type": "builtinType",
@@ -174,6 +178,11 @@
         "token_modifiers": ["defaultLibrary"],
         "font_weight": "bold"
       },
+      {
+        "token_type": "enum",
+        "token_modifiers": ["declaration"],
+        "style": ["type.enum"],
+      },
     ],
   },
   "theme_overrides": {
@@ -181,38 +190,41 @@
       // current line number is lavender
       "editor.active_line_number": "#b4befe",
       "syntax": {
-        // Teal field members
+        // field members: teal
         "property": {
           "color": "#94e2d5"
         },
-        // rosewater macros
-        "attribute": {
+        // labels & lifetimes: sapphire
+        "label": {
+          "color": "#74c7ec"
+        },
+        // macros: rosewater
+        "attribute": { // attributes, e.g. #[derive]
           "color": "#f5e0dc"
         },
         "function.macro": { // bang! macros
           "color": "#f5e0dc"
         },
-        "function.special": { // attributes, e.g. #[derive]
+        "function.special": { // also bang! macros
           "color": "#f5e0dc"
         },
         "function.decorator": {
           "color": "#f5e0dc"
         },
-        // builtin - bold
+        // built-functions: bold
         "function.builtin": {
           "color": "#89b4fa",
           "font_weight": 900
         },
-        // enum
+        // enums: flamingo
         "type.enum": {
-          "color": "#fab387"
+          "color": "#f2cdcd"
         },
-        // enum variant
-        "type.enum.member": {
-          "color": "#fab387",
+        "type.enum.member": { // enum variant
+          "color": "#f2cdcd",
         },
-        "variant": {
-          "color": "#fab387",
+        "variant": { // enum variant
+          "color": "#f2cdcd",
         },
       }
     }
