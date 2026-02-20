@@ -7,6 +7,7 @@
     "Rust": {
       "enable_language_server": true,
       "format_on_save": "on",
+      "semantic_tokens": "combined",
       "sticky_scroll": {
         "enabled": true
       }
@@ -159,15 +160,62 @@
   // Theme
   "theme": "Catppuccin Mocha",
   "icon_theme": "Material Icon Theme",
+  "global_lsp_settings": {
+    "semantic_token_rules": [
+      {
+        "token_type": "lifetime",
+        "foreground_color": "#74c7ec",
+      },
+      {
+        "token_type": "builtinType",
+        "font_weight": "bold"
+      },
+      {
+        "token_modifiers": ["defaultLibrary"],
+        "font_weight": "bold"
+      },
+    ],
+  },
   "theme_overrides": {
     "Catppuccin Mocha": {
       // current line number is lavender
       "editor.active_line_number": "#b4befe",
       "syntax": {
+        // Teal field members
+        "property": {
+          "color": "#94e2d5"
+        },
         // "mauve" macros
+        "attribute": {
+          "color": "#f5e0dc"
+        },
+        // bang! macros
+        "function.macro": {
+          "color": "#f5e0dc"
+        },
+        // attributes
         "function.special": {
           "color": "#f5e0dc"
-        }
+        },
+        "function.decorator": {
+          "color": "#f5e0dc"
+        },
+        // builtin - bold
+        "function.builtin": {
+          "color": "#89b4fa",
+          "font_weight": 900
+        },
+        // enum
+        "type.enum": {
+          "color": "#fab387"
+        },
+        // enum variant
+        "type.enum.member": {
+          "color": "#fab387",
+        },
+        "variant": {
+          "color": "#fab387",
+        },
       }
     }
   },
