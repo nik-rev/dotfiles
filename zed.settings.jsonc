@@ -185,16 +185,14 @@
         "property": {
           "color": "#94e2d5"
         },
-        // "mauve" macros
+        // rosewater macros
         "attribute": {
           "color": "#f5e0dc"
         },
-        // bang! macros
-        "function.macro": {
+        "function.macro": { // bang! macros
           "color": "#f5e0dc"
         },
-        // attributes
-        "function.special": {
+        "function.special": { // attributes, e.g. #[derive]
           "color": "#f5e0dc"
         },
         "function.decorator": {
@@ -224,8 +222,8 @@
   "restore_on_startup": "launchpad",
 
   // Fonts
-  "buffer_font_family": "Fira Mono",
-  "ui_font_family": "Fira Mono",
+  "buffer_font_family": "JetBrains Mono",
+  "ui_font_family": "JetBrains Mono",
   "ui_font_size": 20.0,
   "buffer_font_size": 20.0,
 
