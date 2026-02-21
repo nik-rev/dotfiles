@@ -1,0 +1,135 @@
+[keyboard]
+name = "Nik's Corne Keyboard"
+vendor_id = 0x4c4b
+product_id = 0x4643
+chip = "nrf52840"
+
+[layout]
+rows = 4
+cols = 12
+layers = 4
+matrix_map = """
+(0,0) (0,1) (0,2) (0,3) (0,4) (0,5)                (0,6) (0,7) (0,8) (0,9) (0,10) (0,11)
+(1,0) (1,1) (1,2) (1,3) (1,4) (1,5)                (1,6) (1,7) (1,8) (1,9) (1,10) (1,11)
+(2,0) (2,1) (2,2) (2,3) (2,4) (2,5)                (2,6) (2,7) (2,8) (2,9) (2,10) (2,11)
+                        (3,3) (3,4) (3,5)    (3,6) (3,7) (3,8)
+"""
+
+[[layer]]
+keys = """
+_        q       w      f      p      b          j      l       u      y      down   _
+a        MO(2)   r      s      t      g          m      n       e      i      MO(1)  o
+z        escape  x      c      d      v          k      h       left   right  enter  up
+                        @gui   @shift  backspace       space  @ctrl  @alt
+"""
+
+[[layer]]
+keys = """
+_            _      9                     5               0       3                2                      1         4         8                _     _
+@ampersand   [      @opening_parenthesis  @opening_brace  @colon  7                6                      =         comma     .                _     _
+_            ]      @plus                 -               @hash   @closing_brace   @closing_parenthesis   @percent  ;         @greater_than    _     _
+                                          caps_lock            @shift   page_down          page_up              @ctrl    @alt
+"""
+
+[[layer]]
+keys = """
+_        _      MO(3)             `              @exclamation @tilde               @underscore          @question      '        @pipe     _          _
+_        _      mouse_wheel_down  mouse_wheel_up @left_click  @middle_click        tab                  MouseLeft      MouseUp  MouseDown MouseRight @asterisk
+_        _      @less_than        @dollar        /            @caret               @right_click         @double_quote  Home     End       @at        _
+                                  \\           @shift        mouse_wheel_left     mouse_wheel_right    @ctrl         @alt
+"""
+
+[[layer]]
+keys = """
+_        _      _      @bt_clear  @bt1      @bt2       F1             F2             F3           F4             F5               F6
+_        _      _      @bt_prev   @bt_next  @bt3       F7             F8             F9           F10            F11              F12
+_        _      _      _          @bt5      @bt4       @volume_mute   @volume_down   @volume_up   brightness_up  brightness_down  print_screen
+                       _ @shift @ctrl         @gui       @ctrl          @alt
+"""
+
+[aliases]
+# Modifiers
+shift = "LShift"
+alt = "LAlt"
+gui = "LGui"
+ctrl = "LCtrl"
+
+# Symbols
+tilde = "WM(`, LShift)"
+underscore = "WM(-, LShift)"
+pipe = "WM(\\, LShift)"
+question = "WM(/, LShift)"
+double_quote = "WM(', LShift)"
+exclamation = "WM(1, LShift)"
+at = "WM(2, LShift)"
+hash = "WM(3, LShift)"
+dollar = "WM(4, LShift)"
+percent = "WM(5, LShift)"
+caret = "WM(6, LShift)"
+ampersand = "WM(7, LShift)"
+asterisk = "WM(8, LShift)"
+opening_parenthesis = "WM(9, LShift)"
+closing_parenthesis = "WM(0, LShift)"
+less_than = "WM(comma, LShift)"
+greater_than = "WM(., LShift)"
+opening_brace = "WM([, LShift)"
+closing_brace = "WM(], LShift)"
+colon = "WM(;, LShift)"
+plus = "WM(=, LShift)"
+
+# Mouse keys
+left_click = "mouse_button_1"
+right_click = "mouse_button_2"
+middle_click = "mouse_button_3"
+
+# media keys
+volume_down = "AudioVolDown"
+volume_up = "AudioVolUp"
+volume_mute = "Mute"
+
+# bluetooth profiles
+bt1 = "User0"
+bt2 = "User1"
+bt3 = "User2"
+bt4 = "User3"
+bt5 = "User4"
+
+# bluetooth controls
+bt_next = "User5" # switch to the next profile
+bt_prev = "User6" # switch to the previous profile
+bt_clear = "User7" # clear bond information about profile
+bt_usb = "User8" # switch default output between bluetooth/usb if usb is connected
+
+[host]
+vial_enabled = false
+
+[ble]
+enabled = true
+
+[split]
+connection = "ble"
+
+[split.central]
+rows = 4
+cols = 6
+row_offset = 0
+col_offset = 0
+
+[split.central.matrix]
+col_pins = ["P0_31", "P0_29", "P0_02", "P1_15", "P1_13", "P1_11"]
+row_pins = ["P0_22", "P0_24", "P1_00", "P0_11"]
+
+[[split.peripheral]]
+rows = 4
+cols = 6
+row_offset = 0
+col_offset = 6
+
+[split.peripheral.matrix]
+col_pins = ["P1_11", "P1_13", "P1_15", "P0_02", "P0_29", "P0_31"]
+row_pins = ["P0_22", "P0_24", "P1_00", "P0_11"]
+
+[rmk]
+ble_profiles_num = 5
+# Mouse key interval (ms) - controls mouse movement speed
+mouse_key_interval = 10
