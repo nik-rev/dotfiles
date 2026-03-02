@@ -39,6 +39,12 @@ Start up the VM:
 virsh start DOMAIN
 ```
 
+Open the VM in a window:
+
+```sh
+remote-viewer DISPLAY_PORT
+```
+
 Find the display port of the VM:
 
 ```sh
