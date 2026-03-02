@@ -33,10 +33,18 @@ List available VMs:
 virsh list
 ```
 
+## Open VM
+
 Start up the VM:
 
 ```sh
 virsh start DOMAIN
+```
+
+Find the display port of the VM:
+
+```sh
+virsh domdisplay DOMAIN
 ```
 
 Open the VM in a window:
@@ -45,11 +53,9 @@ Open the VM in a window:
 remote-viewer DISPLAY_PORT
 ```
 
-Find the display port of the VM:
+If VM on windows has low resolution: https://superuser.com/a/1822071
 
-```sh
-virsh domdisplay DOMAIN
-```
+## Power
 
 Shutdown the VM:
 
@@ -63,6 +69,8 @@ Reboot:
 ```sh
 virsh reboot DOMAIN
 ```
+
+## State
 
 Save all state to a file:
 
