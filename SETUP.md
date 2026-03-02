@@ -30,19 +30,60 @@ sudo sysctl --load=/etc/sysctl.conf
 List available VMs:
 
 ```sh
-virsh -c qemu:///system list 
+virsh list
+```
+
+Start up the VM:
+
+```sh
+virsh start DOMAIN
 ```
 
 Find the display port of the VM:
 
 ```sh
-virsh -c qemu:///system domdisplay win11
+virsh domdisplay DOMAIN
+```
+
+Shutdown the VM:
+
+```sh
+virsh shutdown DOMAIN
+# alternative (force): virsh destroy DOMAIN
+```
+
+Reboot:
+
+```sh
+virsh reboot DOMAIN
+```
+
+Save all state to a file:
+
+```sh
+virsh save DOMAIN save_file.save
+```
+
+Restore from state file:
+
+```sh
+virsh restore save_file.save
+```
+
+```sh
+virsh domrename DOMAIN new_domain_name
+```
+
+# Windows
+
+```sh
+scoop bucket add extras
+scoop bucket add versions
 ```
 
 # Cross-platform
 
-firefox
-zed
+zed-nightly (pacman: zed-preview-bin)
 nushell
 vim
 bat
