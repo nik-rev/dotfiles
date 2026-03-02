@@ -25,6 +25,20 @@ sudo sysctl --load=/etc/sysctl.conf
 
 [swappiness]: https://askubuntu.com/questions/157793/why-is-swap-being-used-even-though-i-have-plenty-of-free-ram
 
+# virtul machine management
+
+List available VMs:
+
+```sh
+virsh -c qemu:///system list 
+```
+
+Find the display port of the VM:
+
+```sh
+virsh -c qemu:///system domdisplay win11
+```
+
 # Cross-platform
 
 firefox

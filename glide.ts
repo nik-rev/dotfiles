@@ -3,8 +3,15 @@ const search_engines = {
   "lib.rs": "https://lib.rs/crates/{}",
   "docs.rs": "https://docs.rs/{}",
   google: "https://www.google.com/search?q={}",
+  ddg: "https://noai.duckduckgo.com/?q={}",
 } as const;
-const default_search_engine = search_engines.google;
+const default_search_engine = search_engines.ddg;
+
+// Keybindings will resolve to the physical key pressed,
+// so keybindings will be the same regardless of keyboard layout.
+glide.o.keymaps_use_physical_layout = "force";
+
+glide.o.newtab_url = "about:blank"
 
 // Automatically install used addons
 {
@@ -76,12 +83,6 @@ glide.keymaps.set("normal", "P", edit_select(null, async () => {
   await browser.tabs.create({ url });
 }))
 
-// Scroll a half page up: Can't be done, but this is best-effort
-glide.keymaps.set("normal", "u", edit_select("undo", "scroll_page_up"))
-
-// Scroll a half page down: Can't be done, but this is best-effort
-glide.keymaps.set("normal", "d", edit_select("motion d", "scroll_page_down"))
-
 // track previously active tab
 let previousTabId: number | undefined;
 browser.tabs.onActivated.addListener((activeInfo) => {
@@ -100,6 +101,7 @@ glide.keymaps.set("normal", "yf", () => {
   glide.hints.show({
     // biome-ignore lint/suspicious/noExplicitAny: ...
     action: async (target: any) => {
+      console.log(target)
       if (target.href) {
         await navigator.clipboard.writeText(target.href)
       }
@@ -133,37 +135,32 @@ glide.keymaps.set(
   }),
 );
 
-glide.keymaps.set(ALL_MODES, "<C-t>", "tab_prev") // en
-glide.keymaps.set(ALL_MODES, "<C-е>", "tab_prev") // ru
-glide.keymaps.set(ALL_MODES, "<C-n>", "tab_next") // en
-glide.keymaps.set(ALL_MODES, "<C-т>", "tab_next") // ru
-glide.keymaps.set(ALL_MODES, "<C-s>", "tab_close") // en
-glide.keymaps.set(ALL_MODES, "<C-ы>", "tab_close") // ru
-glide.keymaps.set(VIM_CONTROL, "<C-e>", "back") // en
-glide.keymaps.set(VIM_CONTROL, "<C-у>", "back") // ru
-glide.keymaps.set(VIM_CONTROL, "<C-i>", "forward") // en
-glide.keymaps.set(VIM_CONTROL, "<C-ш>", "forward") // ru
+glide.keymaps.set(ALL_MODES, "<C-t>", "tab_prev")
+glide.keymaps.set(ALL_MODES, "<C-n>", "tab_next")
+glide.keymaps.set(ALL_MODES, "<C-s>", "tab_close")
+glide.keymaps.set(VIM_CONTROL, "<C-e>", "back")
+glide.keymaps.set(VIM_CONTROL, "<C-i>", "forward")
 
 glide.keymaps.set(ALL_MODES, "<C-w><C-n>", "tab_new")
 glide.keymaps.set(ALL_MODES, "<C-w>n", "tab_new")
-glide.keymaps.set(ALL_MODES, "<C-w><C-left>", removeTabs((tab, active_tab) => tab < active_tab))
-glide.keymaps.set(ALL_MODES, "<C-w>left", removeTabs((tab, active_tab) => tab < active_tab))
-glide.keymaps.set(ALL_MODES, "<C-w><C-right>", removeTabs((tab, active_tab) => tab > active_tab))
-glide.keymaps.set(ALL_MODES, "<C-w>right", removeTabs((tab, active_tab) => tab > active_tab))
-glide.keymaps.set(ALL_MODES, "<C-w><C-up>", removeTabs((tab, active_tab) => tab !== active_tab))
+glide.keymaps.set(ALL_MODES, "<C-w><C-left>", remove_tabs((tab, active_tab) => tab < active_tab))
+glide.keymaps.set(ALL_MODES, "<C-w>left", remove_tabs((tab, active_tab) => tab < active_tab))
+glide.keymaps.set(ALL_MODES, "<C-w><C-right>", remove_tabs((tab, active_tab) => tab > active_tab))
+glide.keymaps.set(ALL_MODES, "<C-w>right", remove_tabs((tab, active_tab) => tab > active_tab))
+glide.keymaps.set(ALL_MODES, "<C-w><C-up>", remove_tabs((tab, active_tab) => tab !== active_tab))
 
 // Get the active Tab
-async function activeTab(): Promise<Browser.Tabs.Tab>  {
+async function active_tab(): Promise<Browser.Tabs.Tab>  {
   // SAFETY: The return value cannot be "undefined", because there is always 1 active tab
   return ((await browser.tabs.query({ active: true, currentWindow: true }))[0]) as Browser.Tabs.Tab;
 }
 
 // Remove tabs that satisfy the predicate
-function removeTabs(predicate: (tab: number, active_tab: number) => boolean) {
+function remove_tabs(predicate: (tab: number, active_tab: number) => boolean) {
   return async () => {
     const tabs = await browser.tabs.query({ pinned: false, currentWindow: true })
-    const active_Tab = await activeTab()
-    if (!activeTab) {
+    const active_Tab = await active_tab()
+    if (!active_tab) {
       return
     }
     const ids = tabs.filter(tab => predicate(tab.index, active_Tab.index)).map(tab => tab.id).filter(id => id !== undefined)
@@ -171,40 +168,29 @@ function removeTabs(predicate: (tab: number, active_tab: number) => boolean) {
   }
 }
 
-function opener(
-  newtab: boolean,
-): (props: glide.ExcmdCallbackProps) => void | Promise<void> {
+function create_open_tab_prompt({
+  new_tab
+}: {
+  new_tab: boolean
+}): (props: glide.ExcmdCallbackProps) => void | Promise<void> {
   // ref: https://github.com/glide-browser/glide/discussions/61#discussioncomment-14672404
   function args_to_url(args: string[]): string | undefined {
-    if (!args.length) return;
-
-    // A single argument with dots is a host or URL on its own.
-    // But take care to complete it with a scheme if it doesn't have one.
-    if (args.length === 1 && args[0]!.indexOf(".") >= 0) {
-      return /^[a-z]+:/.test(args[0]!) ? args[0]! : "https://" + args[0]!;
+    if (args.length === 1 && args[0]!.includes(".")) {
+      const has_scheme = /^[a-z]+:/.test(args[0]!);
+      return has_scheme ? args[0]! : "https://" + args[0]!;
     }
 
-    // Otherwise, consider the first argument as a search shorthand.
-    for (const [shorthand, url] of Object.entries(search_engines)) {
-      if (args[0]! === shorthand) {
-        args.shift(); // drop shorthand
-        const query = args.map(encodeURIComponent).join("+");
-        return url.replace("{}", query);
-      }
-    }
-
-    // No shorthand match. Feed all args to the default search engine.
     const query = args.map(encodeURIComponent).join("+");
-    return default_search_engine.replace("{}", query);
+    return `https://noai.duckduckgo.com/?q=${query}`;
   }
 
   return (props) => {
     const url = args_to_url(props.args_arr);
     if (url) {
-      if (newtab) {
+      if (new_tab) {
         browser.tabs.create({ url });
       } else {
-        browser.tabs.update({ url });
+        browser.tabs.update({ url })o
       }
     }
   };
@@ -220,7 +206,9 @@ function edit_select(
       ? called_if_editing
       : called_if_not_editing;
 
-    if (!action) return;
+    if (!action) {
+      return;
+    }
 
     if (typeof action === "string") {
       await glide.excmds.execute(action);
@@ -238,6 +226,8 @@ browser.tabs.onRemoved.addListener((tabId) => {
 browser.tabs.onDetached.addListener((tabId) => {
   tab_indices_before_pin.delete(tabId);
 });
+
+// Toggle pin
 glide.keymaps.set(ALL_MODES, "<C-w><C-p>", async ({ tab_id }) => {
   const tab = await browser.tabs.get(tab_id);
   if (tab.pinned) {
@@ -254,7 +244,7 @@ glide.keymaps.set(ALL_MODES, "<C-w><C-p>", async ({ tab_id }) => {
 });
 
 // Open URL in current tab
-glide.excmds.create({ name: "open" }, opener(false));
+glide.excmds.create({ name: "open" }, create_open_tab_prompt({ new_tab: false }));
 
 // Open URL in new tab
-glide.excmds.create({ name: "tab_open" }, opener(true));
+glide.excmds.create({ name: "tab_open" }, create_open_tab_prompt({ new_tab: true }));

@@ -29,6 +29,9 @@ $env.config.completions.external.completer = {|spans|
     }
 }
 
+# so we can type e.g. "virsh list" instead of "virsh -c qemu:///system list"
+$env.LIBVIRT_DEFAULT_URI = "qemu:///system"
+
 # The prompt
 $env.PROMPT_COMMAND = { || $"(ansi purple_italic)(if $env.PWD == $nu.home-dir { "~" } else { $env.PWD | path split | last } )(ansi reset)" }
 # A prompt which can appear on the right side of the terminal
