@@ -62,11 +62,7 @@ $env.config.show_banner = false
 
 $env.config.edit_mode = "vi"
 
-$env.config.cursor_shape = {
-    emacs: line
-    vi_insert: line
-    vi_normal: block
-}
+$env.config.cursor_shape.vi_insert = "line"
 
 # catppuccin compatible colors for ls
 $env.LS_COLORS = (vivid generate catppuccin-mocha)
@@ -129,5 +125,6 @@ alias cat = bat --style=plain
 alias e = ls+
 alias g = git
 alias i = t "-"
+alias r = zi
 alias l = lazygit
 alias y = yazi
