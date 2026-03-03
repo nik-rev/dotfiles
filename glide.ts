@@ -160,7 +160,7 @@ function remove_tabs(predicate: (tab: number, active_tab: number) => boolean) {
   return async () => {
     const tabs = await browser.tabs.query({ pinned: false, currentWindow: true })
     const active_Tab = await active_tab()
-    if (!active_tab) {
+    if (!active_Tab) {
       return
     }
     const ids = tabs.filter(tab => predicate(tab.index, active_Tab.index)).map(tab => tab.id).filter(id => id !== undefined)
@@ -190,7 +190,7 @@ function create_open_tab_prompt({
       if (new_tab) {
         browser.tabs.create({ url });
       } else {
-        browser.tabs.update({ url })o
+        browser.tabs.update({ url });
       }
     }
   };
