@@ -51,7 +51,7 @@ $env.PROMPT_COMMAND = { || $"(ansi purple_italic)(if $env.PWD == $nu.home-dir { 
 # A prompt which can appear on the right side of the terminal
 $env.PROMPT_COMMAND_RIGHT = { || }
 # Emacs mode indicator
-$env.PROMPT_INDICATOR = $"(ansi black)❯ "
+$env.PROMPT_INDICATOR = $"(ansi black)/ "
 # Vi-normal mode indicator
 $env.PROMPT_INDICATOR_VI_NORMAL = $env.PROMPT_INDICATOR
 # Vi-insert mode indicator
@@ -84,7 +84,7 @@ def n [
     --add (-a), # Add files to an existing workspace
     ...paths: path
 ] {
-    ^(if $nu.os-info.family == "windows" { "zed" } else { "zeditor" }) --add=$add --reuse=$reuse ...$paths
+    ^(if $nu.os-info.family == "windows" { "zed" } else { "zeditor" }) (if $add { --add }) (if $reuse { --reuse }) ...$paths
 }
 
 def ls+ [
@@ -110,7 +110,7 @@ def ls+ [
     --mime-type=$mime_type
     --threads=$threads
     ...$pattern
-  ) | sort-by modified | grid --separator "  " --color --width 80
+  ) | sort-by modified | each { if $in.type == "dir" { $"($in.name)/" } else { $in.name } } | grid --separator "  " --color --width 80
 }
 
 $env.path ++= [
