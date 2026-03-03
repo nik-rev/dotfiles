@@ -30,7 +30,19 @@ sudo sysctl --load=/etc/sysctl.conf
 List available VMs:
 
 ```sh
-virsh list
+virsh list --all
+```
+
+List available networks:
+
+```sh
+virsh net-list --all
+```
+
+Turn on the `default` network:
+
+```sh
+virsh net-start default
 ```
 
 ## Open VM
@@ -111,13 +123,18 @@ lazygit
 mpv
 carapace-bin
 mergiraf
-
 sccache
+fish (shell for completions)
 
-# Cross-platform, language-specific
+# Rust
 
-rust
-nodejs
+On windows, install Visual Studio C++ Build Tools
+
+package: rust
+
+# Windows only
+
+coreutils
 
 # Linux only
 
@@ -137,4 +154,5 @@ ttf-jetbrains-mono-nerd
 
 cargo-outdated
 cargo-expand
+cargo-reedme
 live-server

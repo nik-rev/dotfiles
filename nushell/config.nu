@@ -9,12 +9,21 @@ use std repeat
 # When printing any kind of link in the terminal, make it openable in Zed
 alias rg = ^rg --hyperlink-format="zed://file{path}:{line}:{column}"
 
-alias vm = sudo virsh
+alias vm = sudo virsh --connect=qemu:///system
 
-$env.config.error_style = "short"
+def "vm open" [domain: string] {
+    remote-viewer (vm domdisplay $domain)
+}
 
-# Enable completions for external commands (ones that aren't built-in)
-$env.config.completions.external.enable = true
+def "vm launch" [domain: string] {
+    vm start $domain
+    vm open $domain
+}
+
+# When changing the working directory, show contents of the new directory
+$env.config.hooks.env_change.PWD ++= [{ |old_dir, new_dir|
+    print (ls+)
+}]
 
 # Use the "fish" shell for completions
 $env.config.completions.external.completer = {|spans|
@@ -31,8 +40,11 @@ $env.config.completions.external.completer = {|spans|
     }
 }
 
-# so we can type e.g. "virsh list" instead of "virsh -c qemu:///system list"
-$env.LIBVIRT_DEFAULT_URI = "qemu:///system"
+# More compact errors
+$env.config.error_style = "short"
+
+# Enable completions for external commands (commands that aren't built-in)
+$env.config.completions.external.enable = true
 
 # The prompt
 $env.PROMPT_COMMAND = { || $"(ansi purple_italic)(if $env.PWD == $nu.home-dir { "~" } else { $env.PWD | path split | last } )(ansi reset)" }
@@ -44,20 +56,6 @@ $env.PROMPT_INDICATOR = $"(ansi black)❯ "
 $env.PROMPT_INDICATOR_VI_NORMAL = $env.PROMPT_INDICATOR
 # Vi-insert mode indicator
 $env.PROMPT_INDICATOR_VI_INSERT = $env.PROMPT_INDICATOR
-
-$env.config.keybindings ++= [
-  # ctrl-z to toggle foreground and background
-  {
-    name: unfreeze,
-    modifier: control,
-    keycode: char_z,
-    event: {
-      send: executehostcommand,
-      cmd: "job unfreeze"
-    },
-    mode: emacs
-  }
-]
 
 # disable welcome screen
 $env.config.show_banner = false
@@ -77,44 +75,20 @@ $env.EDITOR = "vim"
 
 # Commands for going to parent directories
 
-def --env o [] {
-  cd ..
-  ls+
-}
+def --env o [] { cd .. }
+def --env oo [] { cd ../.. }
+def --env ooo [] { cd ../../.. }
+def --env oooo [] { cd ../../../.. }
+def --env ooooo [] { cd ../../../../.. }
 
-def --env oo [] {
-  cd ../..
-  ls+
-}
+alias t = __zoxide_z
 
-def --env ooo [] {
-  cd ../../..
-  ls+
-}
-
-def --env oooo [] {
-  cd ../../../..
-  ls+
-}
-
-def --env ooooo [] {
-  cd ../../../../..
-  ls+
-}
-
-# Command for switching directories
-#
-# pass all args to zoxide then list contents of the new directory
-def --env --wrapped t [ ...args: string ] {
-  __zoxide_z ...$args
-  ls+
-}
-
-def z [
+def n [
     --reuse (-r), # Re-use existing window, replacing its workspace
+    --add (-a), # Add files to an existing workspace
     ...paths: path
 ] {
-   ^(if $nu.os-info.family == "windows" { "zed" } else { "zeditor" }) -a ...$paths
+    ^(if $nu.os-info.family == "windows" { "zed" } else { "zeditor" }) --add=$add --reuse=$reuse ...$paths
 }
 
 def ls+ [
@@ -143,40 +117,11 @@ def ls+ [
   ) | sort-by modified | grid --separator "  " --color --width 80
 }
 
-# def pwd [] {
-#   alias pwd = pwd | str replace $nu.home-dir '~'
-# }
-
-def nrs [] {
-  sudo -E nu ~/dotfiles/dots
-}
-
-# `nix develop` with nushell
-def --wrapped d [ ...args: string ] {
-    nix develop ...$args --command nu --execute $"$env.PROMPT_INDICATOR = '\(ansi blue\)❯ ';$env.PROMPT_INDICATOR_VI_NORMAL = $env.PROMPT_INDICATOR;$env.PROMPT_INDICATOR_VI_INSERT = $env.PROMPT_INDICATOR;"
-}
-
-# `nix-shell` with nushell
-def --wrapped ns [ ...args: string ] {
-    nix-shell ...$args --run $"$env.PROMPT_INDICATOR = '\(ansi blue\)❯ ';$env.PROMPT_INDICATOR_VI_NORMAL = $env.PROMPT_INDICATOR;$env.PROMPT_INDICATOR_VI_INSERT = $env.PROMPT_INDICATOR;"
-}
-
 $env.path ++= [
     $"($nu.home-dir)/.cargo/bin"
     $"($nu.home-dir)/.local/bin"
 ]
 $env.RUST_LOG = "ERROR"
-
-# for recording videos in a 16 * 9 resolution on a monitor of a different resolution
-def spad [] {
-  swaymsg gaps left all set 440
-  swaymsg gaps right all set 440
-}
-
-def unspad [] {
-  swaymsg gaps left all set 0
-  swaymsg gaps right all set 0
-}
 
 alias paru = paru --bottomup
 alias c = cargo
@@ -187,8 +132,6 @@ alias i = t "-"
 alias l = lazygit
 alias y = yazi
 alias pass = pass-cli
-alias linoffice = ~/.local/bin/linoffice/linoffice.sh
-alias word = ~/.local/bin/linoffice/linoffice.sh word
 
 def "pass copy" [
     vault: string
@@ -260,13 +203,6 @@ def "pass new login" [
         username: $username
         email: $email
     } | compact --empty
-}
-
-def "atuin login" [] {
-   (^atuin login
-       --username (pass item view --vault-name login --item-title atuin --field Username)
-       --password (pass item view --vault-name login --item-title atuin --field Password)
-       --key (pass item view --vault-name login --item-title atuin --field key))
 }
 
 def p [] {
