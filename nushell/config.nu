@@ -63,6 +63,7 @@ $env.config.show_banner = false
 $env.config.edit_mode = "vi"
 
 $env.config.cursor_shape.vi_insert = "line"
+$env.config.cursor_shape.vi_normal = "block"
 
 # catppuccin compatible colors for ls
 $env.LS_COLORS = (vivid generate catppuccin-mocha)
@@ -84,7 +85,7 @@ def n [
     --add (-a), # Add files to an existing workspace
     ...paths: path
 ] {
-    ^(if $nu.os-info.family == "windows" { "zed" } else { "zeditor" }) (if $add { --add }) (if $reuse { --reuse }) ...$paths
+    ^(if $nu.os-info.family == "windows" { "zed" } else { "zeditor" }) ...(if $add { [--add] }) ...(if $reuse { [--reuse] }) ...$paths
 }
 
 def ls+ [
@@ -99,6 +100,10 @@ def ls+ [
   ...pattern: glob, # The glob pattern to use.
 ] {
   let pattern = if ($pattern | is-empty) { ["."] } else { $pattern }
+  let width = 80
+  let separator = "   "
+  let max_item_width = 80 - ($separator | str length)
+
   (
     ls
     --all=$all
@@ -110,7 +115,7 @@ def ls+ [
     --mime-type=$mime_type
     --threads=$threads
     ...$pattern
-  ) | sort-by modified | each { if $in.type == "dir" { $"($in.name)/" } else { $in.name } } | grid --separator "  " --color --width 80
+  ) | sort-by modified | each { if $in.type == "dir" { $"($in.name)/" } else { $in.name } | str substring ..$max_item_width } | grid --separator $separator --color --width $width
 }
 
 $env.path ++= [
