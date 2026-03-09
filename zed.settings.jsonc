@@ -167,6 +167,10 @@
         "style": ["label"],
       },
       {
+        "token_type": "typeParameter",
+        "style": ["label"]
+      },
+      {
         "token_modifiers": ["mutable"],
         "underline": "#45475a" // surface 1
       },
