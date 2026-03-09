@@ -156,3 +156,7 @@ cargo-outdated
 cargo-expand
 cargo-reedme
 live-server
+
+# Linux Fonts
+
+This repository contains a bunch of fonts for a working system: <https://github.com/hazelshantz/Font-Collection/tree/main>

@@ -1,21 +1,12 @@
 #!/usr/bin/env nu
 
+# location of the config directory on various platforms
 const c = $nu.default-config-dir | path dirname
 
 const LINUX = $nu.os-info.name == "linux"
 const WINDOWS = $nu.os-info.name == "windows"
 
 const zed = if $WINDOWS { "Zed" } else { "zed" }
-let firefox_profile = match $nu.os-info.name {
-    "linux" => $"($nu.home-dir)/.mozilla/firefox"
-    "macos" => $"($c)/Firefox/Profiles"
-    "windows" => $"($c)/Mozilla/Firefox/Profiles"
-}
-let firefox_profile = if ($firefox_profile | path exists) { ls $firefox_profile | where { $in.name | str ends-with ".default-release" } | first | get name }
-let firefox_policies = match $nu.os-info.family {
-    "windows" => "~/scoop/apps/firefox/current"
-    "unix" => "/etc/firefox/policies"
-}
 
 const SUDO = false
 
@@ -33,8 +24,6 @@ let paths = {
     rio.toml: $"($c)/rio/config.toml"
     sway.config: $"($c)/sway/config"
     wezterm.lua: $"($c)/wezterm/wezterm.lua"
-    firefox.user.js: $"($firefox_profile)/user.js"
-    firefox.policies.json: (if $SUDO { $"($firefox_policies)/policies.json" })
     yazi.toml: $"($c)/yazi/yazi.toml"
     yazi.theme.toml: $"($c)/yazi/theme.toml"
     zed.settings.jsonc: $"($c)/($zed)/settings.json"
@@ -46,9 +35,7 @@ let paths = {
     presenterm: $"($c)/presenterm"
     helix: $"($c)/helix"
     bottom.toml: $"($c)/bottom/bottom.toml"
-    #bash.profile: (if $LINUX { "~/.bash_profile" })
     niri.config.kdl: (if $LINUX { $"($c)/niri/config.kdl" })
-    xdg-desktop-portal-termfilechooser.config: (if $LINUX { $"($c)/xdg-desktop-portal-termfilechooser/config" })
 }
 
 $paths
