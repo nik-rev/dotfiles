@@ -3,13 +3,14 @@ input {
 	    repeat-delay 200
 	    repeat-rate 50
 		xkb {
+		    // toggle between english/russian keyboard layout with alt+shift
 			layout "us,ru"
-
 			options "grp:alt_shift_toggle"
         }
 	}
     focus-follows-mouse
 }
+
 layout {
     background-color "#000000"
     center-focused-column "never"
@@ -26,7 +27,7 @@ layout {
 
     // You can change how the focus ring looks.
     focus-ring {
-	off
+        off
     }
 
     gaps 0

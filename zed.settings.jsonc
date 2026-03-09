@@ -153,7 +153,11 @@
     "copy_on_select": true,
     "shell": {
       // Use nushell as the interactive shell
-      "program": "nu"
+      "with_arguments": {
+        "program": "nu",
+        "args": ["--experimental-options=native-clip"],
+      }
+      // "program": "nu"
     }
   },
 
