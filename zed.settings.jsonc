@@ -3,9 +3,6 @@
 // editor::FileHistory
 {
   "inlay_hints": { "enabled": true },
-  // Disable LSP highlighting of word when hovering.
-  // This is a hack, thanks: https://github.com/zed-industries/zed/issues/6843#issuecomment-2543120502
-  "lsp_highlight_debounce": 999999999999999999,
   "languages": {
     "Rust": {
       "enable_language_server": true,
@@ -16,11 +13,14 @@
       "enable_language_server": true,
       "format_on_save": "on",
     },
+    "TOML": {
+      "enable_language_server": true,
+    },
     "JSON": {
-      "enable_language_server": true
+      "enable_language_server": true,
     },
     "JSONC": {
-      "enable_language_server": true
+      "enable_language_server": true,
     },
     "Nu": {
       "enable_language_server": true,
@@ -29,30 +29,47 @@
       "formatter": {
         "external": {
           "command": "nufmt",
-          "arguments": ["--stdin"]
-        }
-      }
-    }
+          "arguments": ["--stdin"],
+        },
+      },
+    },
   },
   "lsp": {
     "rust-analyzer": {
+      // "binary": {
+      //   "path": "/home/e/random/rust-analyzer/target/debug/rust-analyzer",
+      //   "arguments": []
+      // },
       "initialization_options": {
         "check": {
           "command": "clippy"
+        },
+        "rustc": {
+          "source": "discover"
         }
       }
+    },
+    "cargo-ls": {
+      "binary": {
+        "path": "/home/e/oss/cargo-ls/target/debug/cargo-ls",
+      }
     }
+    // "tombi": {
+    //   "settings": {
+    //     "lsp.diagnostic.enabled": false,
+    //   },
+    // },
   },
   // Disable inline blame
   "git": {
     "inline_blame": {
-      "enabled": false
-    }
+      "enabled": false,
+    },
   },
   // Don't show context when scrolling.
   // Requires explicit opt-in per language
   "sticky_scroll": {
-    "enabled": true
+    "enabled": true,
   },
   // Don't use system prompts, ever. Zed UI is more integrated and cleaner
   "use_system_path_prompts": false,
@@ -63,7 +80,7 @@
     // Don't show breakpoint in the gutter
     "breakpoints": false,
     // Disable folds
-    "folds": false
+    "folds": false,
     // TODO: Mouse should not activate breakpoint, but if the breakpoint exists then
     // we will show it. Zed doesn't have this feature, so we'll have to contribute it
   },
@@ -74,7 +91,7 @@
   // Use Vim keybindings
   "vim_mode": true,
   // Disable language servers by default, except explicitly allowed languages
-  "enable_language_server": false,
+  // "enable_language_server": false,
   // Disable automatic editor formatting.
   "format_on_save": "off",
   // Don't show lightning symbol when there are
@@ -82,7 +99,7 @@
   "inline_code_actions": false,
   "preview_tabs": {
     "enable_keep_preview_on_code_navigation": true,
-    "enable_preview_from_file_finder": true
+    "enable_preview_from_file_finder": true,
   },
   "scroll_beyond_last_line": "off",
   "tabs": {
@@ -92,16 +109,16 @@
     // Show icon in tab when the tab has a warning/error
     "show_diagnostics": "all",
     // Use different color if there are potential changes to commit
-    "git_status": true
+    "git_status": true,
   },
   // Hide the status bar. The only reason why I'd need it is to check status of the language server,
   // because the editor otherwise doesn't provide that capability
   "status_bar": {
-    "experimental.show": true
+    "experimental.show": true,
   },
 
   "git_panel": {
-    "tree_view": true
+    "tree_view": true,
   },
 
   // Contains a list of open buffers
@@ -135,7 +152,7 @@
     // Don't show the 3 buttons for buffer search, selection controls and editor controls
     "quick_actions": false,
     // Don't show breadcrumbs, i.e. where in the file we are AST-wise
-    "breadcrumbs": false
+    "breadcrumbs": false,
   },
 
   // Every time the current editor loses focus,
@@ -146,7 +163,7 @@
   "project_panel": {
     // Hide the root entry when there is only one entry
     // in the workspace
-    "hide_root": true
+    "hide_root": true,
   },
   "terminal": {
     // Selecting text in the terminal copies it to the clipboard
@@ -156,9 +173,9 @@
       "with_arguments": {
         "program": "nu",
         "args": ["--experimental-options=native-clip"],
-      }
+      },
       // "program": "nu"
-    }
+    },
   },
 
   // Theme
@@ -172,19 +189,19 @@
       },
       {
         "token_type": "typeParameter",
-        "style": ["label"]
+        "style": ["label"],
       },
       {
         "token_modifiers": ["mutable"],
-        "underline": "#45475a" // surface 1
+        "underline": "#45475a", // surface 1
       },
       {
         "token_type": "builtinType",
-        "font_weight": "bold"
+        "font_weight": "bold",
       },
       {
         "token_modifiers": ["defaultLibrary"],
-        "font_weight": "bold"
+        "font_weight": "bold",
       },
       // because by default it will color all local variables in the standard library
       // as being built-in
@@ -206,42 +223,51 @@
       "syntax": {
         // field members: teal
         "property": {
-          "color": "#94e2d5"
+          "color": "#94e2d5",
         },
         // labels & lifetimes: sapphire
         "label": {
-          "color": "#74c7ec"
+          "color": "#74c7ec",
         },
         // macros: rosewater
-        "attribute": { // attributes, e.g. #[derive]
-          "color": "#f5e0dc"
+        "attribute": {
+          // attributes, e.g. #[derive]
+          "color": "#f5e0dc",
         },
-        "function.macro": { // bang! macros
-          "color": "#f5e0dc"
+        "function.macro": {
+          // bang! macros
+          "color": "#f5e0dc",
         },
-        "function.special": { // also bang! macros
-          "color": "#f5e0dc"
+        "comment.documentation": {
+          // doc comments `///`
+          "color": "#f5c2e7",
+        },
+        "function.special": {
+          // also bang! macros
+          "color": "#f5e0dc",
         },
         "function.decorator": {
-          "color": "#f5e0dc"
+          "color": "#f5e0dc",
         },
         // built-functions: bold
         "function.builtin": {
           "color": "#89b4fa",
-          "font_weight": 900
+          "font_weight": 900,
         },
         // enums: flamingo
         "type.enum": {
-          "color": "#f2cdcd"
-        },
-        "type.enum.member": { // enum variant
           "color": "#f2cdcd",
         },
-        "variant": { // enum variant
+        "type.enum.member": {
+          // enum variant
           "color": "#f2cdcd",
         },
-      }
-    }
+        "variant": {
+          // enum variant
+          "color": "#f2cdcd",
+        },
+      },
+    },
   },
 
   // Open dashboard when opening zed again, instead of just opening the last project
@@ -260,8 +286,8 @@
   "scrollbar": {
     "axes": {
       "vertical": false,
-      "horizontal": false
-    }
+      "horizontal": false,
+    },
   },
 
   // Disable AI
@@ -270,7 +296,7 @@
   // Disable telemetry
   "telemetry": {
     "diagnostics": false,
-    "metrics": false
+    "metrics": false,
   },
 
   // Disable automatic updates
@@ -328,11 +354,11 @@
     "tree-sitter-query": true,
     "tera": true,
     "uiua": true,
-    "lean4": true
+    "lean4": true,
   },
 
   "session": {
-    "trust_all_worktrees": true
+    "trust_all_worktrees": true,
   },
 
   // TODO: Disable cursor movement via mouse click. Zed doesn't have the feature, so we must contribute it
