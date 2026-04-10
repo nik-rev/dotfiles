@@ -1774,7 +1774,7 @@ checksum = "a96887878f22d7bad8a3b6dc5b7440e0ada9a245242924394987b21cf2210a4c"
 [[package]]
 name = "rmk"
 version = "0.8.2"
-source = "git+https://github.com/nik-contrib/rmk?branch=personal#177fb876050ceeb5683eeac5599f6ee9ff973037"
+source = "git+https://github.com/HaoboGu/rmk?rev=e5c834e6c4d3791713a16dca7344f7aec52f56a4#e5c834e6c4d3791713a16dca7344f7aec52f56a4"
 dependencies = [
  "bitfield-struct",
  "bt-hci",
@@ -1819,7 +1819,7 @@ dependencies = [
 [[package]]
 name = "rmk-config"
 version = "0.6.1"
-source = "git+https://github.com/nik-contrib/rmk?branch=personal#177fb876050ceeb5683eeac5599f6ee9ff973037"
+source = "git+https://github.com/HaoboGu/rmk?rev=e5c834e6c4d3791713a16dca7344f7aec52f56a4#e5c834e6c4d3791713a16dca7344f7aec52f56a4"
 dependencies = [
  "cargo_toml",
  "config",
@@ -1836,7 +1836,7 @@ dependencies = [
 [[package]]
 name = "rmk-macro"
 version = "0.7.1"
-source = "git+https://github.com/nik-contrib/rmk?branch=personal#177fb876050ceeb5683eeac5599f6ee9ff973037"
+source = "git+https://github.com/HaoboGu/rmk?rev=e5c834e6c4d3791713a16dca7344f7aec52f56a4#e5c834e6c4d3791713a16dca7344f7aec52f56a4"
 dependencies = [
  "cargo_toml",
  "darling",
@@ -1847,8 +1847,10 @@ dependencies = [
  "proc-macro2",
  "quote",
  "rmk-config",
+ "rmk-types",
  "serde",
  "serde_derive",
+ "strum",
  "syn 2.0.117",
  "toml",
 ]
@@ -1856,7 +1858,7 @@ dependencies = [
 [[package]]
 name = "rmk-types"
 version = "0.2.2"
-source = "git+https://github.com/nik-contrib/rmk?branch=personal#177fb876050ceeb5683eeac5599f6ee9ff973037"
+source = "git+https://github.com/HaoboGu/rmk?rev=e5c834e6c4d3791713a16dca7344f7aec52f56a4#e5c834e6c4d3791713a16dca7344f7aec52f56a4"
 dependencies = [
  "bitfield-struct",
  "defmt 1.0.1",
@@ -1961,9 +1963,9 @@ checksum = "388a1df253eca08550bef6c72392cfe7c30914bf41df5269b68cbd6ff8f570a3"
 
 [[package]]
 name = "sequential-storage"
-version = "6.0.1"
+version = "7.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f6f93d860af08a0079f1c596b65176d5ea2bca1f977ba6210d4547aa16865477"
+checksum = "574e5a379bf43653079b34cb4cf32958404b5f42e0ed5b5adcdff02c2de04d4d"
 dependencies = [
  "defmt 1.0.1",
  "embedded-storage-async",

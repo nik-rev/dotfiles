@@ -10,7 +10,10 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-rmk = { git = "https://github.com/nik-contrib/rmk", branch = "personal", version = "0.8", default-features = false, features = [
+# Note to self: don't update to a new RMK version because they are vibe coding
+# this firmware and I encountered several bugs such as swapped mouse keys and
+# a new mouse key scroll algorithm that is harder to use.
+rmk = { git = "https://github.com/HaoboGu/rmk", rev = "e5c834e6c4d3791713a16dca7344f7aec52f56a4", version = "0.8.2", default-features = false, features = [
     "defmt",
     "storage", # to remember bluetooth profile information
     "nrf52840_ble",
