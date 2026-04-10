@@ -240,7 +240,7 @@
         },
         "comment.documentation": {
           // doc comments `///`
-          "color": "#f5c2e7",
+          "color": "#a6adc8",
         },
         "function.special": {
           // also bang! macros
