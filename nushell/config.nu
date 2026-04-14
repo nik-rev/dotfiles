@@ -25,6 +25,8 @@ $env.config.hooks.env_change.PWD ++= [{ |old_dir, new_dir|
     print (ls+)
 }]
 
+$env.config.completions.algorithm = "fuzzy"
+
 # Use the "fish" shell for completions
 $env.config.completions.external.completer = {|spans|
     fish --command $"complete '--do-complete=($spans | str replace --all "'" "\\'" | str join ' ')'"
