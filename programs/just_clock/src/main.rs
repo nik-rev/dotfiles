@@ -11,13 +11,12 @@ pub fn main() {
         layer_settings: LayerShellSettings {
             size: Some((36, 18)),
             anchor: Anchor::Bottom | Anchor::Right,
-            exclusive_zone: -1, // Overlay
             ..Default::default()
         },
         ..Default::default()
     };
 
-    Clock::run(settings).unwrap()
+    JustClock::run(settings).unwrap()
 }
 
 impl TryFrom<Message> for iced_layershell::actions::LayershellCustomActions {
@@ -27,7 +26,7 @@ impl TryFrom<Message> for iced_layershell::actions::LayershellCustomActions {
     }
 }
 
-struct Clock {
+struct JustClock {
     time: String,
 }
 
@@ -36,31 +35,31 @@ enum Message {
     Tick,
 }
 
-impl Application for Clock {
+fn now() -> String {
+    Local::now().format("%H:%M").to_string()
+}
+
+impl Application for JustClock {
     type Message = Message;
     type Flags = ();
     type Theme = Theme;
     type Executor = iced::executor::Default;
 
     fn new(_flags: ()) -> (Self, iced::Task<Message>) {
-        (
-            Self {
-                time: Local::now().format("%H:%M").to_string(),
-            },
-            iced::Task::none(),
-        )
+        (Self { time: now() }, iced::Task::none())
     }
 
     fn namespace(&self) -> String {
-        String::from("Niri Clock")
+        String::from("just-clock")
     }
 
     fn update(&mut self, message: Message) -> iced::Task<Message> {
         match message {
             Message::Tick => {
-                self.time = Local::now().format("%H:%M").to_string();
+                self.time = now();
             }
         }
+
         iced::Task::none()
     }
 
