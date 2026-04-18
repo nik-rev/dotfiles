@@ -1,9 +1,6 @@
 #!/bin/env -S cargo +nightly -Zscript
 ---
-# This repository contains my personal config files.
-#
-# They are set up by this script: README.rs
-
+# <!--
 package.edition = "2024"
 
 [dependencies]
@@ -14,9 +11,12 @@ walkdir = "2.5"
 fs = { package = "fs-err", version = "3" }
 which = "8.0"
 ---
-/*
+/* -->
 ```rust
 */
+// This repository contains my personal config files.
+//
+// They are set up by this script: README.rs
 #![feature(const_trait_impl)]
 #![feature(const_convert)]
 #![feature(decl_macro)]
