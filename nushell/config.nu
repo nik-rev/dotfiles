@@ -67,6 +67,9 @@ $env.config.edit_mode = "vi"
 $env.config.cursor_shape.vi_insert = "line"
 $env.config.cursor_shape.vi_normal = "block"
 
+# removes frame around tables when printing (TBD: enable in 0.112)
+# $env.config.table.mode = "frameless"
+
 # catppuccin compatible colors for ls
 $env.LS_COLORS = (vivid generate catppuccin-mocha)
 

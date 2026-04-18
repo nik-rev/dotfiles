@@ -14,6 +14,7 @@ walkdir = "2.5"
 fs = { package = "fs-err", version = "3" }
 which = "8.0"
 ---
+// ```rust
 #![feature(const_trait_impl)]
 #![feature(const_convert)]
 #![feature(decl_macro)]
@@ -290,3 +291,4 @@ impl const From<&'static str> for Package {
         }
     }
 }
+// ```
