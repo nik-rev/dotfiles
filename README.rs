@@ -51,20 +51,22 @@ fn main() -> Result {
         "delta",
         "ripgrep",
         unix("nushell"), win("nu"),
-        win("coreutils"),
         "zoxide",
         "carapace-bin",
-
-        linux("noto-fonts-cjk"),
-        linux("noto-fonts-emoji"),
-        linux("noto-fonts"),
-        linux("ttf-jetbrains-mono"),
-        linux("ttf-jetbrains-mono-nerd"),
 
         cargo("cargo-outdated"),
         cargo("cargo-expand"),
         cargo("cargo-reedme"),
         cargo("live-server"),
+
+        win("coreutils"),
+
+        linux("kanshi"), // dynamic display configuration Wayland daemon
+        linux("noto-fonts-cjk"),
+        linux("noto-fonts-emoji"),
+        linux("noto-fonts"),
+        linux("ttf-jetbrains-mono"),
+        linux("ttf-jetbrains-mono-nerd"),
     ];
 
     // scoop buckets: main
