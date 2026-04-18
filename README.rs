@@ -1,25 +1,22 @@
 #!/bin/env -S cargo +nightly -Zscript
-
 ---
+# This repository contains my personal config files.
+#
+# They are set up by this script: README.md, which is both the
+# markdown file you are reading right now, but also an executable script!
+package.edition = "2024"
 
-    package.edition = "2024"
-
-    [dependencies]
-    etcetera = "0.11"
-    eyre = "0.6"
-    rayon = "1.12"
-    walkdir = "2.5"
-    fs = { package = "fs-err", version = "3" }
-    which = "8.0"
-
+[dependencies]
+etcetera = "0.11"
+eyre = "0.6"
+rayon = "1.12"
+walkdir = "2.5"
+fs = { package = "fs-err", version = "3" }
+which = "8.0"
 ---
 /*
 ```rust
 */
-// This repository contains my personal config files.
-//
-// They are set up by this script: README.md, which is both the
-// markdown file you are reading right now, but also an executable script!
 #![feature(const_trait_impl)]
 #![feature(const_convert)]
 #![feature(decl_macro)]
