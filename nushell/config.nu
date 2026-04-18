@@ -77,6 +77,9 @@ $env.EDITOR = "vim"
 
 # Add the current working directory to the path, so we can run scripts
 # without needing to prefix it with "./"
+#
+# NOTE: Must be at the end, so files in the current directory do
+# not get picked over system-wide binaries.
 $env.PATH ++= ["."]
 
 # Commands for going to parent directories
