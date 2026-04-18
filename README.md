@@ -18,7 +18,8 @@
 */
 // This repository contains my personal config files.
 //
-// They are set up by this script: README.rs
+// They are set up by this script: README.md, which is both the
+// markdown file you are reading right now, but also an executable script!
 #![feature(const_trait_impl)]
 #![feature(const_convert)]
 #![feature(decl_macro)]
