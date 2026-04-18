@@ -4,6 +4,7 @@
 #
 # They are set up by this script: README.md, which is both the
 # markdown file you are reading right now, but also an executable script!
+
 package.edition = "2024"
 
 [dependencies]
