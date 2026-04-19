@@ -42,9 +42,9 @@ _        _      @less_than        @dollar        /            @caret            
 [[layer]]
 keys = """
 _        _      _      @bt_clear  @bt1      @bt2       F1             F2             F3           F4             F5               F6
-_        _      _      @bt_prev   @bt_next  @bt3       F7             F8             F9           F10            F11              F12
-_        _      _      _          @bt5      @bt4       @volume_mute   @volume_down   @volume_up   brightness_up  brightness_down  print_screen
-                       _ @shift @ctrl         @gui       @ctrl          @alt
+_        _      _      @bt_next   @bt_usb   @bt3       F7             F8             F9           F10            F11              F12
+_        _      _      @bt_prev   @bt5      @bt4       @volume_mute   @volume_down   @volume_up   brightness_up  brightness_down  print_screen
+                       _ @shift @ctrl        @gui       @ctrl          @alt
 """
 
 [aliases]
