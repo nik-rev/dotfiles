@@ -11,23 +11,34 @@ eyre = "0.6"
 color-eyre = "0.6"
 fs = { version = "3.3", package = "fs-err" }
 camino = "1.2"
+log = "0.4"
+colog = "1.4"
 ---
 
+#[allow(unused)]
 use prelude::*;
 
 fn main() -> Result {
     color_eyre::install()?;
+    colog::init();
 
     Ok(())
 }
 
+#[allow(unused)]
 mod prelude {
     pub use crate::eyre_prelude::*;
     pub use camino::Utf8Path as Path;
     pub use camino::Utf8PathBuf as PathBuf;
     pub use farben::prelude::*;
+    pub use log::debug;
+    pub use log::error;
+    pub use log::info;
+    pub use log::trace;
+    pub use log::warn;
 }
 
+#[allow(unused)]
 mod eyre_prelude {
     pub type Result<T = (), E = eyre::Report> = eyre::Result<T, E>;
 
@@ -36,6 +47,9 @@ mod eyre_prelude {
     pub use eyre::eyre as report;
     pub use eyre::Report;
     pub use eyre::WrapErr as ResultExt;
+
+    use core::fmt::Debug;
+    use core::fmt::Display;
 
     pub trait OptionExt<T> {
         fn try_ok(self) -> Result<T>;
