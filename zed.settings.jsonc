@@ -172,6 +172,7 @@
   "cursor_shape": "bar",
   "relative_line_numbers": "enabled",
   "project_panel": {
+    "dock": "left",
     // Hide the root entry when there is only one entry
     // in the workspace
     "hide_root": true,
