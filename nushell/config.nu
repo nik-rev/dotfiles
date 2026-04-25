@@ -75,6 +75,8 @@ $env.LS_COLORS = (vivid generate catppuccin-mocha)
 
 $env.EDITOR = "vim"
 
+$env.BROWSER = "glide-bin"
+
 # Add the current working directory to the path, so we can run scripts
 # without needing to prefix it with "./"
 #
