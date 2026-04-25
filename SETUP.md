@@ -1,3 +1,10 @@
+# Directories
+
+- `w`: Work stuff
+- `p`: Personal projects
+- `c`: Contributions to other people's projects
+- `t`: Temporary folder, may be `rm rf`d at any time
+
 # Set up Git
 
 Generate SSH key:
