@@ -2,6 +2,10 @@
 codegen-backend = true
 feature-unification = true
 
+[alias]
+t = "nextest run"
+nt = "nextest"
+
 [target.x86_64-unknown-linux-gnu]
 linker = "clang"
 rustflags = ["-Clink-arg=--ld-path=wild"]
@@ -12,7 +16,7 @@ linker = "rust-lld.exe"
 
 [profile.dev]
 # Use `cranelift` backend instead of the `llvm` while developing, for faster compile speeds
-#codegen-backend = "cranelift"
+codegen-backend = "cranelift"
 # Don't include debug information.
 debug = false
 # Strip everything

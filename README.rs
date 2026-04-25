@@ -2,7 +2,7 @@
 ---
 # This repository contains my personal config files.
 #
-# They are set up by this script: README.md, which is both the
+# They are set up by this script: README.rs, which is both the
 # markdown file you are reading right now, but also an executable script!
 
 package.edition = "2024"
@@ -58,6 +58,7 @@ fn main() -> Result {
         cargo("cargo-expand"),
         cargo("cargo-reedme"),
         cargo("live-server"),
+        cargo("cargo-nextest"),
 
         win("coreutils"),
 
@@ -74,6 +75,7 @@ fn main() -> Result {
     let paths = paths! {
         "alacritty.toml" => config.join("alacritty/alacritty.toml"),
         "cargo.config.toml" => home.join(".cargo/config.toml"),
+        "cargo.config.toml" => home.join("random/.cargo/config.toml"),
         "git.config" => config.join("git/config"),
         "git.attributes" => config.join("git/attributes"),
         "atuin.toml" => config.join("atuin/config.toml"),
