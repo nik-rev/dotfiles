@@ -75,7 +75,7 @@ fn main() -> Result {
     let paths = paths! {
         "alacritty.toml" => config.join("alacritty/alacritty.toml"),
         "cargo.config.toml" => home.join(".cargo/config.toml"),
-        "cargo.config.toml" => home.join("random/.cargo/config.toml"),
+        "cargo.config.rustc.toml" => home.join("contrib/rust/.cargo/config.toml"),
         "git.config" => config.join("git/config"),
         "git.attributes" => config.join("git/attributes"),
         "atuin.toml" => config.join("atuin/config.toml"),

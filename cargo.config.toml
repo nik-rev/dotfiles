@@ -3,6 +3,9 @@ codegen-backend = true
 feature-unification = true
 
 [alias]
+# nextest is better than the default Rust test framework
+#
+# ref: https://nexte.st/
 t = "nextest run"
 nt = "nextest"
 
@@ -16,6 +19,12 @@ linker = "rust-lld.exe"
 
 [profile.dev]
 # Use `cranelift` backend instead of the `llvm` while developing, for faster compile speeds
+#
+# This will often result in an error like "failed to find `codegen-backends` folder", to fix:
+#
+# rustup component add rustc-codegen-cranelift-preview
+#
+# this would be fixed by rustup custom profiles: https://github.com/rust-lang/rustup/issues/4285
 codegen-backend = "cranelift"
 # Don't include debug information.
 debug = false
@@ -23,7 +32,10 @@ debug = false
 strip = "symbols"
 
 # Separate profile just for debugging with a debugger, once in a blue moon
-[profile.debug]
+#
+# This uses "dbg" instead of "debug" because that name is reserved by Cargo.
+# They might add a "debug" profile at some point:
+[profile.dbg]
 inherits = "dev"
 debug = true
 strip = "none"
@@ -31,11 +43,16 @@ strip = "none"
 [build]
 # Rust parallel frontend for further compilation speed increases
 rustflags = ["-Z", "threads=8"]
+# compilation cache that lives outside the project (useful for hopping between PRs)
+#
+# ref: https://elijahpotter.dev/articles/why-you-need-sccache
 rustc-wrapper = "sccache"
 
 [resolver]
 # reuse more dependency builds by ensuring the same set of dependency features
 # are activated, independent of which package you are currently building and testing.
+#
+# ref: https://doc.rust-lang.org/cargo/reference/unstable.html?highlight=unstable#resolverfeature-unification
 feature-unification = "workspace"
 
 # HACK: these packages fail to compile with cranelift, so we use LLVM for them

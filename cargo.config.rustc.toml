@@ -1,0 +1,11 @@
+# These settings are overrides for the global Cargo config
+# specifically for building the Rust compiler.
+
+[profile.dev]
+# The compiler cannot be compiled using cranelift, only LLVM is supported.
+codegen-backend = "llvm"
+
+[resolver]
+# The "workspace" feature unification is not supported, and leads to cryptic errors
+# when attempting to build the compiler.
+feature-unification = "selected"
