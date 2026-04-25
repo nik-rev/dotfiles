@@ -4,6 +4,7 @@
 - `p`: Personal projects
 - `c`: Contributions to other people's projects
 - `t`: Temporary folder, may be `rm rf`d at any time
+- `o`: Miscellaneous stuff
 
 # Set up Git
 
