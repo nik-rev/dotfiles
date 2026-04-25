@@ -114,9 +114,9 @@ def ls+ [
   ...pattern: glob, # The glob pattern to use.
 ] {
   let pattern = if ($pattern | is-empty) { ["."] } else { $pattern }
-  let width = 80
+  let width = 79
   let separator = "   "
-  let max_item_width = 80 - ($separator | str length)
+  let max_item_width = 79 - ($separator | str length)
 
   (
     ls
