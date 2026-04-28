@@ -8,4 +8,5 @@ async-process = "2.5.0"
 iced = { version = "0.14.0", features = ["tokio"] }
 ipc-channel = { version = "0.21.0", features = ["async"] }
 itertools = "0.14.0"
+serde = { version = "1.0.228", features = ["derive"] }
 tokio = "1.52.1"

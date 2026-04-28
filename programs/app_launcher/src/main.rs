@@ -4,15 +4,37 @@ use std::{collections::HashMap, process::Stdio, time::Duration};
 
 use iced::{
     Color, Length,
+    futures::StreamExt,
     widget::{Column, button, container, row, space, text},
 };
+use ipc_channel::ipc::{IpcOneShotServer, IpcSender};
 use itertools::Itertools;
 
 use crate::window_id::WindowId;
 
 mod window_id;
 
+#[derive(serde::Serialize, serde::Deserialize)]
+struct PickerOpened;
+
 fn main() {
+    // let is_server = std::env::args().next().is_some_and(|it| it == "server");
+
+    // if !is_server {
+    //     let a = "lol";
+
+    //     let tx: IpcSender<PickerOpened> = IpcSender::connect(a.to_string()).unwrap();
+    //     tx.send(PickerOpened).unwrap();
+    // }
+
+    // let (server, token) = IpcOneShotServer::<PickerOpened>::new().unwrap();
+
+    // let (rx, msg) = server.accept().unwrap();
+
+    // let mut a = rx.to_stream();
+
+    // async move { while let Some(xx) = a.next().await {} };
+
     let theme: fn(&App) -> iced::Theme = |_| {
         iced::Theme::custom(
             "window_theme",
@@ -83,7 +105,7 @@ impl App {
 
         let this = Self {
             window_id: WindowId::new(),
-            visible: true,
+            visible: false, // start off invisible, we don't want the app to show at startup
             commands: HashMap::from_iter(
                 [
                     Command {
@@ -120,7 +142,7 @@ impl App {
     fn subscription(&self) -> Subscription {
         iced::Subscription::batch([
             iced::keyboard::listen().map(Message::Keyboard),
-            iced::time::every(Duration::from_secs(1)).map(Message::ToggleWindow),
+            iced::time::every(Duration::from_secs(10)).map(Message::ToggleWindow),
         ])
     }
 
