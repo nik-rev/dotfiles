@@ -1,0 +1,10 @@
+[package]
+name = "app_launcher"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+async-process = "2.5.0"
+iced = { version = "0.14.0", features = ["tokio"] }
+itertools = "0.14.0"
+tokio = "1.52.1"
