@@ -62,6 +62,11 @@ fn main() -> Result {
 
         win("coreutils"),
 
+        // NOTE: Install from https://github.com/wild-linker/wild/issues/1576#issuecomment-4342369052
+        // because default installation is broken for now.
+        //
+        // linux("wild"), // fast linux x86_64 linker
+
         linux("kanshi"), // dynamic display configuration Wayland daemon
         linux("noto-fonts-cjk"),
         linux("noto-fonts-emoji"),
