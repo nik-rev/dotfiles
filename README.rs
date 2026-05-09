@@ -85,6 +85,7 @@ fn main() -> Result {
         "cargo.config.toml" => home.join(".cargo/config.toml"),
         "cargo.config.rustc.toml" => home.join("c/rust/.cargo/config.toml"),
         "auto_login", if SETUP && LINUX => PathBuf::from("/etc/systemd/system/getty@tty1.service.d/autologin.conf"),
+        ".profile", if LINUX => home.join(".profile"),
         "git.config" => config.join("git/config"),
         "git.attributes" => config.join("git/attributes"),
         "atuin.toml" => config.join("atuin/config.toml"),
