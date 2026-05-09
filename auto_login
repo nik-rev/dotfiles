@@ -1,0 +1,4 @@
+# enables auto-login on arch linux
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --skip-login --nonewline --noissue --noreset --noclear --autologin e - ${TERM}

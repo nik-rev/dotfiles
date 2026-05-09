@@ -26,7 +26,8 @@ use rayon::prelude::*;
 use std::path::PathBuf;
 use std::process::Command;
 
-const INSTALL_PACKAGES: bool = option_env!("SETUP").is_some() || option_env!("INSTALL_PACKAGES").is_some();
+const SETUP: bool = option_env!("SETUP").is_some();
+const INSTALL_PACKAGES: bool = SETUP || option_env!("INSTALL_PACKAGES").is_some();
 
 fn main() -> Result {
     let script_dir = {
@@ -77,10 +78,13 @@ fn main() -> Result {
 
     // scoop buckets: main
 
+    const LINUX: bool = cfg!(target_os = "linux");
+
     let paths = paths! {
         "alacritty.toml" => config.join("alacritty/alacritty.toml"),
         "cargo.config.toml" => home.join(".cargo/config.toml"),
         "cargo.config.rustc.toml" => home.join("c/rust/.cargo/config.toml"),
+        "auto_login", if SETUP && LINUX => PathBuf::from("/etc/systemd/system/getty@tty1.service.d/autologin.conf"),
         "git.config" => config.join("git/config"),
         "git.attributes" => config.join("git/attributes"),
         "atuin.toml" => config.join("atuin/config.toml"),
@@ -108,6 +112,7 @@ fn main() -> Result {
 
     paths
         .par_iter()
+        .flatten()
         .map(|(src, dest)| {
             let src = script_dir.join(src);
 
@@ -219,8 +224,13 @@ fn install_pkg(system: System, manager: PackageManager, package: &'static str) -
     Ok(())
 }
 
-macro paths($($src:expr => $dest:expr),* $(,)?) {
-    [$(($src, $dest)),*]
+macro paths($($src:expr $(, if $guard:expr)? => $dest:expr),* $(,)?) {
+    [$(opt_guard!($($guard)?, $dest).map(|dest| ($src, dest))),*]
+}
+
+macro opt_guard {
+    (, $value:expr) => { Some($value) },
+    ($guard:expr, $value:expr) => { ($guard).then(|| $value) }
 }
 
 const ZED: &str = cfg_select! {
