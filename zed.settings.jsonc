@@ -22,6 +22,10 @@
     "JSONC": {
       "enable_language_server": true,
     },
+    "Typst": {
+      "enable_language_server": true,
+      "format_on_save": "on",
+    },
     "Nu": {
       "enable_language_server": true,
       // off for now, re-visit when `nufmt` is better
