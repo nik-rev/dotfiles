@@ -1,7 +1,6 @@
 source zoxide.nu
 source catppuccin.nu
 
-use std/clip copy
 use std bench
 use std/iter intersperse
 use std repeat
