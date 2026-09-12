@@ -26,6 +26,11 @@ $env.config.hooks.env_change.PWD ++= [{ |old_dir, new_dir|
 
 $env.config.completions.algorithm = "fuzzy"
 
+# Access the previous result of pipeline. Defaults to 0b, which means it is disabled. Enable it.
+#
+# https://www.nushell.sh/blog/2026-08-15-nushell_v0_115_0.html#added-ans-for-accessing-the-last-repl-result
+$env.config.max_last_result_size = 10Mb
+
 # Use the "fish" shell for completions
 $env.config.completions.external.completer = {|spans|
     fish --command $"complete '--do-complete=($spans | str replace --all "'" "\\'" | str join ' ')'"
