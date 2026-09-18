@@ -1,4 +1,3 @@
-// install logid, save this file to /etc/logid.cfg and do sudo systemctl restart logid
 devices:
 (
   {
@@ -8,12 +7,16 @@ devices:
     buttons:
     (
       {
-        cid: 0x53;   // back button
+        cid: 0x56;   // forward button
         action = { type: "Keypress"; keys: ["KEY_LEFTCTRL"]; };
       },
       {
-        cid: 0x56;   // forward button
+        cid: 0x53;   // back button
         action = { type: "Keypress"; keys: ["KEY_LEFTSHIFT"]; };
+      },
+      {
+        cid: 0xc4;   // mode-shift button
+        action = { type: "Keypress"; keys: ["KEY_LEFTALT"]; };
       }
     );
   }
