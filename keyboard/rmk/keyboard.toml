@@ -33,9 +33,9 @@ TO(one_handed_1)    @pound 9              5               0        3            
 
 [[layer]]
 keys = """
-_        @logical_not     MO(3)             `              @exclamation @tilde                @underscore          @question      '        @pipe     @play_pause   @next_track
+_        @logical_not     MO(3)             `              @exclamation @tilde                @underscore          @question      '        @pipe     @play_pause   @prev_track
 _        _                mouse_wheel_down  mouse_wheel_up @left_click  @middle_click         tab                  MouseLeft      MouseUp  MouseDown MouseRight    @asterisk
-_        _                @less_than        @dollar        /            @caret                @right_click         @double_quote  Home     End       @at           @prev_track
+_        _                @less_than        @dollar        /            @caret                @right_click         @double_quote  Home     End       @at           @next_track
                                   @backslash     @shift        mouse_wheel_left     mouse_wheel_right    @ctrl         @alt
 """
 
