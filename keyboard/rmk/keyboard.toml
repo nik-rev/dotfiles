@@ -103,9 +103,9 @@ gui = "LGui"
 ctrl = "LCtrl"
 
 # Media keys
-play_pause = "PlayPause"
-next_track = "NextTrack"
-prev_track = "PrevTrack"
+play_pause = "MediaPlayPause"
+next_track = "MediaNextTrack"
+prev_track = "MediaPrevTrack"
 
 # cross-platform way to switch languages (works on Linux, MacOS, Windows)
 lang_switch = "WM(space, LGui)"
