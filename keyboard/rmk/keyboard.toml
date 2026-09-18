@@ -17,52 +17,94 @@ matrix_map = """
 
 [[layer]]
 keys = """
-_        q       w      f      p      b          j      l       u      y      down   _
-a        MO(2)   r      s      t      g          m      n       e      i      MO(1)  o
-z        escape  x      c      d      v          k      h       left   right  enter  up
-                        @gui   @shift  backspace       space  @ctrl  @alt
+@r_alt   q       w      f      p       b              j      l       u      y      down   @r_alt
+a        MO(2)   r      s      t       g              m      n       e      i      MO(1)  o
+z        escape  x      c      d       v              k      h       left   right  enter  up
+                        @gui   @shift  backspace      space  @ctrl   @alt
 """
 
 [[layer]]
 keys = """
-_            _      9                     5               0       3                2                      1         4         8                _     _
-@ampersand   [      @opening_parenthesis  @opening_brace  @colon  7                6                      =         comma     .                _     _
-_            ]      @plus                 -               @hash   @closing_brace   @closing_parenthesis   @percent  ;         @greater_than    _     _
-                                          caps_lock            @shift   page_down          page_up              @ctrl    @alt
+@logical_not        @pound 9              5               0        3                  2                      1         4         8                _     _
+@ampersand   [      @opening_parenthesis  @opening_brace  @colon   7                  6                      =         comma     .                _     _
+@lang_switch ]      @plus                 -               @hash    @closing_brace     @closing_parenthesis   @percent  ;         @greater_than    _     _
+                                          caps_lock       @shift   page_down          page_up                @ctrl     @alt
 """
 
 [[layer]]
 keys = """
-_        _      MO(3)             `              @exclamation @tilde               @underscore          @question      '        @pipe     _          _
-_        _      mouse_wheel_down  mouse_wheel_up @left_click  @middle_click        tab                  MouseLeft      MouseUp  MouseDown MouseRight @asterisk
-_        _      @less_than        @dollar        /            @caret               @right_click         @double_quote  Home     End       @at        _
-                                  \\           @shift        mouse_wheel_left     mouse_wheel_right    @ctrl         @alt
+_        _      MO(3)             `              @exclamation @tilde                @underscore          @question      '        @pipe     @play_pause   @next_track
+_        _      mouse_wheel_down  mouse_wheel_up @left_click  @middle_click         tab                  MouseLeft      MouseUp  MouseDown MouseRight    @asterisk
+_        _      @less_than        @dollar        /            @caret                @right_click         @double_quote  Home     End       @at           @prev_track
+                                  @backslash     @shift        mouse_wheel_left     mouse_wheel_right    @ctrl         @alt
 """
 
 [[layer]]
 keys = """
-_        _      _      @bt_clear  @bt1      @bt2       F1             F2             F3           F4             F5               F6
-_        _      _      @bt_next   @bt_usb   @bt3       F7             F8             F9           F10            F11              F12
-_        _      _      @bt_prev   @bt5      @bt4       @volume_mute   @volume_down   @volume_up   brightness_up  brightness_down  print_screen
-                       @gui @shift @ctrl        @gui       @ctrl          @alt
+_        _      _      @bt_clear  @bt1      @bt2         F1             F2             F3           F4             F5               F6
+_        _      _      @bt_next   @bt_usb   @bt3         F7             F8             F9           F10            F11              F12
+_        _      _      @bt_prev   @bt5      @bt4         @volume_mute   @volume_down   @volume_up   brightness_up  brightness_down  print_screen
+                       @gui       @shift    @ctrl        @gui           @ctrl          @alt
 """
 
 [aliases]
 # Modifiers
 shift = "LShift"
 alt = "LAlt"
+r_alt = "RAlt"
 gui = "LGui"
 ctrl = "LCtrl"
 
+# Media keys
+play_pause = "PlayPause"
+next_track = "NextTrack"
+prev_track = "PrevTrack"
+
+# cross-platform way to switch languages (works on Linux, MacOS, Windows)
+lang_switch = "WM(space, LGui)"
+
+# gives \ reliably, on both US and Non-US layouts
+backslash = "NonUsBackslash"
+
 # Symbols
-tilde = "WM(`, LShift)"
 underscore = "WM(-, LShift)"
-pipe = "WM(\\, LShift)"
+
+# --- Pipe (US) ---
+# pipe = "WM(\\, LShift)"
+# --- Pipe (UK) ---
+pipe = "WM(NonUsBackslash, LShift)"
+
+# --- Hash (US) --- (gives £ on UK)
+# hash = "WM(3, LShift)"
+# --- Hash (UK) --- (gives \ on US)
+hash = "\\"
+
+# --- Tidle (US) --- (gives ¬ on UK)
+# tilde = "WM(`, LShift)"
+# --- Tidle (UK) --- (gives | on UK)
+tilde = "WM(\\, LShift)"
+
+# --- At (US) --- (gives ' on UK)
+# at = "WM(2, LShift)"
+# --- At (UK) --- (gives ' on US)
+at = "WM(', LShift)"
+
+# --- At (US) --- (gives @ on UK)
+# double_quote = "WM(', LShift)"
+# --- At (UK) --- (gives @ on US)
+double_quote = "WM(2, LShift)"
+
+# UK-only: ¬ (gives ~ on US)
+logical_not = "WM(`, LShift)"
+# UK-only: £ (gives # on US)
+pound = "WM(3, LShift)"
+# # UK-only: € (gives nothing on US)
+# euro = "WM(4, RAlt)"
+# # UK-only: ¦ (gives nothing on US)
+# broken_bar = "WM(`, RAlt)"   # or WM(`, RAlt) depending on which keycode your firmware treats as the AltGr-backtick position
+
 question = "WM(/, LShift)"
-double_quote = "WM(', LShift)"
 exclamation = "WM(1, LShift)"
-at = "WM(2, LShift)"
-hash = "WM(3, LShift)"
 dollar = "WM(4, LShift)"
 percent = "WM(5, LShift)"
 caret = "WM(6, LShift)"
