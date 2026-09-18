@@ -1,0 +1,20 @@
+// install logid, save this file to /etc/logid.cfg and do sudo systemctl restart logid
+devices:
+(
+  {
+    name: "MX Anywhere 3S";
+    dpi: 1000;
+
+    buttons:
+    (
+      {
+        cid: 0x53;   // back button
+        action = { type: "Keypress"; keys: ["KEY_LEFTCTRL"]; };
+      },
+      {
+        cid: 0x56;   // forward button
+        action = { type: "Keypress"; keys: ["KEY_LEFTSHIFT"]; };
+      }
+    );
+  }
+);
