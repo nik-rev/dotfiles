@@ -1,0 +1,9 @@
+(
+    output: "eDP-1",
+    source: Path("/usr/share/backgrounds/cosmic/tarantula_nebula_nasa_PIA23646.jpg"),
+    filter_by_theme: false,
+    rotation_frequency: 300,
+    filter_method: Lanczos,
+    scaling_mode: Zoom,
+    sampling_method: Alphanumeric,
+)

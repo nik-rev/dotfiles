@@ -1,0 +1,8 @@
+old_dotfiles/
+sync-packages.sh
+rebuild-main-toolbox.sh
+main-packages.txt
+install-packages.sh
+flatpaks.txt
+rpms.txt
+README.md

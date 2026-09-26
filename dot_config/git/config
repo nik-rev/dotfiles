@@ -1,0 +1,126 @@
+[user]
+	email = pm@nikrev.com
+	name = Nik Revenco
+
+[alias]
+    p = pull
+    # git pull --hard
+    ph = reset --hard @{upstream}
+    ps = push
+    psf = push --force
+    d = diff
+    b = branch
+    a = add
+    aa = add --all
+    c = commit
+    wip = "!git add --all && git commit --message WIP"
+    cm = commit --message
+    # g aa + g cm
+    ca = "!git add --all && git commit --message"
+    # g ca + g ps
+    caps = "!f() { git add --all && git commit --message \"$1\" && git push; }; f"
+    # git commit fixup: Changes in the working directory are applied onto the given commit
+    cf = "!f() { git commit --fixup \"$1\" && GIT_EDITOR=: GIT_SEQUENCE_EDITOR=: git rebase --interactive --autosquash \"$1^\"; }; f"
+    m = merge
+    f = fetch
+    l = log --oneline --pretty=format:'%C(yellow)%h%Creset %s' --abbrev-commit
+    s = status --short --branch
+    sh = stash
+    shp = stash pop
+    r = reset
+    cp = cherry-pick
+    re = remote
+    sw = switch
+    # switch to another branch, retain changes in stash
+    sws = "!f() { git stash --include-untracked; git switch "$@"; git stash pop; }; f"
+    rs = restore
+    # Void all changes
+    rh = reset --hard
+    rb = rebase
+
+[branch]
+	sort = committerdate
+
+[column]
+	ui = auto
+
+# NOTE: in Git 3.0, this will become the default
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[rebase]
+    # Uses short command names in `git rebase -i`, e.g. `p` instead of `pick`
+    abbreviateCommands = true
+
+[push]
+    # "git push" automatically uses "--set-upstream" if the remote branch does not exist
+    autoSetupRemove = true
+    # push the current branch to its upstream branch. By default, the "simple" is used,
+    # which refuses to push if the upstream branch's name is different from the local one
+    #
+    # ref: https://stackoverflow.com/a/948397
+    default = upstream
+
+[rerere]
+	enabled = true
+
+[safe]
+	directory = *
+
+# TOOL: mergiraf
+# syntax-aware git merge driver
+#
+# https://codeberg.org/mergiraf/mergiraf
+[merge "mergiraf"]
+	name = mergiraf
+	driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L
+
+# TOOL: delta
+# syntax-aware pager
+#
+# https://github.com/dandavison/delta
+
+[core]
+	pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+	features = catppuccin-mocha
+	line-numbers = false
+
+[delta "catppuccin-mocha"]
+	blame-palette = "#1e1e2e #181825 #11111b #313244 #45475a"
+	commit-decoration-style = "#6c7086" bold box ul
+	dark = true
+	file-decoration-style = "#6c7086"
+	file-style = "#cdd6f4"
+	hunk-header-decoration-style = "#6c7086" box ul
+	hunk-header-file-style = bold
+	hunk-header-line-number-style = bold "#a6adc8"
+	hunk-header-style = file line-number syntax
+	line-numbers-left-style = "#6c7086"
+	line-numbers-minus-style = bold "#f38ba8"
+	line-numbers-plus-style = bold "#a6e3a1"
+	line-numbers-right-style = "#6c7086"
+	line-numbers-zero-style = "#6c7086"
+	# 35% red 65% base
+	minus-emph-style = bold syntax "#694559"
+	# 20% red 80% base
+	minus-style = syntax "#493447"
+	# 35% green 65% base
+	plus-emph-style = bold syntax "#4e6356"
+	# 20% green 80% base
+	plus-style = syntax "#394545"
+	map-styles = \
+		bold purple => syntax "#5b4e74", \
+		bold blue => syntax "#445375", \
+		bold cyan => syntax "#446170", \
+		bold yellow => syntax "#6b635b"
+	# Should match the name of the bat theme
+	syntax-theme = catppuccin-mocha

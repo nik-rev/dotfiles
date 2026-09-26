@@ -1,0 +1,339 @@
+[
+  {
+    "bindings": {
+      // Same as default, but in global context. So when we are for example in "Project Search",
+      // this keybind will work
+      "ctrl-6": "pane::AlternateFile",
+
+      // By default it just quits. But we have window manager commands for that
+      "ctrl-q": null,
+
+      // Change font size
+      "ctrl-+": ["zed::IncreaseBufferFontSize", { "persist": false }],
+      "ctrl-=": ["zed::ResetBufferFontSize", { "persist": false }],
+      "ctrl--": ["zed::DecreaseBufferFontSize", { "persist": false }],
+
+      // Jump back/forward in the jump list
+      //
+      // Global because we need them when we're not in Vim mode, e.g.
+      // when we are in the "Project Search"
+      "ctrl-e": "pane::GoBack",
+      "ctrl-i": "pane::GoForward",
+
+      // Make this the action everywhere. By default,
+      // this selects the previous entry in the file explorer
+      "ctrl-p": "file_finder::Toggle",
+
+      // These are under "ctrl" because they are useful e.g. in the Terminal
+      "ctrl-y": "workspace::CopyRelativePath",
+      "ctrl-shift-y": "workspace::CopyPath",
+
+      // Resize panes. These use `alt`/`ctrl` for auto-repeat
+      "shift-ctrl-l": "vim::ResizePaneRight",
+      "shift-ctrl-h": "vim::ResizePaneLeft",
+      "shift-ctrl-j": "vim::ResizePaneDown",
+      "shift-ctrl-k": "vim::ResizePaneUp",
+
+      // Go to next/previous tab
+      "ctrl-t": "vim::GoToPreviousTab",
+      "ctrl-n": "vim::GoToTab",
+
+      // Go to first tab
+      "ctrl-shift-t": ["pane::ActivateItem", 0],
+      // Go to last tab
+      "ctrl-shift-n": "pane::ActivateLastItem",
+
+      // close active item
+      "ctrl-s": "pane::CloseActiveItem",
+
+      // "ctrl-w" should do nothing by itself, as by default Zed binds it to close the
+      // active window: this frequently causes current window to be closed accidentally due
+      // to key timeout
+      "ctrl-w": null,
+
+      // Pin
+      "ctrl-w p": "pane::TogglePinTab",
+      "ctrl-w ctrl-p": "pane::TogglePinTab",
+
+      // Close
+      "ctrl-w up": "pane::CloseOtherItems",
+      "ctrl-w ctrl-up": "pane::CloseOtherItems",
+      "ctrl-w left": "pane::CloseItemsToTheLeft",
+      "ctrl-w ctrl-left": "pane::CloseItemsToTheLeft",
+      "ctrl-w right": "pane::CloseItemsToTheRight",
+      "ctrl-w ctrl-right": "pane::CloseItemsToTheRight",
+      "ctrl-w f": "workspace::CloseAllDocks",
+      "ctrl-w ctrl-f": "workspace::CloseAllDocks",
+
+      // Toggle focus
+      "ctrl-w t": "terminal_panel::ToggleFocus",
+      "ctrl-w ctrl-t": "terminal_panel::ToggleFocus",
+      "ctrl-w e": "project_panel::ToggleFocus",
+      "ctrl-w ctrl-e": "project_panel::ToggleFocus",
+      "ctrl-w m": "git_panel::ToggleFocus",
+      "ctrl-w ctrl-m": "git_panel::ToggleFocus",
+      "ctrl-w shift-f": "collab_panel::ToggleFocus",
+      "ctrl-w ctrl-shift-f": "collab_panel::ToggleFocus",
+      "ctrl-w w": "editor::ToggleFocus",
+      "ctrl-w ctrl-w": "editor::ToggleFocus",
+
+
+      // Toggle dock
+      "ctrl-w u": "workspace::ToggleBottomDock",
+      "ctrl-w ctrl-u": "workspace::ToggleBottomDock",
+      "ctrl-w y": "workspace::ToggleLeftDock",
+      "ctrl-w ctrl-y": "workspace::ToggleLeftDock",
+
+      // New terminal
+      "ctrl-w i": "workspace::NewTerminal",
+      "ctrl-w ctrl-i": "workspace::NewTerminal",
+      "ctrl-w shift-i": "workspace::NewCenterTerminal",
+      "ctrl-w ctrl-shift-i": "workspace::NewCenterTerminal",
+
+      // Window related commands (ctrl-w) that are the same as default Vim,
+      // but make them available everywhere (for example in the terminal)
+      "ctrl-w h": "workspace::ActivatePaneLeft",
+      "ctrl-w ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-w l": "workspace::ActivatePaneRight",
+      "ctrl-w ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-w k": "workspace::ActivatePaneUp",
+      "ctrl-w ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-w j": "workspace::ActivatePaneDown",
+      "ctrl-w ctrl-j": "workspace::ActivatePaneDown",
+      "ctrl-w shift-left": "workspace::SwapPaneLeft",
+      "ctrl-w ctrl-shift-left": "workspace::SwapPaneLeft",
+      "ctrl-w shift-right": "workspace::SwapPaneRight",
+      "ctrl-w ctrl-shift-right": "workspace::SwapPaneRight",
+      "ctrl-w shift-up": "workspace::SwapPaneUp",
+      "ctrl-w ctrl-shift-up": "workspace::SwapPaneUp",
+      "ctrl-w shift-down": "workspace::SwapPaneDown",
+      "ctrl-w ctrl-shift-down": "workspace::SwapPaneDown",
+      "ctrl-w shift-h": "workspace::MovePaneLeft",
+      "ctrl-w ctrl-shift-h": "workspace::MovePaneLeft",
+      "ctrl-w shift-l": "workspace::MovePaneRight",
+      "ctrl-w ctrl-shift-l": "workspace::MovePaneRight",
+      "ctrl-w shift-k": "workspace::MovePaneUp",
+      "ctrl-w ctrl-shift-k": "workspace::MovePaneUp",
+      "ctrl-w shift-j": "workspace::MovePaneDown",
+      "ctrl-w ctrl-shift-j": "workspace::MovePaneDown",
+      "ctrl-w =": "vim::ResetPaneSizes",
+      "ctrl-w ctrl-=": "vim::ResetPaneSizes",
+      "ctrl-w v": "pane::SplitVertical",
+      "ctrl-w ctrl-v": "pane::SplitVertical",
+      "ctrl-w s": "pane::SplitHorizontal",
+      "ctrl-w ctrl-s": "pane::SplitHorizontal",
+      "ctrl-w a": "pane::CloseAllItems",
+      "ctrl-w ctrl-a": "pane::CloseAllItems",
+      "ctrl-w o": "workspace::CloseInactiveTabsAndPanes",
+      "ctrl-w ctrl-o": "workspace::CloseInactiveTabsAndPanes",
+      "ctrl-w n": "workspace::NewFileSplitHorizontal",
+      "ctrl-w ctrl-n": "workspace::NewFileSplitHorizontal",
+
+      // New file
+      "ctrl-w shift-n": "workspace::NewFileSplitVertical",
+      "ctrl-w shift-ctrl-n": "workspace::NewFileSplitVertical"
+    }
+  },
+
+  // Additional Vim keybindings
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      // Saving is so common, bind it to enter
+      "enter": "workspace::Save",
+
+      // Incrementally increase/decrease tree-sitter selection
+      "alt-down": "vim::SelectSmallerSyntaxNode",
+      "alt-up": "vim::SelectLargerSyntaxNode",
+
+      // Goto References
+      "g r": "editor::FindAllReferences",
+
+      // File diagnostics
+      "g t": "diagnostics::DeployCurrentFile",
+      // Workspace diagnostics
+      "g shift-t": "diagnostics::Deploy",
+
+      // Jump to file in multibuffers
+      "g o": "editor::OpenExcerpts",
+
+      // Commands under "g" mode prefixed with "ctrl-w" will open
+      // in a split
+      "ctrl-w g d": "editor::GoToDefinitionSplit",
+      "ctrl-w g shift-d": "editor::GoToDeclarationSplit",
+      "ctrl-w g y": "editor::GoToTypeDefinitionSplit",
+      "ctrl-w g shift-i": "editor::GoToImplementationSplit",
+      "ctrl-w g o": "editor::OpenExcerptsSplit",
+
+      // Multi-line t,f,T,F motions
+      "f": ["vim::PushFindForward", { "before": false, "multiline": true }],
+      "t": ["vim::PushFindForward", { "before": true, "multiline": true }],
+      "shift-f": [
+        "vim::PushFindBackward",
+        { "after": false, "multiline": true }
+      ],
+      "shift-t": ["vim::PushFindBackward", { "after": true, "multiline": true }],
+
+      // Replace object with yanked: "vp" but bound to a single key
+      // and doesn't replace contents with whatever we removed
+      "up": "vim::PushReplaceWithRegister",
+
+      // To match "D" and "C"
+      "shift-y": "vim::YankToEndOfLine",
+
+      // Add cursor below/above
+      "alt-right": "vim::HelixDuplicateBelow",
+      "alt-left": "vim::HelixDuplicateAbove",
+
+      // Motions that respect wrapped lines
+      "j": ["vim::Down", { "display_lines": true }],
+      "k": ["vim::Up", { "display_lines": true }],
+      "$": ["vim::EndOfLine", { "display_lines": true }],
+      "_": ["vim::FirstNonWhitespace", { "display_lines": true }],
+      "0": ["vim::StartOfLine", { "display_lines": true }],
+      // Motions that don't respect wrapped line
+      "g j": "vim::Down",
+      "g k": "vim::Up",
+      "g $": "vim::EndOfLine",
+      "g _": "vim::FirstNonWhitespace",
+      "g 0": "vim::StartOfLine",
+
+      // View hunk diff
+      "g h": "editor::ToggleSelectedDiffHunks",
+      // Toggle if hunk is staged
+      "g shift-h": "git::ToggleStaged",
+      // Restore hunk to what it was before the change
+      "g shift-r": "git::Restore",
+
+      // Manipulate selections
+      "g l": "vim::HelixSelectRegex",
+      "g shift-l": ["editor::SplitSelectionIntoLines", { "keep_selections": true }],
+    }
+  },
+
+  {
+    "context": "VimControl && VimCount",
+    "bindings": {
+      // We overwrite the "0" keybind to respect visual lines, which will break
+      // counted jumps - so fix it by assigning to a number
+      "0": ["vim::Number", 0],
+    },
+  },
+
+  // Bindings for search
+  {
+    "context": "!Terminal && Pane",
+    "bindings": {
+      "ctrl-c c": "search::ToggleCaseSensitive",
+      "ctrl-c ctrl-c": "search::ToggleCaseSensitive",
+      "ctrl-c w": "search::ToggleWholeWord",
+      "ctrl-c ctrl-w": "search::ToggleWholeWord",
+      "ctrl-c t": "search::ToggleRegex",
+      "ctrl-c ctrl-t": "search::ToggleRegex",
+      "ctrl-c r": "search::ToggleReplace",
+      "ctrl-c ctrl-r": "search::ToggleReplace",
+      "ctrl-c s": "search::ToggleSelection",
+      "ctrl-c ctrl-s": "search::ToggleSelection",
+      "ctrl-c a": "search::ReplaceAll",
+      "ctrl-c ctrl-a": "search::ReplaceAll"
+    }
+  },
+
+  // Use "S" to add surround instead of "ys".
+  //
+  // Main reason is that "ys" is not available in Visual mode,
+  // and it would be awkward to use "ys" for adding surrounds in normal and "S" in visual
+  // so let's just make it "S" everywhere - since "S" is the same as "cc" anyways
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      // Surround operator in normal mode
+      "shift-s": "vim::PushAddSurrounds"
+    }
+  },
+
+  // Visual mode bindings
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !VimObject",
+    "bindings": {
+      // Surround selection in visual mode with `S`
+      "shift-s": "vim::PushAddSurrounds",
+      // Like "p" but doesn't change the clipboard
+      "up": ["vim::Paste", { "preserve_clipboard": true }]
+    }
+  },
+
+  // Subword text-object
+  {
+    "context": "vim_operator == a || vim_operator == i || vim_operator == cs",
+    "bindings": {
+      // Subword allows operating on parts of snake_case or camelCase
+      "n": "vim::Subword",
+      // Subword with the separator included
+      "shift-n": ["vim::Subword", { "ignore_punctuation": true }]
+    }
+  },
+
+  // Go to next/previous error
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "] s": ["editor::GoToDiagnostic", { "severity": "error" }],
+      "[ s": ["editor::GoToPreviousDiagnostic", { "severity": "error" }]
+    }
+  },
+
+  // Manually trigger intellisense
+  {
+    "context": "vim_mode == insert",
+    "bindings": {
+      "ctrl-x": "editor::ShowCompletions"
+    }
+  },
+
+  {
+    "context": "Terminal",
+    "bindings": {
+      // NOTE: This is currently bugged.
+      // The terminal doesn't redraw when using vim motions:
+      // https://github.com/zed-industries/zed/pull/44870
+      "ctrl-m": "terminal::ToggleViMode"
+    }
+  },
+
+  // File explorer
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      // end with / to create directory
+      "a": "project_panel::NewFile",
+      "r": "project_panel::Rename",
+      "y": "project_panel::Copy",
+      "x": "project_panel::Cut",
+      // since we can recover from trash, let's not ask for confirmation
+      "d": ["project_panel::Trash", { "skip_prompt": true }],
+      "shift-d": "project_panel::RemoveFromProject",
+      // delete, without option to restore
+      "ctrl-shift-d": "project_panel::Delete",
+      "p": "project_panel::Paste",
+      ".": "project_panel::ToggleHideGitIgnore",
+
+      "t": "workspace::OpenInTerminal",
+
+      // To match "up shift-v"
+      "shift-v": "project_panel::OpenSplitHorizontal",
+
+      // Preview file
+      "s": "project_panel::Open",
+    }
+  },
+
+  // Git Panel
+  {
+    "context": "GitPanel > Editor && vim_mode == normal",
+    "bindings": {
+      // There's no default keybinding to focus back to changes
+      "escape": "git_panel::FocusChanges"
+    },
+  },
+]
