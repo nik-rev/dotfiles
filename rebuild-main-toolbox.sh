@@ -20,6 +20,7 @@ PACKAGES=(
     fish
     cargo
     typst
+    delta
     flatpak
 )
 
