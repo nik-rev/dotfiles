@@ -1,0 +1,2 @@
+{{- /* "true" on a Fedora Atomic host, outside of any toolbox */ -}}
+{{- if and (eq .chezmoi.os "linux") (stat "/run/ostree-booted") (not (stat "/run/.containerenv")) }}true{{ end -}}

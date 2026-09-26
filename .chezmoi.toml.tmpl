@@ -1,0 +1,7 @@
+{{- if eq .chezmoi.os "windows" -}}
+# Windows blocks running .ps1 files by default, which the setup scripts in
+# .chezmoiscripts are
+[interpreters.ps1]
+    command = "powershell"
+    args = ["-NoLogo", "-ExecutionPolicy", "Bypass"]
+{{- end }}

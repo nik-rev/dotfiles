@@ -1,0 +1,80 @@
+# Packages installed by the scripts in .chezmoiscripts. Editing this file
+# makes `chezmoi apply` run the affected scripts again.
+#
+# Graphical applications on Fedora Atomic come from Flathub instead, see
+# flatpaks.txt
+
+# Everyday CLI tools. Installed with Homebrew on Linux and macOS, and with
+# winget on Windows. A missing name means the tool is not available there
+[[tools]]
+brew = "bat"
+winget = "sharkdp.bat"
+
+[[tools]]
+brew = "chezmoi"
+winget = "twpayne.chezmoi"
+
+[[tools]]
+brew = "fish"
+
+[[tools]]
+brew = "fzf"
+winget = "junegunn.fzf"
+
+[[tools]]
+brew = "git-delta"
+winget = "dandavison.delta"
+
+[[tools]]
+brew = "lazygit"
+winget = "JesseDuffield.lazygit"
+
+[[tools]]
+brew = "nushell"
+winget = "Nushell.Nushell"
+
+[[tools]]
+brew = "ripgrep"
+winget = "BurntSushi.ripgrep.MSVC"
+
+[[tools]]
+brew = "typst"
+winget = "Typst.Typst"
+
+[[tools]]
+brew = "vim"
+winget = "vim.vim"
+
+[[tools]]
+brew = "vivid"
+winget = "sharkdp.vivid"
+
+[[tools]]
+brew = "yazi"
+winget = "sxyazi.yazi"
+
+[[tools]]
+brew = "zoxide"
+winget = "ajeetdsouza.zoxide"
+
+# macOS only. On Fedora Atomic, sccache lives in the toolbox and Zed comes
+# from Flathub
+[darwin]
+brews = ["sccache"]
+casks = ["zed@preview"]
+
+# Windows only
+[windows]
+winget = ["Git.Git", "Mozilla.sccache", "ZedIndustries.Zed.Preview"]
+
+# Fedora Atomic only: the toolbox used for compiling Rust
+[toolbox]
+name = "main"
+dnf = ["vim", "sccache", "clang", "flatpak"]
+
+# Nightly Rust, installed with rustup. ~/.cargo/config.toml needs these
+[rust]
+components = ["rust-src", "rust-analyzer", "rustc-codegen-cranelift-preview"]
+cargo = ["cargo-nextest"]
+# wild only supports Linux
+cargo_linux = ["wild-linker"]

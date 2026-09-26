@@ -4,6 +4,10 @@
 # symlink to this script.
 #
 # Set ZED_TOOLBOX to use a toolbox other than the default one.
+#
+# toolbox run does not pass PATH through, so add ~/.cargo/bin (rustup
+# and cargo installed tools) to the PATH of the toolbox.
 exec flatpak-spawn --host --watch-bus \
     toolbox run ${ZED_TOOLBOX:+--container "$ZED_TOOLBOX"} \
+    sh -c 'PATH="$HOME/.cargo/bin:$PATH" exec "$@"' sh \
     "$(basename "$0")" "$@"

@@ -1,0 +1,58 @@
+{{- $atomic := includeTemplate "is-atomic" . -}}
+{{- if or $atomic (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+# Installs the packages from .chezmoidata/packages.toml on Fedora Atomic
+# and macOS
+set -euo pipefail
+
+{{ if $atomic -}}
+# -------------------------------
+# Flatpak applications
+# -------------------------------
+
+flatpak --user remote-add --if-not-exists flathub \
+    https://dl.flathub.org/repo/flathub.flatpakrepo
+
+flatpak --user install --noninteractive flathub
+{{- range (include "flatpaks.txt" | splitList "\n") }}{{ if and . (not (hasPrefix "#" .)) }} {{ . | quote }}{{ end }}{{ end }}
+
+{{ end -}}
+# -------------------------------
+# Homebrew
+# -------------------------------
+
+{{ if eq .chezmoi.os "darwin" -}}
+brew={{ if eq .chezmoi.arch "arm64" }}/opt/homebrew{{ else }}/usr/local{{ end }}/bin/brew
+{{- else -}}
+brew=/home/linuxbrew/.linuxbrew/bin/brew
+{{- end }}
+
+if [ ! -x "$brew" ]; then
+    # The installer needs sudo once, to create its directory. Ask for the
+    # password up front, so the installer itself can run without prompts
+    sudo -v
+    NONINTERACTIVE=1 /bin/bash -c \
+        "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+"$brew" bundle --file=- <<'BREWFILE'
+{{ range .tools }}{{ if hasKey . "brew" }}brew {{ .brew | quote }}
+{{ end }}{{ end -}}
+{{ if eq .chezmoi.os "darwin" -}}
+{{ range .darwin.brews }}brew {{ . | quote }}
+{{ end -}}
+{{ range .darwin.casks }}cask {{ . | quote }}
+{{ end -}}
+{{ end -}}
+BREWFILE
+{{- if eq .chezmoi.os "darwin" }}
+
+# -------------------------------
+# Rust
+# -------------------------------
+
+(
+{{ template "rust-setup.sh" . }}
+)
+{{- end }}
+{{ end -}}

@@ -1,0 +1,73 @@
+{{- if eq .chezmoi.os "windows" -}}
+# Installs the packages from .chezmoidata/packages.toml on Windows
+$ErrorActionPreference = "Stop"
+
+# Runs a program, and stops the script if it fails
+function Invoke-Checked {
+    $program, $arguments = $args
+    & $program @arguments
+    if ($LASTEXITCODE -ne 0) {
+        throw "$program exited with code $LASTEXITCODE"
+    }
+}
+
+function Install-WingetPackage {
+    param([string]$Id, [string[]]$Arguments = @())
+
+    winget list --exact --id $Id --accept-source-agreements *> $null
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "$Id is already installed."
+        return
+    }
+
+    Invoke-Checked winget install --exact --id $Id --source winget --silent `
+        --accept-package-agreements --accept-source-agreements @Arguments
+}
+
+# -------------------------------
+# winget packages
+# -------------------------------
+
+{{ range .tools }}{{ if hasKey . "winget" -}}
+Install-WingetPackage {{ .winget | squote }}
+{{ end }}{{ end -}}
+{{ range .windows.winget -}}
+Install-WingetPackage {{ . | squote }}
+{{ end }}
+# C++ build tools and the Windows SDK, needed to link Rust programs
+Install-WingetPackage "Microsoft.VisualStudio.2022.BuildTools" @(
+    "--override",
+    "--wait --passive --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+)
+
+# -------------------------------
+# Rust
+# -------------------------------
+
+$rustup = "$HOME\.cargo\bin\rustup.exe"
+
+if (-not (Test-Path $rustup)) {
+    $rustup_init = Join-Path ([IO.Path]::GetTempPath()) "rustup-init.exe"
+    Invoke-WebRequest "https://win.rustup.rs/x86_64" -OutFile $rustup_init
+    Invoke-Checked $rustup_init -y --default-toolchain nightly --profile default
+    Remove-Item $rustup_init
+}
+
+$env:Path = "$HOME\.cargo\bin;$env:Path"
+
+Invoke-Checked rustup default nightly
+Invoke-Checked rustup component add{{ range .rust.components }} {{ . | squote }}{{ end }}
+
+# Own CARGO_HOME so ~/.cargo/config.toml is not used: it needs sccache,
+# which may not be on the PATH yet
+$temporary_dir = Join-Path ([IO.Path]::GetTempPath()) ([Guid]::NewGuid())
+New-Item -ItemType Directory -Path $temporary_dir | Out-Null
+$env:CARGO_HOME = $temporary_dir
+try {
+    Invoke-Checked cargo install --locked --root "$HOME\.cargo"{{ range .rust.cargo }} {{ . | squote }}{{ end }}
+}
+finally {
+    Remove-Item Env:CARGO_HOME
+    Remove-Item -Recurse -Force $temporary_dir
+}
+{{ end -}}

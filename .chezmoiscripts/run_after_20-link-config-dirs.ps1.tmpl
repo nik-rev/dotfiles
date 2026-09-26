@@ -1,0 +1,29 @@
+{{- if eq .chezmoi.os "windows" -}}
+# Programs on Windows read their config from AppData instead of ~/.config.
+# Link those directories to ~/.config, where chezmoi puts the config.
+# Junctions work without administrator rights, unlike symlinks
+$ErrorActionPreference = "Stop"
+
+$links = [ordered]@{
+    "$env:APPDATA\alacritty"    = "$HOME\.config\alacritty"
+    "$env:APPDATA\bat"          = "$HOME\.config\bat"
+    "$env:APPDATA\nushell"      = "$HOME\.config\nushell"
+    "$env:APPDATA\Zed"          = "$HOME\.config\zed"
+    "$env:LOCALAPPDATA\lazygit" = "$HOME\.config\lazygit"
+}
+
+foreach ($link in $links.GetEnumerator()) {
+    $item = Get-Item -LiteralPath $link.Key -Force -ErrorAction SilentlyContinue
+
+    if ($item -and $item.LinkType -eq "Junction") {
+        continue
+    }
+
+    # Keep config the program created before chezmoi ran
+    if ($item) {
+        Move-Item -LiteralPath $link.Key -Destination "$($link.Key).backup"
+    }
+
+    New-Item -ItemType Junction -Path $link.Key -Target $link.Value | Out-Null
+}
+{{ end -}}

@@ -1,8 +1,23 @@
-old_dotfiles/
-sync-packages.sh
-rebuild-main-toolbox.sh
-main-packages.txt
-install-packages.sh
-flatpaks.txt
-rpms.txt
+# Files in this repository that are not dotfiles
 README.md
+flatpaks.txt
+sync-packages.sh
+old_dotfiles/
+
+{{ if ne .chezmoi.os "linux" -}}
+# COSMIC desktop
+.config/cosmic
+{{ end -}}
+
+{{ if not (includeTemplate "is-atomic" .) -}}
+# Zed flatpak and toolbox integration, only used on Fedora Atomic
+.local/share/flatpak
+.local/share/zed-flatpak
+.var
+{{ end -}}
+
+{{ if ne .chezmoi.os "darwin" -}}
+# Links from macOS config locations to ~/.config, and Homebrew setup
+Library
+.zprofile
+{{ end -}}
