@@ -2,6 +2,7 @@
 //
 // editor::FileHistory
 {
+  "cli_default_open_behavior": "existing_window",
   "inlay_hints": { "enabled": true },
   "languages": {
     "Rust": {
@@ -66,7 +67,9 @@
     },
     "cargo-ls": {
       "binary": {
-        "path": "/home/e/oss/cargo-ls/target/debug/cargo-ls",
+        // Resolved from PATH, so this works on every OS.
+        // Install with: cargo install --path ~/p/cargo-ls
+        "path": "cargo-ls",
       }
     }
     // "tombi": {
