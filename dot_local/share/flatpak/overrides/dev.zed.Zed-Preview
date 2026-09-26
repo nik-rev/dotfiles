@@ -7,6 +7,3 @@
 PATH=/home/e/.local/share/zed-flatpak/bin:/app/bin:/usr/bin
 # Toolbox that the wrappers in zed-flatpak/bin run commands in
 ZED_TOOLBOX=main
-# Flatpak points this at ~/.var/app/dev.zed.Zed-Preview/config by default.
-# Use the host location so ~/.config/zed is shared with non-flatpak Zed.
-XDG_CONFIG_HOME=/home/e/.config
