@@ -1,4 +1,8 @@
-{{- if eq .chezmoi.os "windows" -}}
+# `chezmoi cd` opens nushell, like the terminal, instead of $SHELL
+[cd]
+    command = "nu"
+{{- if eq .chezmoi.os "windows" }}
+
 # Windows blocks running .ps1 files by default, which the setup scripts in
 # .chezmoiscripts are
 [interpreters.ps1]
