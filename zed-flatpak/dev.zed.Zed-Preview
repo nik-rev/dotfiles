@@ -1,0 +1,9 @@
+# Flatpak override for Zed Preview. Only used on Fedora Atomic.
+# Lives at: ~/.local/share/flatpak/overrides/dev.zed.Zed-Preview
+#
+# The flatpak already has home access and may run host commands
+# (org.freedesktop.Flatpak), so only PATH needs changing.
+[Environment]
+PATH=/home/e/.local/share/zed-flatpak-bin:/app/bin:/usr/bin
+# Toolbox that the wrappers in zed-flatpak-bin run commands in
+ZED_TOOLBOX=main

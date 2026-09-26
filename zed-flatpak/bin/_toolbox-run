@@ -1,0 +1,9 @@
+#!/bin/sh
+# Runs the command this file is invoked as inside a toolbox, so the Zed
+# flatpak can use CLIs installed there. Each tool in this directory is a
+# symlink to this script.
+#
+# Set ZED_TOOLBOX to use a toolbox other than the default one.
+exec flatpak-spawn --host --watch-bus \
+    toolbox run ${ZED_TOOLBOX:+--container "$ZED_TOOLBOX"} \
+    "$(basename "$0")" "$@"
