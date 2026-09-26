@@ -7,6 +7,10 @@ set -euo pipefail
 
 container_name="main"
 
+# Fedora's nushell package is too old for our config, so nu comes from
+# the upstream release instead of dnf
+nushell_version="0.115.1"
+
 REPOSITORIES=(
     "https://github.com/terrapkg/subatomic-repos/raw/main/terra.repo"
 )
@@ -14,7 +18,6 @@ REPOSITORIES=(
 PACKAGES=(
     vim
     chezmoi
-    nushell
     rust
     lazygit
     fish
@@ -124,5 +127,38 @@ if ((${#missing[@]})); then
 else
     printf 'All configured packages are already installed.\n'
 fi
+
+# -------------------------------
+# Install nushell
+# -------------------------------
+
+toolbox run --container "$container_name" \
+    sh -c '
+        set -eu
+
+        version="$1"
+
+        if [ "$(/usr/local/bin/nu --version 2>/dev/null)" = "$version" ]; then
+            printf "nushell %s is already installed.\n" "$version"
+            exit 0
+        fi
+
+        name="nu-${version}-$(uname -m)-unknown-linux-gnu"
+        temporary_dir="$(mktemp -d)"
+
+        cleanup() {
+            rm -rf "$temporary_dir"
+        }
+
+        trap cleanup EXIT
+
+        curl -fsSL \
+            "https://github.com/nushell/nushell/releases/download/${version}/${name}.tar.gz" |
+            tar -xz -C "$temporary_dir"
+
+        sudo install -m 0755 "$temporary_dir/$name"/nu* /usr/local/bin/
+
+        printf "Installed nushell %s.\n" "$version"
+    ' _ "$nushell_version"
 
 printf 'Toolbox %q synchronized successfully.\n' "$container_name"
