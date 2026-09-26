@@ -122,5 +122,5 @@
 		bold blue => syntax "#445375", \
 		bold cyan => syntax "#446170", \
 		bold yellow => syntax "#6b635b"
-	# Should match the name of the bat theme
-	syntax-theme = catppuccin-mocha
+	# Built into bat and delta
+	syntax-theme = Catppuccin Mocha
