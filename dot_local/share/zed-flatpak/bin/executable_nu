@@ -2,12 +2,8 @@
 # Runs nushell from Homebrew on the host instead of in the toolbox, so
 # terminals in Zed open instantly.
 #
-# flatpak-spawn does not pass the environment through, so forward the
-# variables that Zed sets for its terminals.
-exec flatpak-spawn --host --watch-bus \
-    --env=TERM="$TERM" \
-    --env=COLORTERM="$COLORTERM" \
-    --env=TERM_PROGRAM="$TERM_PROGRAM" \
-    --env=TERM_PROGRAM_VERSION="$TERM_PROGRAM_VERSION" \
-    --env=ZED_TERM="$ZED_TERM" \
+# host-spawn instead of flatpak-spawn, because nushell needs a terminal it
+# controls. It also passes through the variables Zed sets for terminals.
+exec "$(dirname "$0")/host-spawn" \
+    -env TERM,COLORTERM,TERM_PROGRAM,TERM_PROGRAM_VERSION,ZED_TERM \
     /home/linuxbrew/.linuxbrew/bin/nu "$@"

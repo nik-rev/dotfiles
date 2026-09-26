@@ -95,6 +95,7 @@ chezmoi apply
 | `.chezmoidata/packages.toml` | packages for every platform |
 | `.chezmoiscripts/` | setup scripts, one set per platform |
 | `.chezmoitemplates/` | pieces shared by the scripts |
+| `.chezmoiexternal.toml.tmpl` | files chezmoi downloads, like `host-spawn` for the Zed flatpak |
 | `Library/` | macOS: links app config locations to `~/.config` |
 | `dot_local/share/zed-flatpak/`, `dot_var/` | Fedora Atomic: lets the Zed flatpak use the host and toolbox |
 | `.chezmoiignore` | which files each platform gets |
