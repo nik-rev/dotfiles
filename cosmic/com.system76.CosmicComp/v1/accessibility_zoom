@@ -1,7 +1,7 @@
 (
     start_on_login: false,
-    show_overlay: true,
-    increment: 50,
+    show_overlay: false,
+    increment: 200,
     view_moves: Continuously,
     enable_mouse_zoom_shortcuts: true,
 )
