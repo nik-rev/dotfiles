@@ -5,8 +5,14 @@ sync-packages.sh
 old_dotfiles/
 
 {{ if ne .chezmoi.os "linux" -}}
-# COSMIC desktop
+# COSMIC desktop, and font settings
 .config/cosmic
+.config/fontconfig
+{{ end -}}
+
+{{ if eq .chezmoi.os "windows" -}}
+# The `zed` command. On Windows, Zed already installs one
+.local/bin
 {{ end -}}
 
 {{ if not (includeTemplate "is-atomic" .) -}}

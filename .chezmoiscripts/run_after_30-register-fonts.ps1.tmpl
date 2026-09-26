@@ -1,0 +1,14 @@
+{{- if eq .chezmoi.os "windows" -}}
+# Windows only uses the per-user fonts that chezmoi puts in AppData once
+# they are registered
+$ErrorActionPreference = "Stop"
+
+$fonts = "$env:LOCALAPPDATA\Microsoft\Windows\Fonts"
+$registry = "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts"
+
+New-Item -Path $registry -Force | Out-Null
+
+Get-ChildItem -Path $fonts -Recurse -Include *.ttf, *.otf | ForEach-Object {
+    Set-ItemProperty -Path $registry -Name "$($_.BaseName) (TrueType)" -Value $_.FullName
+}
+{{ end -}}

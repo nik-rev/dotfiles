@@ -116,7 +116,7 @@ def n [
     --add (-a), # Add files to an existing workspace
     ...paths: path
 ] {
-    ^(if $nu.os-info.family == "windows" { "zed" } else { "zeditor" }) ...(if $add { [--add] }) ...(if $reuse { [--reuse] }) ...$paths
+    ^zed ...(if $add { [--add] }) ...(if $reuse { [--reuse] }) ...$paths
 }
 
 def ls+ [

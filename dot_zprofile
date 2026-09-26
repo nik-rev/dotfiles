@@ -1,3 +1,6 @@
+# Commands from these dotfiles, like `zed`
+export PATH="$HOME/.local/bin:$PATH"
+
 # Put Homebrew on the PATH. macOS apps like Zed read the environment from
 # the login shell, so this makes Homebrew tools available to them too
 if [ -x /opt/homebrew/bin/brew ]; then

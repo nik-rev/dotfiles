@@ -8,3 +8,40 @@
     type = "file"
     url = "https://github.com/1player/host-spawn/releases/download/v1.6.2/host-spawn-{{ if eq .chezmoi.arch "arm64" }}aarch64{{ else }}x86_64{{ end }}"
     executable = true
+
+# -------------------------------
+# Fonts
+# -------------------------------
+
+# Installed per user. On other Linux distributions, fonts come from the
+# system package manager instead
+{{- $fonts := "" }}
+{{- if includeTemplate "is-atomic" . }}
+{{-   $fonts = ".local/share/fonts" }}
+{{- else if eq .chezmoi.os "darwin" }}
+{{-   $fonts = "Library/Fonts" }}
+{{- else if eq .chezmoi.os "windows" }}
+{{-   $fonts = "AppData/Local/Microsoft/Windows/Fonts" }}
+{{- end }}
+{{- if $fonts }}
+
+# Terminal, and the default font for everything, see fontconfig/fonts.conf
+["{{ $fonts }}/JetBrainsMono"]
+    type = "archive"
+    url = "https://github.com/JetBrains/JetBrainsMono/releases/download/v2.304/JetBrainsMono-2.304.zip"
+    stripComponents = 2
+    include = ["fonts", "fonts/ttf", "fonts/ttf/JetBrainsMono-*.ttf"]
+
+# Icons in the terminal, used as a fallback for all fonts
+["{{ $fonts }}/SymbolsNerdFont"]
+    type = "archive"
+    url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/NerdFontsSymbolsOnly.tar.xz"
+    include = ["*.ttf"]
+
+# Zed
+{{- range list "Regular" "Medium" "Bold" }}
+["{{ $fonts }}/FiraMono/FiraMono-{{ . }}.ttf"]
+    type = "file"
+    url = "https://raw.githubusercontent.com/mozilla/Fira/4.202/ttf/FiraMono-{{ . }}.ttf"
+{{- end }}
+{{- end }}
