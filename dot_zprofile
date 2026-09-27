@@ -1,3 +1,3 @@
 # PATH on macOS. Apps like Zed read the environment from the login shell,
 # so this makes these available to them too
-export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.pixi/bin"
+export PATH="$PATH:$HOME/.local/bin:$HOME/.pixi/bin"

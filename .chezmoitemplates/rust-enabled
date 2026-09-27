@@ -1,0 +1,3 @@
+{{- /* "true" where Rust is installed into the rust-env pixi environment:
+       Fedora Atomic, macOS and Windows, unless rust.enabled is false */ -}}
+{{- if and .rust.enabled (or (includeTemplate "is-atomic" .) (ne .chezmoi.os "linux")) }}true{{ end -}}

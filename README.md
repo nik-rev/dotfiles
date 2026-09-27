@@ -41,10 +41,10 @@ placeholder `git` that only offers to install the developer tools.
 |---|---|---|---|
 | CLI tools | pixi | pixi | pixi |
 | Apps | Flathub | Zed installer | winget |
-| Rust (nightly) | rustup | rustup | rustup + VS C++ build tools |
+| Rust (nightly) | rust-env | rust-env + Xcode Command Line Tools | rust-env + VS C++ build tools |
 
 Nothing is layered with `rpm-ostree` on Fedora Atomic, and no toolbox is
-needed: pixi provides the C compiler and libraries that Rust needs.
+needed. On other Linux distributions, only the config files are installed.
 
 ## Everyday use
 
@@ -76,9 +76,26 @@ on Fedora Atomic are listed in `flatpaks.txt`. After installing one with
 
 ### Rust
 
-`cargo` works everywhere, including inside the Zed flatpak. On Linux, the
-`rust-dev` pixi environment provides clang, pkg-config, OpenSSL and CMake
-for crates that build C code, and `~/.cargo/config.toml` uses its clang.
+Rust lives in its own pixi environment, `~/.local/share/rust-env`, with
+everything needed to compile it: nightly Rust (rustup), cargo's config and
+downloads, sccache, and on Linux the C compiler and libraries that `-sys`
+crates need. Nothing outside that directory is changed, and `cargo` only
+exists inside the environment. Enter it to compile:
+
+```sh
+rust    # nushell. Elsewhere: pixi shell --manifest-path ~/.local/share/rust-env/pixi.toml
+```
+
+Zed does not need it entered: `~/.local/bin/rust-analyzer` runs
+rust-analyzer from the environment.
+
+To remove Rust, set `rust.enabled = false` in `.chezmoidata/packages.toml`
+and delete `~/.local/share/rust-env`. `pixi clean cache` also removes the
+packages pixi downloaded.
+
+Projects that pin a toolchain in `rust-toolchain.toml` need the cranelift
+component added to it, since the cargo config uses cranelift for debug
+builds: `rustup component add rustc-codegen-cranelift-preview`
 
 ### Re-running the setup
 
@@ -94,13 +111,14 @@ chezmoi apply
 
 | Path | Contents |
 |---|---|
-| `dot_config/`, `dot_cargo/` | config files, installed to `~/.config` and `~/.cargo` |
+| `dot_config/` | config files, installed to `~/.config` |
 | `dot_pixi/manifests/` | CLI tools for every platform, installed with pixi |
+| `dot_local/share/rust-env/` | the Rust environment, including cargo's config |
 | `.chezmoidata/packages.toml` | packages pixi does not provide |
 | `.chezmoiscripts/` | setup scripts, one set per platform |
 | `.chezmoitemplates/` | pieces shared by the scripts |
 | `.chezmoiexternal.toml.tmpl` | files chezmoi downloads: fonts, and `host-spawn` for the Zed flatpak |
-| `dot_local/bin/zed` | `zed` command on Linux, whatever Zed's own command is called |
+| `dot_local/bin/` | `zed` on Linux, whatever Zed's own command is called, and `rust-analyzer` from the Rust environment |
 | `Library/` | macOS: links app config locations to `~/.config` |
 | `dot_local/share/zed-flatpak/`, `dot_var/` | Fedora Atomic: Zed flatpak integration |
 | `.chezmoiignore` | which files each platform gets |

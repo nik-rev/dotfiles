@@ -18,6 +18,21 @@ flatpak --user install --noninteractive flathub
 
 {{ else -}}
 # -------------------------------
+# Xcode Command Line Tools
+# -------------------------------
+
+# Apple's compiler, linker and SDK, which Rust needs to link, and git. Only
+# Apple provides them, so they cannot come from pixi
+if ! xcode-select -p >/dev/null 2>&1; then
+    # Fails if an installation was already requested, the loop waits either way
+    xcode-select --install || true
+    printf '%s\n' 'Waiting for the Command Line Tools: click "Install" in the dialog'
+    until xcode-select -p >/dev/null 2>&1; do
+        sleep 10
+    done
+fi
+
+# -------------------------------
 # Zed
 # -------------------------------
 

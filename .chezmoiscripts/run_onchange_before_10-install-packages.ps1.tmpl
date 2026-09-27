@@ -45,4 +45,15 @@ Install-WingetPackage "Microsoft.VisualStudio.2022.BuildTools" @(
 if (-not (Test-Path "$HOME\.pixi\bin\pixi.exe")) {
     Invoke-RestMethod https://pixi.sh/install.ps1 | Invoke-Expression
 }
+
+# -------------------------------
+# PATH
+# -------------------------------
+
+# Commands from these dotfiles, like rust-analyzer
+$bin = "$HOME\.local\bin"
+$path = [Environment]::GetEnvironmentVariable("Path", "User")
+if (($path -split ";") -notcontains $bin) {
+    [Environment]::SetEnvironmentVariable("Path", "$path;$bin", "User")
+}
 {{ end -}}

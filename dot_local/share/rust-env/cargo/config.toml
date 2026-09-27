@@ -66,15 +66,3 @@ codegen-backend = "llvm"
 
 [profile.dev.package.rustls]
 codegen-backend = "llvm"
-{{- if eq .chezmoi.os "linux" }}
-
-[env]
-# Compile C code from -sys crates with clang from pixi, the same compiler
-# that links above, so it uses the same C library
-CC = "clang"
-CXX = "clang++"
-AR = "llvm-ar"
-# pkg-config from pixi knows the C libraries in the rust-dev environment,
-# like OpenSSL. The system one, which comes first on the PATH, does not
-PKG_CONFIG = "{{ .chezmoi.homeDir }}/.pixi/bin/pkg-config"
-{{- end }}

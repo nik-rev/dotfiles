@@ -1,0 +1,5 @@
+#!/bin/sh
+# Runs rust-analyzer from the rust-env pixi environment. Editors like Zed
+# find it on the PATH, and it finds cargo and the rest of the environment
+exec "$HOME/.pixi/bin/pixi" run \
+    --manifest-path "$HOME/.local/share/rust-env/pixi.toml" -- rust-analyzer "$@"

@@ -1,6 +1,14 @@
-{{- if eq .chezmoi.os "windows" -}}
-# Installs nightly Rust with rustup, and the components in rust.components
-# from .chezmoidata/packages.toml
+{{- if and (includeTemplate "rust-enabled" .) (eq .chezmoi.os "windows") -}}
+# Installs nightly Rust into the rust-env pixi environment, with the
+# components in rust.components from .chezmoidata/packages.toml. Runs
+# again when the environment changes:
+# {{ include "dot_local/share/rust-env/pixi.toml" | sha256sum }}
+$ErrorActionPreference = "Stop"
+
+$setup = Join-Path ([IO.Path]::GetTempPath()) "rust-setup-$([Guid]::NewGuid()).ps1"
+
+# Runs inside the environment, so RUSTUP_HOME and CARGO_HOME point into it
+Set-Content -Path $setup -Value @'
 $ErrorActionPreference = "Stop"
 
 # Runs a program, and stops the script if it fails
@@ -12,15 +20,26 @@ function Invoke-Checked {
     }
 }
 
-if (-not (Test-Path "$HOME\.cargo\bin\rustup.exe")) {
+if (-not (Test-Path "$env:CARGO_HOME\bin\rustup.exe")) {
     $rustup_init = Join-Path ([IO.Path]::GetTempPath()) "rustup-init.exe"
     Invoke-WebRequest "https://win.rustup.rs/x86_64" -OutFile $rustup_init
-    Invoke-Checked $rustup_init -y --default-toolchain nightly --profile default
+    Invoke-Checked $rustup_init -y --no-modify-path --default-toolchain nightly --profile default
     Remove-Item $rustup_init
 }
 
-$env:Path = "$HOME\.cargo\bin;$env:Path"
-
 Invoke-Checked rustup default nightly
 Invoke-Checked rustup component add{{ range .rust.components }} {{ . | squote }}{{ end }}
+'@
+
+try {
+    & "$HOME\.pixi\bin\pixi.exe" run `
+        --manifest-path "$HOME\.local\share\rust-env\pixi.toml" -- `
+        powershell -NoProfile -ExecutionPolicy Bypass -File $setup
+    if ($LASTEXITCODE -ne 0) {
+        throw "Installing Rust exited with code $LASTEXITCODE"
+    }
+}
+finally {
+    Remove-Item $setup
+}
 {{ end -}}

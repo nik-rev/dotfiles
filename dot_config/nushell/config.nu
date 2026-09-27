@@ -4,11 +4,17 @@ source catppuccin.nu
 # After the system directories, so these never shadow system commands
 $env.path ++= [
     $"($nu.home-dir)/.local/bin"
-    # rustup, and tools installed with `cargo install`
-    $"($nu.home-dir)/.cargo/bin"
     # CLI tools from pixi
     $"($nu.home-dir)/.pixi/bin"
+    # Rust installed the usual way, with rustup. The dotfiles install it into
+    # its own pixi environment instead, see `rust` below
+    $"($nu.home-dir)/.cargo/bin"
 ]
+
+# Enter the pixi environment with Rust and everything needed to compile it
+def rust [] {
+    ^pixi shell --manifest-path ($nu.home-dir | path join .local share rust-env pixi.toml)
+}
 
 use std bench
 use std/iter intersperse

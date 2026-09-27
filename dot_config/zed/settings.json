@@ -322,6 +322,19 @@
   // Disable automatic updates
   "auto_update": false,
 
+  // Highlight chezmoi templates like the file they produce, for example
+  // foo.toml.tmpl like foo.toml
+  "file_types": {
+    "JSON": ["*.json.tmpl"],
+    "JSONC": ["*.jsonc.tmpl"],
+    "Markdown": ["*.md.tmpl"],
+    "Nu": ["*.nu.tmpl"],
+    "PowerShell": ["*.ps1.tmpl"],
+    "Shell Script": ["*.sh.tmpl", "*.bash.tmpl"],
+    "TOML": ["*.toml.tmpl"],
+    "YAML": ["*.yaml.tmpl", "*.yml.tmpl"],
+  },
+
   // Add support for many languages
   "auto_install_extensions": {
     "kdl": true,

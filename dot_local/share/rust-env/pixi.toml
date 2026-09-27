@@ -1,0 +1,52 @@
+# Everything needed to compile Rust, in one self-contained pixi environment.
+# Enter it with `rust` in nushell, or with:
+#
+#     pixi shell --manifest-path ~/.local/share/rust-env/pixi.toml
+#
+# The toolchains (rustup), cargo's downloads, tools installed with
+# `cargo install` and the sccache cache all live in this directory, and
+# nothing outside of it is changed. Deleting the directory removes Rust
+# completely. To keep it deleted, set rust.enabled = false in
+# .chezmoidata/packages.toml of the dotfiles.
+[workspace]
+name = "rust"
+channels = ["conda-forge"]
+platforms = ["linux-64", "linux-aarch64", "osx-arm64", "osx-64", "win-64"]
+
+[dependencies]
+sccache = "*"
+cargo-nextest = "*"
+cmake = "*"
+
+# C libraries for -sys crates. openssl 3, because openssl-sys does not
+# support openssl 4 yet. On Windows, openssl-sys finds OpenSSL differently
+[target.unix.dependencies]
+pkg-config = "*"
+openssl = "3.*"
+
+# On Linux, the C compiler, linker and ar come from here too, because
+# Fedora Atomic has none. macOS uses Xcode's, and Windows Visual Studio's
+[target.linux.dependencies]
+clang = "*"
+clangxx = "*"
+llvm-tools = "*"
+
+[target.unix.activation.env]
+RUSTUP_HOME = "$PIXI_PROJECT_ROOT/rustup"
+# cargo also reads its config from here: cargo/config.toml
+CARGO_HOME = "$PIXI_PROJECT_ROOT/cargo"
+SCCACHE_DIR = "$PIXI_PROJECT_ROOT/sccache"
+PATH = "$PIXI_PROJECT_ROOT/cargo/bin:$PATH"
+
+[target.win.activation.env]
+RUSTUP_HOME = "%PIXI_PROJECT_ROOT%\\rustup"
+CARGO_HOME = "%PIXI_PROJECT_ROOT%\\cargo"
+SCCACHE_DIR = "%PIXI_PROJECT_ROOT%\\sccache"
+PATH = "%PIXI_PROJECT_ROOT%\\cargo\\bin;%PATH%"
+
+# Compile C code from -sys crates with the clang above, which also links
+# (see cargo/config.toml), so everything uses the same C library
+[target.linux.activation.env]
+CC = "clang"
+CXX = "clang++"
+AR = "llvm-ar"

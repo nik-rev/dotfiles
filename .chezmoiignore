@@ -10,7 +10,18 @@ old_dotfiles/
 .config/cosmic
 .config/fontconfig
 .config/environment.d
-.local/bin
+.local/bin/zed
+{{ end -}}
+
+{{ if not (includeTemplate "rust-enabled" .) -}}
+# Rust, in its own pixi environment
+.local/share/rust-env
+.local/bin/rust-analyzer
+.local/bin/rust-analyzer.cmd
+{{ else if eq .chezmoi.os "windows" -}}
+.local/bin/rust-analyzer
+{{ else -}}
+.local/bin/rust-analyzer.cmd
 {{ end -}}
 
 {{ if not (includeTemplate "is-atomic" .) -}}

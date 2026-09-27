@@ -4,6 +4,9 @@
 #
 # Edit with `chezmoi edit ~/.pixi/manifests/pixi-global.toml`. Tools added
 # with `pixi global install` are overwritten by the next `chezmoi apply`.
+#
+# Rust and everything needed to compile it is in its own environment
+# instead, see ~/.local/share/rust-env/pixi.toml
 version = 1
 
 [envs.bat]
@@ -74,35 +77,3 @@ exposed = { ya = "ya", yazi = "yazi" }
 channels = ["conda-forge"]
 dependencies = { zoxide = "*" }
 exposed = { zoxide = "zoxide" }
-
-# -------------------------------
-# Rust development
-# -------------------------------
-
-# Used by ~/.cargo/config.toml on every platform
-[envs.sccache]
-channels = ["conda-forge"]
-dependencies = { sccache = "*" }
-exposed = { sccache = "sccache" }
-
-[envs.cargo-nextest]
-channels = ["conda-forge"]
-dependencies = { cargo-nextest = "*" }
-exposed = { cargo-nextest = "cargo-nextest" }
-
-# C toolchain and libraries for -sys crates, like openssl-sys.
-{{- if eq .chezmoi.os "linux" }}
-# On Linux, clang also links, see ~/.cargo/config.toml, and llvm-tools
-# provides llvm-ar. Fedora Atomic has neither a C compiler nor binutils.
-# openssl 3, because openssl-sys does not support openssl 4 yet
-[envs.rust-dev]
-channels = ["conda-forge"]
-dependencies = { clang = "*", clangxx = "*", llvm-tools = "*", pkg-config = "*", openssl = "3.*", cmake = "*" }
-exposed = { clang = "clang", "clang++" = "clang++", llvm-ar = "llvm-ar", llvm-ranlib = "llvm-ranlib", pkg-config = "pkg-config", cmake = "cmake" }
-{{- else }}
-# macOS and Windows use the system C compiler (Xcode, Visual Studio)
-[envs.rust-dev]
-channels = ["conda-forge"]
-dependencies = { cmake = "*" }
-exposed = { cmake = "cmake" }
-{{- end }}

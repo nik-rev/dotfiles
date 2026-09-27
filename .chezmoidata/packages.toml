@@ -9,8 +9,12 @@
 [windows]
 winget = ["Git.Git", "ZedIndustries.Zed.Preview"]
 
-# Nightly Rust, installed with rustup. ~/.cargo/config.toml needs these
+# Nightly Rust, installed with rustup into the rust-env pixi environment,
+# see dot_local/share/rust-env/pixi.toml. The cargo config needs these
+# components. `enabled = false` stops installing Rust; the environment in
+# ~/.local/share/rust-env can then be deleted
 [rust]
+enabled = true
 components = ["rust-src", "rust-analyzer", "rustc-codegen-cranelift-preview"]
 # Installed with `cargo install`. wild only supports Linux
 cargo_linux = ["wild-linker"]

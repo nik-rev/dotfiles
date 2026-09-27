@@ -1,4 +1,16 @@
-{{- if or (includeTemplate "is-atomic" .) (eq .chezmoi.os "darwin") -}}
+{{- if and (includeTemplate "rust-enabled" .) (ne .chezmoi.os "windows") -}}
 #!/bin/sh
+# Installs Rust into the rust-env pixi environment. Runs again when the
+# environment changes: {{ include "dot_local/share/rust-env/pixi.toml" | sha256sum }}
+set -eu
+
+setup="$(mktemp)"
+trap 'rm -f "$setup"' EXIT
+
+cat >"$setup" <<'RUST_SETUP'
 {{ template "rust-setup.sh" . }}
+RUST_SETUP
+
+"$HOME/.pixi/bin/pixi" run \
+    --manifest-path "$HOME/.local/share/rust-env/pixi.toml" -- sh "$setup"
 {{ end -}}
