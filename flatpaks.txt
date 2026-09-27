@@ -4,3 +4,4 @@ me.proton.Pass
 org.gimp.GIMP
 org.inkscape.Inkscape
 org.kde.kdenlive
+org.virt_manager.virt-manager

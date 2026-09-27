@@ -16,6 +16,9 @@ flatpak --user remote-add --if-not-exists flathub \
 flatpak --user install --noninteractive flathub
 {{- range (include "flatpaks.txt" | splitList "\n") }}{{ if and . (not (hasPrefix "#" .)) }} {{ . | quote }}{{ end }}{{ end }}
 
+flatpak --user install --noninteractive flathub
+{{- range .fedora.flatpak_extensions }} {{ . | quote }}{{ end }}
+
 # -------------------------------
 # Layered packages
 # -------------------------------

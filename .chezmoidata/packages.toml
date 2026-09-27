@@ -16,6 +16,11 @@
 [fedora]
 layered = ["oo7-portal"]
 
+# Fedora Atomic only: Flathub extensions, which `flatpak list --app` (and so
+# sync-packages.sh) does not list. The QEMU extension lets virt-manager run
+# virtual machines itself, without libvirt installed on the system
+flatpak_extensions = ["org.virt_manager.virt_manager.Extension.Qemu"]
+
 # Windows applications, from winget. Zed on macOS comes from its installer
 [windows]
 winget = ["Git.Git", "ZedIndustries.Zed.Preview"]

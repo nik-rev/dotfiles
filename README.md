@@ -178,6 +178,7 @@ Do not use `pixi global install`. The next
 | What | Where |
 |---|---|
 | Flathub apps (Fedora Atomic) | [`flatpaks.txt`](flatpaks.txt). Install one with `flatpak --user install flathub <app>`, then `sh sync-packages.sh` updates the list |
+| Flathub extensions (Fedora Atomic) | `fedora.flatpak_extensions` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml), since `sync-packages.sh` only lists apps |
 | Layered packages (Fedora Atomic) | `fedora.layered` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml). Only for what the COSMIC image does not ship yet: setup reminds you to remove one once Fedora includes it |
 | winget packages (Windows) | `windows.winget` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) |
 | Rust components, `cargo install` tools | `rust` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) |
@@ -217,6 +218,34 @@ Projects that pin a toolchain need the cranelift component added to it,
 since the cargo config uses cranelift for debug builds. Inside the
 project, in the environment:
 `rustup component add rustc-codegen-cranelift-preview`
+
+## Virtual machines
+
+On Fedora Atomic, [virt-manager](https://virt-manager.org) from Flathub runs
+Linux and Windows virtual machines, with the QEMU extension from Flathub.
+Nothing is installed on the system: the virtual machines run as your user
+(the "QEMU/KVM User session" connection in virt-manager), and are as fast
+as usual thanks to KVM.
+
+- **Windows 11** needs UEFI firmware and a TPM. When creating the virtual
+  machine, choose "Customize configuration before install", then set the
+  firmware to UEFI and add a TPM device (emulated, TPM 2.0). From the
+  command line:
+
+  ```sh
+  flatpak run --command=virt-install org.virt_manager.virt-manager \
+      --connect qemu:///session --name win11 --osinfo win11 \
+      --memory 8192 --vcpus 4 --boot uefi \
+      --tpm model=tpm-crb,backend.type=emulator,backend.version=2.0 \
+      --disk size=80 --cdrom ~/Downloads/Win11.iso --network user
+  ```
+
+- **Networking** is NAT only: virtual machines reach the internet, but the
+  host cannot reach them by IP address, and there is no bridged networking.
+- **Disks** are in `~/.var/app/org.virt_manager.virt-manager/data/images`.
+  virt-manager can open ISOs in `~/Downloads` and the other home folders.
+- `virsh` works with
+  `flatpak run --command=virsh org.virt_manager.virt-manager --connect qemu:///session`.
 
 ## Everyday use
 
