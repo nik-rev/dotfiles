@@ -35,45 +35,44 @@ placeholder `git` that only offers to install the developer tools.
 
 ## How it works
 
-Two tools do the work: **chezmoi** puts files in place, and **pixi**
-installs programs.
+- **chezmoi** puts files in place (dotfiles manager)
+- **pixi** installs programs (package manager).
 
-### chezmoi: the config files
+### chezmoi: dotfiles manager
 
-[chezmoi](https://chezmoi.io) copies the files in this repository to your
+[chezmoi](https://chezmoi.io) copies the files in this repository to my
 home directory. The repository lives in `~/.local/share/chezmoi`, and file
 names say where each file goes:
 
 - `dot_config/nushell/config.nu` becomes `~/.config/nushell/config.nu`
-  (`dot_` means a leading `.`).
+  (`dot_` becomes a leading `.`).
 - Files ending in `.tmpl` are templates: they can differ per platform, for
-  example `{{ if eq .chezmoi.os "windows" }}…{{ end }}`.
+  instance: `{{ if eq .chezmoi.os "windows" }}...{{ end }}`.
 - `executable_`, `symlink_` and similar prefixes set file attributes.
 - [`.chezmoiignore`](.chezmoiignore) decides which files a platform does
-  not get, like the COSMIC config on macOS.
+  not get, for example the COSMIC config on macOS.
 - [`.chezmoiscripts/`](.chezmoiscripts) contains setup scripts that
-  install programs. A script named `run_onchange_…` only runs again when
+  install programs. A script named `run_onchange_...` only runs again when
   its content changes, for example when a package list it includes changes.
 - [`.chezmoidata/`](.chezmoidata) holds data the templates use, like
   package lists.
 - [`.chezmoiexternal.toml.tmpl`](.chezmoiexternal.toml.tmpl) lists files
   chezmoi downloads, like fonts.
 
-`chezmoi apply` makes your home directory match the repository.
+`chezmoi apply` makes the home directory match the repository.
 
-### pixi: the programs
+### pixi: package manager
 
-[pixi](https://pixi.sh) is a package manager that works the same on Linux,
-macOS and Windows. It installs packages from
-[conda-forge](https://conda-forge.org), a large collection of prebuilt
-programs and libraries for all three, into your home directory. It needs
+[pixi](https://pixi.sh) is a cross-platform package manager. It installs packages from
+[conda-forge](https://conda-forge.org), a large repo of prebuilt
+programs and libraries for all three, into the home directory. It needs
 no administrator rights and never touches the system.
 
 pixi keeps every set of packages in its own **environment**, a directory
 with those packages and nothing else. These dotfiles use two kinds:
 
 - **Global tools**: one environment per CLI tool (nushell, ripgrep, bat,
-  …). pixi puts the commands of each in `~/.pixi/bin`, which is on the
+  etc.). pixi puts the commands of each in `~/.pixi/bin`, which is on the
   PATH, so they work everywhere. All of them are listed in pixi's own file,
   `~/.pixi/manifests/pixi-global.toml`, and `pixi global sync` installs
   exactly what it lists.
@@ -89,13 +88,13 @@ keeps a cache of downloaded packages, which `pixi clean cache` empties.
 | | Fedora Atomic | macOS | Windows |
 |---|---|---|---|
 | CLI tools | pixi | pixi | pixi |
-| Apps (Zed, …) | Flathub | Zed's installer | winget |
+| Apps (Zed, ...) | Flathub | Zed's installer | winget |
 | Rust | pixi workspace | pixi workspace + Xcode Command Line Tools | pixi workspace + Visual Studio Build Tools |
 | Fonts | `~/.local/share/fonts` | `~/Library/Fonts` | per-user fonts |
 
 pixi cannot provide graphical apps, and Apple's and Microsoft's compilers
 only come from them, so those stay per platform. On Fedora Atomic, only what the COSMIC image
-lacks is layered with `rpm-ostree`, and no toolbox is needed. On other Linux
+lacks is layered with `rpm-ostree`. On other Linux
 distributions, only the config files are installed.
 
 ### What happens during setup
@@ -117,9 +116,7 @@ Running it again only does what changed.
 ### CLI tools, on every platform
 
 1. Find the package on conda-forge, with `pixi search <name>` or on
-   [prefix.dev](https://prefix.dev/channels/conda-forge). The package name
-   can differ from the command: fd is `fd-find`, delta is `git-delta`.
-
+   [prefix.dev](https://prefix.dev/channels/conda-forge).
 2. Open the list:
 
    ```sh
@@ -164,7 +161,7 @@ Running it again only does what changed.
 
 To remove a tool, delete its entry and run `chezmoi apply`.
 
-Do not use `pixi global install` for tools you want to keep: the next
+Do not use `pixi global install`. The next
 `chezmoi apply` restores the list from the repository, which removes them.
 
 ### Apps and other packages
@@ -196,7 +193,7 @@ Nothing outside that directory is changed: `cargo` does not exist outside
 the environment. Enter it to compile:
 
 ```sh
-rust    # nushell. Elsewhere: pixi shell --manifest-path ~/.local/share/rust-env/pixi.toml
+rust    # alias for: pixi shell --manifest-path ~/.local/share/rust-env/pixi.toml
 cargo build
 ```
 
