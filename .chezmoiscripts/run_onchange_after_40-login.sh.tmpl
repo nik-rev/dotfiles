@@ -115,8 +115,8 @@ else
 fi
 
 if [ ! -x /usr/libexec/oo7-daemon ]; then
-    printf '%s\n' "The keyring only unlocks by itself with oo7, which newer Fedora" \
-        "images have: update with rpm-ostree upgrade" >&2
+    printf '%s\n' "The keyring only unlocks by itself with oo7 (Fedora 45 and newer). With" \
+        "gnome-keyring, it asks for the login password after automatic login" >&2
 fi
 {{- end }}
 {{ end -}}

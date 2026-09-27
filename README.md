@@ -347,6 +347,22 @@ Windows' own `expand`, `hostname`, `more`, `sort`, `timeout` and `whoami`
 come first on the PATH, and in nushell its built-in commands like `ls` come
 first, so call those with a caret: `^ls`.
 
+## secureblue
+
+[secureblue](https://secureblue.dev) is a hardened version of Fedora Atomic,
+and these dotfiles work on its COSMIC image (`cosmic-main-hardened`) too.
+Install Fedora Atomic first and rebase to secureblue as its guide explains,
+then use the usual install command. The differences:
+
+- secureblue has no `sudo`. Setup uses `run0` instead, which asks for the
+  password again every time.
+- It is based on an older Fedora, with gnome-keyring instead of oo7. With
+  automatic login, gnome-keyring asks for the login password when an app
+  first needs it.
+- `oo7-portal` is not layered: gnome-keyring already is the Secret portal.
+- Its firewall blocks incoming connections and SSH is disabled, which
+  matters for remote access only.
+
 ## Troubleshooting
 
 **A setup script failed.** Fix the cause and run `chezmoi apply` again:
