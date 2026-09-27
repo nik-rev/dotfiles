@@ -1,9 +1,9 @@
 #!/bin/sh
-# Runs nushell from Homebrew on the host instead of in the toolbox, so
-# terminals in Zed open instantly.
+# Runs nushell from pixi on the host, so the terminal in Zed is not stuck
+# in the flatpak sandbox.
 #
 # host-spawn instead of flatpak-spawn, because nushell needs a terminal it
 # controls. It also passes through the variables Zed sets for terminals.
 exec "$(dirname "$0")/host-spawn" \
     -env TERM,COLORTERM,TERM_PROGRAM,TERM_PROGRAM_VERSION,ZED_TERM \
-    /home/linuxbrew/.linuxbrew/bin/nu "$@"
+    "$HOME/.pixi/bin/nu" "$@"

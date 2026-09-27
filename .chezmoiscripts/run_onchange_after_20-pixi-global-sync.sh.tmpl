@@ -1,0 +1,8 @@
+{{- if or (includeTemplate "is-atomic" .) (eq .chezmoi.os "darwin") -}}
+#!/bin/sh
+# Installs the tools in ~/.pixi/manifests/pixi-global.toml. Runs again when
+# it changes: {{ include "dot_pixi/manifests/pixi-global.toml.tmpl" | sha256sum }}
+set -eu
+
+"$HOME/.pixi/bin/pixi" global sync
+{{ end -}}

@@ -66,3 +66,11 @@ codegen-backend = "llvm"
 
 [profile.dev.package.rustls]
 codegen-backend = "llvm"
+{{- if eq .chezmoi.os "linux" }}
+
+[env]
+# Compile C code from -sys crates with clang from pixi, the same compiler
+# that links above, so it uses the same C library
+CC = "clang"
+CXX = "clang++"
+{{- end }}

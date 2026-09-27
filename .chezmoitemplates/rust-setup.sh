@@ -1,8 +1,8 @@
-# Installs nightly Rust with rustup, and the tools in rust.cargo from
-# .chezmoidata/packages.toml. Used on macOS and in the Fedora Atomic toolbox
+# Installs nightly Rust with rustup, the components in rust.components from
+# .chezmoidata/packages.toml, and on Linux the tools in rust.cargo_linux
 set -eu
 
-export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$HOME/.pixi/bin:$PATH"
 
 if [ ! -x "$HOME/.cargo/bin/rustup" ]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
@@ -11,12 +11,13 @@ fi
 
 rustup default nightly
 rustup component add{{ range .rust.components }} {{ . | quote }}{{ end }}
+{{- if eq .chezmoi.os "linux" }}
 
 temporary_dir="$(mktemp -d)"
 trap 'rm -rf "$temporary_dir"' EXIT
 
-# Own CARGO_HOME so ~/.cargo/config.toml is not used: it needs sccache and,
-# on Linux, links with wild, which is one of the packages installed here
+# Own CARGO_HOME so ~/.cargo/config.toml is not used: it links with wild,
+# which is one of the packages installed here
 CARGO_HOME="$temporary_dir" cargo install --locked --root "$HOME/.cargo"
-{{- range .rust.cargo }} {{ . | quote }}{{ end }}
-{{- if eq .chezmoi.os "linux" }}{{ range .rust.cargo_linux }} {{ . | quote }}{{ end }}{{ end }}
+{{- range .rust.cargo_linux }} {{ . | quote }}{{ end }}
+{{- end }}

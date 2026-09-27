@@ -1,7 +1,8 @@
 # dotfiles
 
 My config for Fedora Atomic (COSMIC), macOS and Windows, managed with
-[chezmoi](https://chezmoi.io).
+[chezmoi](https://chezmoi.io). CLI tools come from [pixi](https://pixi.sh)
+on every platform.
 
 ## Install
 
@@ -20,14 +21,14 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /tmp init --apply --use-builtin-git=t
 iex "&{$(irm 'https://get.chezmoi.io/ps1')} -b '$env:TEMP' init --apply nik-rev"
 ```
 
-Homebrew asks for your password once, and Windows may show UAC prompts.
+Windows may show UAC prompts.
 
 <details>
 <summary>What the command does</summary>
 
 It downloads chezmoi to a temporary directory, clones this repository to
 `~/.local/share/chezmoi` and runs `chezmoi apply`. That runs the setup
-scripts, which also install chezmoi itself with Homebrew or winget.
+scripts, which also install chezmoi itself with pixi.
 
 `--use-builtin-git` lets chezmoi clone before git is installed. macOS has a
 placeholder `git` that only offers to install the developer tools.
@@ -36,13 +37,14 @@ placeholder `git` that only offers to install the developer tools.
 
 ## What gets installed
 
-| | CLI tools | Apps | Rust (nightly) |
+| | Fedora Atomic | macOS | Windows |
 |---|---|---|---|
-| Fedora Atomic | Homebrew | Flathub | in the `main` toolbox |
-| macOS | Homebrew | Homebrew | rustup |
-| Windows | winget | winget | rustup + VS C++ build tools |
+| CLI tools | pixi | pixi | pixi |
+| Apps | Flathub | Zed installer | winget |
+| Rust (nightly) | rustup | rustup | rustup + VS C++ build tools |
 
-Nothing is layered with `rpm-ostree` on Fedora Atomic.
+Nothing is layered with `rpm-ostree` on Fedora Atomic, and no toolbox is
+needed: pixi provides the C compiler and libraries that Rust needs.
 
 ## Everyday use
 
@@ -56,31 +58,32 @@ chezmoi cd                                # open a shell in the repository
 
 ### Packages
 
-Every package is listed in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml),
-with its Homebrew and winget name. Edit it and run `chezmoi apply`. The setup
-scripts re-run whenever the list changes.
-
-Flathub apps on Fedora Atomic are listed in `flatpaks.txt`. After installing
-one with `flatpak --user install flathub <app>`, run `sh sync-packages.sh` to
-update the list.
-
-### Rust on Fedora Atomic
-
-Fedora Atomic has no C toolchain, which Rust needs for linking, so Rust
-lives in a toolbox:
+CLI tools are listed in pixi's own format in
+[`dot_pixi/manifests/pixi-global.toml.tmpl`](dot_pixi/manifests/pixi-global.toml.tmpl).
+Add one there, not with `pixi global install`, then run `chezmoi apply`:
 
 ```sh
-toolbox enter main
+chezmoi edit ~/.pixi/manifests/pixi-global.toml
 ```
 
-Everything else runs on the host. Zed's `cargo` and `rust-analyzer` run in
-the toolbox automatically, through the wrappers in
-`~/.local/share/zed-flatpak/bin`.
+Find package names with `pixi search <name>`, or on
+[prefix.dev](https://prefix.dev/channels/conda-forge).
+
+Everything pixi does not provide, like Windows apps and Rust components, is
+in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml). Flathub apps
+on Fedora Atomic are listed in `flatpaks.txt`. After installing one with
+`flatpak --user install flathub <app>`, run `sh sync-packages.sh`.
+
+### Rust
+
+`cargo` works everywhere, including inside the Zed flatpak. On Linux, the
+`rust-dev` pixi environment provides clang, pkg-config, OpenSSL and CMake
+for crates that build C code, and `~/.cargo/config.toml` uses its clang.
 
 ### Re-running the setup
 
 The setup scripts only run when they, or the package lists, change. To run
-them anyway, for example after deleting the toolbox:
+them anyway:
 
 ```sh
 chezmoi state delete-bucket --bucket=entryState
@@ -92,13 +95,14 @@ chezmoi apply
 | Path | Contents |
 |---|---|
 | `dot_config/`, `dot_cargo/` | config files, installed to `~/.config` and `~/.cargo` |
-| `.chezmoidata/packages.toml` | packages for every platform |
+| `dot_pixi/manifests/` | CLI tools for every platform, installed with pixi |
+| `.chezmoidata/packages.toml` | packages pixi does not provide |
 | `.chezmoiscripts/` | setup scripts, one set per platform |
 | `.chezmoitemplates/` | pieces shared by the scripts |
 | `.chezmoiexternal.toml.tmpl` | files chezmoi downloads: fonts, and `host-spawn` for the Zed flatpak |
-| `dot_local/bin/zed` | `zed` command on Linux and macOS, whatever Zed's own command is called |
+| `dot_local/bin/zed` | `zed` command on Linux, whatever Zed's own command is called |
 | `Library/` | macOS: links app config locations to `~/.config` |
-| `dot_local/share/zed-flatpak/`, `dot_var/` | Fedora Atomic: lets the Zed flatpak use the host and toolbox |
+| `dot_local/share/zed-flatpak/`, `dot_var/` | Fedora Atomic: Zed flatpak integration |
 | `.chezmoiignore` | which files each platform gets |
 
 On Windows, a setup script links the `AppData` config locations to

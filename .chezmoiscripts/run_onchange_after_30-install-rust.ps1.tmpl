@@ -1,0 +1,26 @@
+{{- if eq .chezmoi.os "windows" -}}
+# Installs nightly Rust with rustup, and the components in rust.components
+# from .chezmoidata/packages.toml
+$ErrorActionPreference = "Stop"
+
+# Runs a program, and stops the script if it fails
+function Invoke-Checked {
+    $program, $arguments = $args
+    & $program @arguments
+    if ($LASTEXITCODE -ne 0) {
+        throw "$program exited with code $LASTEXITCODE"
+    }
+}
+
+if (-not (Test-Path "$HOME\.cargo\bin\rustup.exe")) {
+    $rustup_init = Join-Path ([IO.Path]::GetTempPath()) "rustup-init.exe"
+    Invoke-WebRequest "https://win.rustup.rs/x86_64" -OutFile $rustup_init
+    Invoke-Checked $rustup_init -y --default-toolchain nightly --profile default
+    Remove-Item $rustup_init
+}
+
+$env:Path = "$HOME\.cargo\bin;$env:Path"
+
+Invoke-Checked rustup default nightly
+Invoke-Checked rustup component add{{ range .rust.components }} {{ . | squote }}{{ end }}
+{{ end -}}

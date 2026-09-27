@@ -1,8 +1,7 @@
 #!/bin/sh
-# Opens Zed. Its command has a different name on every platform, so this
-# gives it the same name everywhere
+# Opens Zed. Its command has a different name on every Linux distribution,
+# so this gives it the same name as on macOS and Windows
 for zed in \
-    zed-preview \
     zeditor \
     "$HOME/.local/share/flatpak/exports/bin/dev.zed.Zed-Preview" \
     /var/lib/flatpak/exports/bin/dev.zed.Zed-Preview

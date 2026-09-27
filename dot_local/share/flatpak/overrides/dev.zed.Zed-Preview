@@ -4,6 +4,6 @@
 # The flatpak already has home access and may run host commands
 # (org.freedesktop.Flatpak), so only the environment needs changing.
 [Environment]
-PATH=/home/e/.local/share/zed-flatpak/bin:/app/bin:/usr/bin
-# Toolbox that the wrappers in zed-flatpak/bin run commands in
-ZED_TOOLBOX=main
+# zed-flatpak/bin runs nushell on the host. Rust (rustup) and the tools
+# from pixi run inside the sandbox directly
+PATH=/home/e/.local/share/zed-flatpak/bin:/home/e/.cargo/bin:/home/e/.pixi/bin:/app/bin:/usr/bin

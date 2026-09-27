@@ -1,18 +1,14 @@
 source zoxide.nu
 source catppuccin.nu
 
+# After the system directories, so these never shadow system commands
 $env.path ++= [
-    # Homebrew on Linux and macOS. After the system directories, so it
-    # never shadows them
-    "/home/linuxbrew/.linuxbrew/bin"
-    "/opt/homebrew/bin"
     $"($nu.home-dir)/.local/bin"
+    # rustup, and tools installed with `cargo install`
+    $"($nu.home-dir)/.cargo/bin"
+    # CLI tools from pixi
+    $"($nu.home-dir)/.pixi/bin"
 ]
-# rustup and `cargo install`ed tools. On Fedora Atomic these only work inside
-# the toolbox, which has the C toolchain needed for linking
-if not (("/run/ostree-booted" | path exists) and not ("/run/.containerenv" | path exists)) {
-    $env.path ++= [$"($nu.home-dir)/.cargo/bin"]
-}
 
 use std bench
 use std/iter intersperse

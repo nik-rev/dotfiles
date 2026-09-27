@@ -1,5 +1,5 @@
 {{- if eq .chezmoi.os "windows" -}}
-# Installs the packages from .chezmoidata/packages.toml on Windows
+# Installs pixi, and the applications it does not provide, on Windows
 $ErrorActionPreference = "Stop"
 
 # Runs a program, and stops the script if it fails
@@ -28,9 +28,6 @@ function Install-WingetPackage {
 # winget packages
 # -------------------------------
 
-{{ range .tools }}{{ if hasKey . "winget" -}}
-Install-WingetPackage {{ .winget | squote }}
-{{ end }}{{ end -}}
 {{ range .windows.winget -}}
 Install-WingetPackage {{ . | squote }}
 {{ end }}
@@ -41,33 +38,11 @@ Install-WingetPackage "Microsoft.VisualStudio.2022.BuildTools" @(
 )
 
 # -------------------------------
-# Rust
+# pixi
 # -------------------------------
 
-$rustup = "$HOME\.cargo\bin\rustup.exe"
-
-if (-not (Test-Path $rustup)) {
-    $rustup_init = Join-Path ([IO.Path]::GetTempPath()) "rustup-init.exe"
-    Invoke-WebRequest "https://win.rustup.rs/x86_64" -OutFile $rustup_init
-    Invoke-Checked $rustup_init -y --default-toolchain nightly --profile default
-    Remove-Item $rustup_init
-}
-
-$env:Path = "$HOME\.cargo\bin;$env:Path"
-
-Invoke-Checked rustup default nightly
-Invoke-Checked rustup component add{{ range .rust.components }} {{ . | squote }}{{ end }}
-
-# Own CARGO_HOME so ~/.cargo/config.toml is not used: it needs sccache,
-# which may not be on the PATH yet
-$temporary_dir = Join-Path ([IO.Path]::GetTempPath()) ([Guid]::NewGuid())
-New-Item -ItemType Directory -Path $temporary_dir | Out-Null
-$env:CARGO_HOME = $temporary_dir
-try {
-    Invoke-Checked cargo install --locked --root "$HOME\.cargo"{{ range .rust.cargo }} {{ . | squote }}{{ end }}
-}
-finally {
-    Remove-Item Env:CARGO_HOME
-    Remove-Item -Recurse -Force $temporary_dir
+# The installer also adds ~/.pixi/bin to the PATH
+if (-not (Test-Path "$HOME\.pixi\bin\pixi.exe")) {
+    Invoke-RestMethod https://pixi.sh/install.ps1 | Invoke-Expression
 }
 {{ end -}}

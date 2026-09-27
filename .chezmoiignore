@@ -5,25 +5,23 @@ sync-packages.sh
 old_dotfiles/
 
 {{ if ne .chezmoi.os "linux" -}}
-# COSMIC desktop, and font settings
+# Linux desktop: COSMIC, fonts, session PATH, and the `zed` command, which
+# Zed installs itself on macOS and Windows
 .config/cosmic
 .config/fontconfig
-{{ end -}}
-
-{{ if eq .chezmoi.os "windows" -}}
-# The `zed` command. On Windows, Zed already installs one
+.config/environment.d
 .local/bin
 {{ end -}}
 
 {{ if not (includeTemplate "is-atomic" .) -}}
-# Zed flatpak and toolbox integration, only used on Fedora Atomic
+# Zed flatpak integration, only used on Fedora Atomic
 .local/share/flatpak
 .local/share/zed-flatpak
 .var
 {{ end -}}
 
 {{ if ne .chezmoi.os "darwin" -}}
-# Links from macOS config locations to ~/.config, and Homebrew setup
+# Links from macOS config locations to ~/.config, and PATH setup
 Library
 .zprofile
 {{ end -}}

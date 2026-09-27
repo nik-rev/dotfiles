@@ -1,0 +1,10 @@
+{{- if eq .chezmoi.os "windows" -}}
+# Installs the tools in ~/.pixi/manifests/pixi-global.toml. Runs again when
+# it changes: {{ include "dot_pixi/manifests/pixi-global.toml.tmpl" | sha256sum }}
+$ErrorActionPreference = "Stop"
+
+& "$HOME\.pixi\bin\pixi.exe" global sync
+if ($LASTEXITCODE -ne 0) {
+    throw "pixi global sync exited with code $LASTEXITCODE"
+}
+{{ end -}}

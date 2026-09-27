@@ -1,0 +1,106 @@
+# CLI tools on every platform, installed from conda-forge with pixi. Each
+# tool gets its own environment, and `exposed` lists the commands it puts
+# in ~/.pixi/bin. `chezmoi apply` runs `pixi global sync` after changes.
+#
+# Edit with `chezmoi edit ~/.pixi/manifests/pixi-global.toml`. Tools added
+# with `pixi global install` are overwritten by the next `chezmoi apply`.
+version = 1
+
+[envs.bat]
+channels = ["conda-forge"]
+dependencies = { bat = "*" }
+exposed = { bat = "bat" }
+
+[envs.chezmoi]
+channels = ["conda-forge"]
+dependencies = { chezmoi = "*" }
+exposed = { chezmoi = "chezmoi" }
+{{- if ne .chezmoi.os "windows" }}
+
+# No Windows build
+[envs.fish]
+channels = ["conda-forge"]
+dependencies = { fish = "*" }
+exposed = { fish = "fish" }
+{{- end }}
+
+[envs.fzf]
+channels = ["conda-forge"]
+dependencies = { fzf = "*" }
+exposed = { fzf = "fzf" }
+
+[envs.git-delta]
+channels = ["conda-forge"]
+dependencies = { git-delta = "*" }
+exposed = { delta = "delta" }
+
+[envs.lazygit]
+channels = ["conda-forge"]
+dependencies = { lazygit = "*" }
+exposed = { lazygit = "lazygit" }
+
+[envs.nushell]
+channels = ["conda-forge"]
+dependencies = { nushell = "*" }
+exposed = { nu = "nu" }
+
+[envs.ripgrep]
+channels = ["conda-forge"]
+dependencies = { ripgrep = "*" }
+exposed = { rg = "rg" }
+
+[envs.typst]
+channels = ["conda-forge"]
+dependencies = { typst = "*" }
+exposed = { typst = "typst" }
+
+[envs.vim]
+channels = ["conda-forge"]
+dependencies = { vim = "*" }
+exposed = { vim = "vim", vimdiff = "vimdiff", xxd = "xxd" }
+
+[envs.vivid]
+channels = ["conda-forge"]
+dependencies = { vivid = "*" }
+exposed = { vivid = "vivid" }
+
+[envs.yazi]
+channels = ["conda-forge"]
+dependencies = { yazi = "*" }
+exposed = { ya = "ya", yazi = "yazi" }
+
+[envs.zoxide]
+channels = ["conda-forge"]
+dependencies = { zoxide = "*" }
+exposed = { zoxide = "zoxide" }
+
+# -------------------------------
+# Rust development
+# -------------------------------
+
+# Used by ~/.cargo/config.toml on every platform
+[envs.sccache]
+channels = ["conda-forge"]
+dependencies = { sccache = "*" }
+exposed = { sccache = "sccache" }
+
+[envs.cargo-nextest]
+channels = ["conda-forge"]
+dependencies = { cargo-nextest = "*" }
+exposed = { cargo-nextest = "cargo-nextest" }
+
+# C toolchain and libraries for -sys crates, like openssl-sys.
+{{- if eq .chezmoi.os "linux" }}
+# On Linux, clang also links, see ~/.cargo/config.toml. openssl 3, because
+# openssl-sys does not support openssl 4 yet
+[envs.rust-dev]
+channels = ["conda-forge"]
+dependencies = { clang = "*", clangxx = "*", pkg-config = "*", openssl = "3.*", cmake = "*" }
+exposed = { clang = "clang", "clang++" = "clang++", pkg-config = "pkg-config", cmake = "cmake" }
+{{- else }}
+# macOS and Windows use the system C compiler (Xcode, Visual Studio)
+[envs.rust-dev]
+channels = ["conda-forge"]
+dependencies = { cmake = "*" }
+exposed = { cmake = "cmake" }
+{{- end }}

@@ -1,0 +1,4 @@
+{{- if or (includeTemplate "is-atomic" .) (eq .chezmoi.os "darwin") -}}
+#!/bin/sh
+{{ template "rust-setup.sh" . }}
+{{ end -}}
