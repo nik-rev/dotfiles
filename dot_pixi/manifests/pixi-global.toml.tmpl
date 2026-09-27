@@ -9,6 +9,13 @@
 # instead, see ~/.local/share/rust-env/pixi.toml
 version = 1
 
+# Terminal. `shortcuts` adds it to the app menu on every platform
+[envs.alacritty]
+channels = ["conda-forge"]
+dependencies = { alacritty = "*" }
+exposed = { alacritty = "alacritty" }
+shortcuts = ["alacritty"]
+
 [envs.bat]
 channels = ["conda-forge"]
 dependencies = { bat = "*" }

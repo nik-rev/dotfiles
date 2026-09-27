@@ -9,7 +9,7 @@ old_dotfiles/
 # Zed installs itself on macOS and Windows
 .config/cosmic
 .config/fontconfig
-.config/environment.d
+.bashrc.d
 .local/bin/zed
 {{ end -}}
 

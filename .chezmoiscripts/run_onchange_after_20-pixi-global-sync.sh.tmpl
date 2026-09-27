@@ -4,5 +4,9 @@
 # it changes: {{ include "dot_pixi/manifests/pixi-global.toml.tmpl" | sha256sum }}
 set -eu
 
+# App-menu entries (`shortcuts`) keep the PATH that pixi runs with, and
+# apps started from them need the tools from pixi, like Alacritty needs nu
+export PATH="$HOME/.local/bin:$HOME/.pixi/bin:/usr/local/bin:/usr/bin:/bin"
+
 "$HOME/.pixi/bin/pixi" global sync
 {{ end -}}
