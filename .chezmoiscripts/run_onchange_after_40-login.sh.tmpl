@@ -8,6 +8,13 @@
 # password that systemd keeps encrypted, instead of with the login password
 set -eu
 
+# Changes to system files are collected in this script, and run as root at
+# the end, so there is at most one password prompt. In the home directory,
+# since run0 gives root its own /tmp
+root_script="$(mktemp -p "$HOME" .dotfiles-root.XXXXXX)"
+trap 'rm -f "$root_script"' EXIT
+printf '%s\n' "set -eu" >"$root_script"
+
 # -------------------------------
 # Login screen
 # -------------------------------
@@ -26,9 +33,13 @@ After=kmsconvt@tty1.service"
 if [ -e /usr/lib/systemd/system/kmsconvt@.service ] &&
     [ "$(cat "$dropin" 2>/dev/null)" != "$dropin_content" ]; then
     printf '%s\n' "Making the login screen start instead of the kmscon text console"
-    sudo mkdir -p "$(dirname "$dropin")"
-    printf '%s\n' "$dropin_content" | sudo tee "$dropin" >/dev/null
-    sudo systemctl daemon-reload
+    cat >>"$root_script" <<EOF
+mkdir -p $(dirname "$dropin")
+cat >$dropin <<'DROPIN'
+$dropin_content
+DROPIN
+systemctl daemon-reload
+EOF
 fi
 
 # -------------------------------
@@ -52,10 +63,24 @@ if [ "$current" != "$wanted" ]; then
         printf '%s\n' "Not changing automatic login: $config already has an [initial_session] section" >&2
     else
         printf '%s\n' "Changing automatic login in $config"
-        sudo sed -i "/^$begin\$/,/^$end\$/d" "$config"
+        printf '%s\n' "sed -i '/^$begin\$/,/^$end\$/d' $config" >>"$root_script"
         if [ -n "$wanted" ]; then
-            printf '\n%s\n' "$wanted" | sudo tee -a "$config" >/dev/null
+            cat >>"$root_script" <<EOF
+cat >>$config <<'BLOCK'
+
+$wanted
+BLOCK
+EOF
         fi
+    fi
+fi
+
+if [ "$(wc -l <"$root_script")" -gt 1 ]; then
+    # secureblue has no sudo, only run0
+    if [ -x /usr/bin/sudo ]; then
+        sudo sh "$root_script"
+    else
+        run0 sh "$root_script"
     fi
 fi
 {{- if .login.autologin }}

@@ -10,16 +10,21 @@
 # takes effect after a reboot. Setup reminds you when Fedora includes one in
 # the image: then remove it here and run `rpm-ostree uninstall <package>`.
 #
-# oo7-portal: the Secret portal, so flatpak apps like Zed and Proton Pass can
-# store passwords in the keyring. COSMIC already expects it, but the image
-# only ships the keyring (oo7-daemon) without it
+# `only_with` skips a package unless another one is installed.
 [fedora]
-layered = ["oo7-portal"]
 
-# Fedora Atomic only: Flathub extensions, which `flatpak list --app` (and so
+# Flathub extensions, which `flatpak list --app` (and so
 # sync-packages.sh) does not list. The QEMU extension lets virt-manager run
 # virtual machines itself, without libvirt installed on the system
 flatpak_extensions = ["org.virt_manager.virt_manager.Extension.Qemu"]
+
+# The Secret portal, so flatpak apps like Zed and Proton Pass can store
+# passwords in the keyring. COSMIC already expects it, but the image only
+# ships the keyring (oo7-daemon) without it. Images with gnome-keyring
+# instead, like secureblue, do not need it: gnome-keyring is the portal
+[[fedora.layered]]
+package = "oo7-portal"
+only_with = "oo7-daemon"
 
 # Windows applications, from winget. Zed on macOS comes from its installer
 [windows]
