@@ -1,92 +1,98 @@
 # dotfiles
 
-My cross-platform system config for:
+My system config, shared between:
 
 - Linux (Fedora COSMIC Atomic)
 - macOS
 - Windows
 
-A single command sets up a fresh machine: it installs the programs and puts the config files in place.
+On a fresh machine I run one command, and it installs my programs and puts
+all the config files where they belong.
 
 ## Install
 
-- Linux (Fedora COSMIC Atomic)
-- macOS
+On Linux (Fedora COSMIC Atomic) and macOS:
 
 ```sh
 sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /tmp init --apply --use-builtin-git=true nik-rev
 ```
 
-- Windows
+On Windows, in PowerShell:
 
 ```powershell
 iex "&{$(irm 'https://get.chezmoi.io/ps1')} -b '$env:TEMP' init --apply nik-rev"
 ```
 
-Windows may show UAC prompts. On macOS, click "Install" when asked to
-install the Command Line Tools.
+Expect some UAC prompts on Windows. On macOS, a dialog asks to install the
+Command Line Tools, so click "Install".
 
 <details>
 <summary>What the command does</summary>
 
 1. Downloads chezmoi to a temporary directory
 2. Clones this repository to `~/.local/share/chezmoi`
-3. Runs `chezmoi apply`, which does everything described in [What happens during setup](#what-happens-during-setup).
+3. Runs `chezmoi apply`, which does everything in
+   [What happens during setup](#what-happens-during-setup)
 
-`--use-builtin-git` lets chezmoi clone before git is installed. macOS has a
-placeholder `git` that only offers to install the developer tools.
+The `--use-builtin-git` flag is there because chezmoi has to clone the repo
+before git is installed. On a fresh Mac, `git` is just a placeholder that
+offers to install the developer tools.
 
 </details>
 
 ## How it works
 
-- **chezmoi** puts files in place (dotfiles manager)
-- **pixi** installs programs (package manager).
+Two tools do all the work:
 
-### chezmoi: dotfiles manager
+- **chezmoi** manages the dotfiles
+- **pixi** installs the programs
 
-[chezmoi](https://chezmoi.io) copies the files in this repository to my
-home directory. The repository lives in `~/.local/share/chezmoi`, and file
-names say where each file goes:
+### chezmoi
 
-- `dot_config/nushell/config.nu` becomes `~/.config/nushell/config.nu`
-  (`dot_` becomes a leading `.`).
-- Files ending in `.tmpl` are templates: they can differ per platform, for
-  instance: `{{ if eq .chezmoi.os "windows" }}...{{ end }}`.
-- `executable_`, `symlink_` and similar prefixes set file attributes.
-- [`.chezmoiignore`](.chezmoiignore) decides which files a platform does
-  not get, for example the COSMIC config on macOS.
-- [`.chezmoiscripts/`](.chezmoiscripts) contains setup scripts that
-  install programs. A script named `run_onchange_...` only runs again when
-  its content changes, for example when a package list it includes changes.
-- [`.chezmoidata/`](.chezmoidata) holds data the templates use, like
+[chezmoi](https://chezmoi.io) copies the files in this repository into my
+home directory. The repo lives in `~/.local/share/chezmoi`, and the file
+names tell chezmoi where everything goes:
+
+- `dot_config/nushell/config.nu` ends up as `~/.config/nushell/config.nu`.
+  The `dot_` prefix turns into a leading `.`.
+- Files ending in `.tmpl` are templates, so they can be different per
+  platform, e.g. `{{ if eq .chezmoi.os "windows" }}...{{ end }}`.
+- Prefixes like `executable_` and `symlink_` set file attributes.
+- [`.chezmoiignore`](.chezmoiignore) lists what a platform shouldn't get,
+  like the COSMIC config on macOS.
+- [`.chezmoiscripts/`](.chezmoiscripts) has the setup scripts that install
+  programs. The ones named `run_onchange_...` only run again when their
+  content changes, which includes changes to a package list they pull in.
+- [`.chezmoidata/`](.chezmoidata) holds data for the templates, such as
   package lists.
-- [`.chezmoiexternal.toml.tmpl`](.chezmoiexternal.toml.tmpl) lists files
-  chezmoi downloads, like fonts.
+- [`.chezmoiexternal.toml.tmpl`](.chezmoiexternal.toml.tmpl) lists files for
+  chezmoi to download, such as fonts.
 
-`chezmoi apply` makes the home directory match the repository.
+Running `chezmoi apply` makes the home directory match the repository.
 
-### pixi: package manager
+### pixi
 
-[pixi](https://pixi.sh) is a cross-platform package manager. It installs packages from
-[conda-forge](https://conda-forge.org), a large repo of prebuilt
-programs and libraries for all three, into the home directory. It needs
-no administrator rights and never touches the system.
+[pixi](https://pixi.sh) is a package manager that works the same way on
+Linux, macOS and Windows. It gets its packages from
+[conda-forge](https://conda-forge.org), a big repository of prebuilt
+programs and libraries for all three, and installs them into the home
+directory. It doesn't need admin rights and doesn't touch the rest of the
+system.
 
-pixi keeps every set of packages in its own **environment**, a directory
-with those packages and nothing else. These dotfiles use two kinds:
+Every set of packages goes into its own **environment**, which is just a
+directory containing those packages and nothing else. I use two kinds:
 
-- **Global tools**: one environment per CLI tool (nushell, ripgrep, bat,
-  etc.). pixi puts the commands of each in `~/.pixi/bin`, which is on the
-  PATH, so they work everywhere. All of them are listed in pixi's own file,
+- **Global tools.** Each CLI tool (nushell, ripgrep, bat, etc.) gets its
+  own environment, and pixi puts its commands in `~/.pixi/bin`. That's on
+  the PATH, so they work everywhere. They're all listed in pixi's own file,
   `~/.pixi/manifests/pixi-global.toml`, and `pixi global sync` installs
-  exactly what it lists.
-- **Workspaces**: an environment described by a `pixi.toml`, whose
-  commands are only available after entering it with `pixi shell`. Rust
-  lives in one, see [Rust](#rust).
+  exactly what's in there.
+- **Workspaces.** These are described by a `pixi.toml`, and their commands
+  are only available after entering them with `pixi shell`. My Rust setup
+  is one of these (see [Rust](#rust)).
 
-Deleting an environment's directory removes it completely. pixi also
-keeps a cache of downloaded packages, which `pixi clean cache` empties.
+To get rid of an environment, delete its directory. pixi also keeps a cache
+of downloaded packages, and `pixi clean cache` empties it.
 
 ### What each platform gets
 
@@ -99,67 +105,70 @@ keeps a cache of downloaded packages, which `pixi clean cache` empties.
 | Rust | pixi workspace | pixi workspace + Xcode Command Line Tools | pixi workspace + Visual Studio Build Tools |
 | Fonts | `~/.local/share/fonts` | `~/Library/Fonts` | per-user fonts |
 
-conda-forge, where pixi's packages come from, has few graphical apps, and
-Apple's and Microsoft's compilers only come from them, so those stay per
-platform. On Fedora Atomic, only what the COSMIC image lacks is layered
-with `rpm-ostree`. On other Linux distributions, only the config files are
+conda-forge doesn't have many graphical apps, and only Apple and Microsoft
+ship their compilers, so those parts are different on each platform. On
+Fedora Atomic, the only packages layered with `rpm-ostree` are ones the
+COSMIC image is missing. On other Linux distros, only the config files get
 installed.
 
 ### Why Zed and Alacritty come from pixi
 
-Other graphical apps come from Flathub on Fedora Atomic, where each runs in
-a sandbox. That suits apps that only open your files, but not these two:
+On Fedora Atomic, my other graphical apps come from Flathub and each one
+runs in a sandbox. That's fine for apps that just open files, but it doesn't
+work well for these two.
 
-- **Zed** runs language servers, `cargo`, and a terminal with your shell,
-  all of which are outside a flatpak's sandbox. As a flatpak it needed
-  workarounds to reach them. From pixi, it runs like any other desktop app
-  and finds all of them directly.
-- **Alacritty** is not on Flathub: a sandboxed terminal would also run its
-  shell in the sandbox.
+Zed runs language servers, `cargo` and a terminal with my shell, and all of
+those live outside a flatpak's sandbox. The flatpak version needed a bunch
+of workarounds to reach them. Installed with pixi, it's just a normal
+desktop app that finds everything on its own.
 
-pixi also adds both to the app menu (`shortcuts` in the manifest), and the
-same pixi package works on every platform. Only on Windows, pixi's Zed has
-no Start menu entry, so setup adds one, and makes `zed://` links open in
-it, which Zed's own installer would do. (Zed 1.21 itself does not open
-`zed://file` links on Windows yet, whichever way it is installed.)
+Alacritty isn't on Flathub at all, which makes sense: if the terminal were
+sandboxed, the shell inside it would be too.
 
-conda-forge only has Zed's stable releases, not Zed Preview.
+pixi also adds both apps to the app menu (that's what `shortcuts` in the
+manifest does), and the same package works on every platform. The one
+exception is Zed on Windows, which gets no Start menu entry from pixi. Setup
+adds one there, and also registers `zed://` links the way Zed's own
+installer would. Zed 1.21 can't actually open `zed://file` links on Windows
+yet, though, no matter how it's installed.
+
+Note that conda-forge only has Zed's stable releases, not Zed Preview.
 
 ### What happens during setup
 
-`chezmoi apply` runs, in this order:
+`chezmoi apply` goes through these steps in order:
 
-1. **Installs what pixi cannot**
+1. **Install whatever pixi can't**
    ([`install-packages`](.chezmoiscripts)):
 
    - Flathub apps on Fedora Atomic
    - the Xcode Command Line Tools on macOS
    - winget packages and the Visual Studio Build Tools on Windows
-   - Then pixi itself.
+   - and finally pixi itself
 
-2. **Puts the config files in place**, and downloads fonts.
-3. **Installs the global tools** (`pixi-global-sync`): `pixi global sync`.
-4. **Installs Rust** (`install-rust`) into its pixi workspace.
+2. **Put the config files in place** and download the fonts.
+3. **Install the global tools** with `pixi global sync` (`pixi-global-sync`).
+4. **Install Rust** into its pixi workspace (`install-rust`).
 
-Running it again only does what changed.
+If I run it again, it only redoes what changed.
 
 ## Installing packages
 
-### CLI tools, on every platform
+### CLI tools (all platforms)
 
-1. Find the package on conda-forge, with `pixi search <name>` or on
-   [prefix.dev](https://prefix.dev/channels/conda-forge).
+1. Look the package up on conda-forge, either with `pixi search <name>` or
+   on [prefix.dev](https://prefix.dev/channels/conda-forge).
 2. Open the list:
 
    ```sh
    chezmoi edit ~/.pixi/manifests/pixi-global.toml
    ```
 
-   This edits the template in the repository,
+   This actually edits the template in the repo,
    [`dot_pixi/manifests/pixi-global.toml.tmpl`](dot_pixi/manifests/pixi-global.toml.tmpl).
 
-3. Add an environment for it. `exposed` maps each command to put on the
-   PATH to the command in the package:
+3. Add an environment for the package. In `exposed`, each key is a command
+   to put on the PATH, and its value is the command inside the package:
 
    ```toml
    [envs.fd-find]
@@ -168,14 +177,15 @@ Running it again only does what changed.
    exposed = { fd = "fd" }
    ```
 
-   Every exposed command must exist in the package on every platform that
-   gets it, otherwise `pixi global sync` fails. To see what a package
-   provides, install it once with `pixi global install <package>`: it
-   prints the commands it exposes, and adds a ready-made entry to
-   `~/.pixi/manifests/pixi-global.toml` to copy from.
+   Every exposed command has to exist in the package on every platform that
+   gets it, or `pixi global sync` will fail. The easiest way to find out
+   what a package provides is to install it once with
+   `pixi global install <package>`. It prints the commands it exposes and
+   writes a ready-made entry into `~/.pixi/manifests/pixi-global.toml` that
+   I can copy.
 
-4. For a single platform, wrap the entry in a template condition, like
-   the uutils entry for Windows:
+4. If a package is only for one platform, wrap it in a template condition,
+   like the uutils entry for Windows:
 
    ```toml
    {{- if eq .chezmoi.os "windows" }}
@@ -184,76 +194,78 @@ Running it again only does what changed.
    {{- end }}
    ```
 
-   `.chezmoi.os` is `linux`, `darwin` or `windows`.
+   `.chezmoi.os` is one of `linux`, `darwin` or `windows`.
 
-5. Run `chezmoi apply`. It notices the list changed and runs
+5. Run `chezmoi apply`. It sees that the list changed and runs
    `pixi global sync`.
 
-6. Commit and push. Other machines get it with `chezmoi update`.
+6. Commit and push, and the other machines pick it up with
+   `chezmoi update`.
 
-To remove a tool, delete its entry and run `chezmoi apply`.
+Removing a tool works the same way: delete its entry and run
+`chezmoi apply`.
 
-Do not use `pixi global install`. The next
-`chezmoi apply` restores the list from the repository, which removes them.
+Don't use `pixi global install` for tools you want to keep, because the
+next `chezmoi apply` resets the list to what's in the repository and
+removes them again.
 
 ### Apps and other packages
 
 | What | Where |
 |---|---|
-| Flathub apps (Fedora Atomic) | [`flatpaks.txt`](flatpaks.txt). Install one with `flatpak --user install flathub <app>`, then `sh sync-packages.sh` updates the list |
-| Flathub extensions (Fedora Atomic) | `fedora.flatpak_extensions` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml), since `sync-packages.sh` only lists apps |
-| Layered packages (Fedora Atomic) | `fedora.layered` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml). Only for what the COSMIC image does not ship yet: setup reminds you to remove one once Fedora includes it |
+| Flathub apps (Fedora Atomic) | [`flatpaks.txt`](flatpaks.txt). Install the app with `flatpak --user install flathub <app>`, then run `sh sync-packages.sh` to update the list |
+| Flathub extensions (Fedora Atomic) | `fedora.flatpak_extensions` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml). `sync-packages.sh` only picks up apps, so these go here |
+| Layered packages (Fedora Atomic) | `fedora.layered` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml). Only for things the COSMIC image doesn't ship yet. Setup reminds me to remove one once Fedora includes it |
 | winget packages (Windows) | `windows.winget` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) |
 | Rust components, `cargo install` tools | `rust` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) |
 | Libraries and tools for compiling Rust | [`dot_local/share/rust-env/pixi.toml`](dot_local/share/rust-env/pixi.toml) |
 
-`chezmoi apply` installs changes to any of these.
+`chezmoi apply` installs whatever changed in any of these.
 
 ## Rust
 
-Everything needed to compile Rust is in one pixi workspace,
+Everything I need to compile Rust lives in one pixi workspace,
 `~/.local/share/rust-env`:
 
-- nightly Rust, installed with rustup, including toolchains that projects
-  pin in `rust-toolchain.toml`
+- nightly Rust from rustup, plus any toolchains that projects pin in their
+  `rust-toolchain.toml`
 - cargo's [config](dot_local/share/rust-env/cargo/config.toml), its
-  downloads, and tools installed with `cargo install`
-- sccache, and its cache
-- on Linux, the C compiler, linker and libraries (like OpenSSL) that
-  crates with C code need
+  downloads, and whatever I install with `cargo install`
+- sccache and its cache
+- on Linux, the C compiler, linker and libraries (like OpenSSL) that crates
+  with C code need
 
-Nothing outside that directory is changed: `cargo` does not exist outside
-the environment. Enter it to compile:
+None of it leaks outside that directory, so `cargo` doesn't even exist
+until I enter the environment:
 
 ```sh
 rust    # alias for: pixi shell --manifest-path ~/.local/share/rust-env/pixi.toml
 cargo build
 ```
 
-Zed does not need it entered: `~/.local/bin/rust-analyzer` runs
+Zed doesn't need me to enter it, because `~/.local/bin/rust-analyzer` runs
 rust-analyzer from the environment.
 
-To remove Rust, set `rust.enabled = false` in
+To remove Rust completely, I'd set `rust.enabled = false` in
 [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) and delete
 `~/.local/share/rust-env`.
 
-Projects that pin a toolchain need the cranelift component added to it,
-since the cargo config uses cranelift for debug builds. Inside the
-project, in the environment:
-`rustup component add rustc-codegen-cranelift-preview`
+My cargo config uses cranelift for debug builds, so projects that pin their
+own toolchain need the cranelift component added to it. From inside the
+project, in the environment, run
+`rustup component add rustc-codegen-cranelift-preview`.
 
 ## Virtual machines
 
-On Fedora Atomic, [virt-manager](https://virt-manager.org) from Flathub runs
-Linux and Windows virtual machines, with the QEMU extension from Flathub.
-Nothing is installed on the system: the virtual machines run as your user
-(the "QEMU/KVM User session" connection in virt-manager), and are as fast
-as usual thanks to KVM.
+On Fedora Atomic, I run Linux and Windows virtual machines with
+[virt-manager](https://virt-manager.org) and its QEMU extension, both from
+Flathub. Nothing gets installed on the system itself. The VMs run as my
+user (the "QEMU/KVM User session" connection in virt-manager), and KVM
+keeps them as fast as usual.
 
-- **Windows 11** needs UEFI firmware and a TPM. When creating the virtual
-  machine, choose "Customize configuration before install", then set the
-  firmware to UEFI and add a TPM device (emulated, TPM 2.0). From the
-  command line:
+- **Windows 11** needs UEFI firmware and a TPM. When creating the VM, tick
+  "Customize configuration before install", set the firmware to UEFI and
+  add a TPM device (emulated, TPM 2.0). Or from the command line:
 
   ```sh
   flatpak run --command=virt-install org.virt_manager.virt-manager \
@@ -263,20 +275,22 @@ as usual thanks to KVM.
       --disk size=80 --cdrom ~/Downloads/Win11.iso --network user
   ```
 
-- **Networking** is NAT only: virtual machines reach the internet, but the
-  host cannot reach them by IP address, and there is no bridged networking.
-- **Disks** are in `~/.var/app/org.virt_manager.virt-manager/data/images`.
-  virt-manager can open ISOs in `~/Downloads` and the other home folders.
-- `virsh` works with
+- **Networking** is NAT only. The VMs can reach the internet, but the host
+  can't reach them by IP, and bridged networking isn't available.
+- **Disks** are stored in
+  `~/.var/app/org.virt_manager.virt-manager/data/images`. virt-manager can
+  open ISOs from `~/Downloads` and the other home folders.
+- **`virsh`** works through
   `flatpak run --command=virsh org.virt_manager.virt-manager --connect qemu:///session`.
 
 ## NVIDIA graphics
 
-Not part of the setup, since it depends on the hardware. On Fedora Atomic,
-NVIDIA's driver comes from [RPM Fusion](https://rpmfusion.org/Howto/NVIDIA)
-(for GeForce RTX 20 and newer, it uses NVIDIA's open kernel module):
+This isn't part of the setup, since it depends on the hardware. On Fedora
+Atomic, NVIDIA's driver comes from
+[RPM Fusion](https://rpmfusion.org/Howto/NVIDIA), which uses NVIDIA's open
+kernel module for GeForce RTX 20 and newer.
 
-1. Add RPM Fusion, then reboot:
+1. Add RPM Fusion and reboot:
 
    ```sh
    sudo rpm-ostree install \
@@ -285,8 +299,8 @@ NVIDIA's driver comes from [RPM Fusion](https://rpmfusion.org/Howto/NVIDIA)
    systemctl reboot
    ```
 
-2. Install the driver, and turn off the drivers that come with Fedora, then
-   reboot:
+2. Install the driver, turn off the drivers Fedora ships with, and reboot
+   again:
 
    ```sh
    sudo rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
@@ -295,18 +309,19 @@ NVIDIA's driver comes from [RPM Fusion](https://rpmfusion.org/Howto/NVIDIA)
    systemctl reboot
    ```
 
-   Add `xorg-x11-drv-nvidia-cuda` to the first command for CUDA and
-   `nvidia-smi`.
+   For CUDA and `nvidia-smi`, add `xorg-x11-drv-nvidia-cuda` to the first
+   command.
 
-3. Check that it is in use: `cat /proc/driver/nvidia/version`
+3. Check that it's being used with `cat /proc/driver/nvidia/version`.
 
-With Secure Boot enabled, the driver must be signed first, see RPM Fusion's
-[Secure Boot guide](https://rpmfusion.org/Howto/Secure%20Boot). On laptops
-with GeForce RTX 30 or newer, the NVIDIA GPU turns itself off when idle.
-The driver is rebuilt at every system update, which makes updates slower.
+If Secure Boot is on, the driver has to be signed first. RPM Fusion's
+[Secure Boot guide](https://rpmfusion.org/Howto/Secure%20Boot) explains how.
+On laptops with a GeForce RTX 30 or newer, the NVIDIA GPU switches itself
+off when it's idle. The driver gets rebuilt on every system update, so
+updates take longer.
 
-secureblue has images with NVIDIA's driver built in (`cosmic-nvidia-open`),
-which make these steps unnecessary.
+secureblue has images with NVIDIA's driver already built in
+(`cosmic-nvidia-open`), so none of this is needed there.
 
 ## Everyday use
 
@@ -327,112 +342,123 @@ pixi global update   # newer versions of the pixi tools, like Zed
 rpm-ostree upgrade   # Fedora Atomic itself, then reboot
 ```
 
-`chezmoi apply` only installs what is missing, it does not update what is
+`chezmoi apply` installs things that are missing, but it never updates what's
 already installed.
 
 ## Platform details
 
-**Config locations.** The config files live in `~/.config` on every
-platform. Some apps read theirs elsewhere on macOS (`~/Library/Application
-Support`) and Windows (`AppData`), so those locations are linked to
-`~/.config`, and the app finds its config there:
+### Config locations
 
-- On macOS with symlinks, like on Linux.
-- On Windows with junctions. A junction is Windows' kind of link for
-  folders: `AppData\Roaming\Zed` is then another name for `~\.config\zed`,
-  and programs see the same files through both paths. Unlike symlinks,
-  creating junctions does not need administrator rights. Deleting a
-  junction only removes the link, not the files.
+The config files live in `~/.config` on every platform. Some apps look
+somewhere else on macOS (`~/Library/Application Support`) and Windows
+(`AppData`), so I link those locations to `~/.config` and the apps find
+their config anyway:
 
-**`zed`** opens Zed from a terminal on every platform, provided by pixi.
+- On macOS, with symlinks, the same as on Linux.
+- On Windows, with junctions, which are Windows' version of a link for
+  folders. `AppData\Roaming\Zed` becomes another name for `~\.config\zed`,
+  and programs see the same files through both paths. Creating a junction
+  doesn't need admin rights, unlike a symlink, and deleting one only
+  removes the link, not the files behind it.
 
-**Automatic login on Fedora Atomic.** The disk encryption password at boot
-is the only password: COSMIC then logs in by itself. Set `login.autologin`
-in [`.chezmoidata/desktop.toml`](.chezmoidata/desktop.toml) to turn it off
-(`chezmoi apply` asks for the sudo password to change it).
+### The `zed` command
 
-The keyring, where apps like Zed and git keep passwords, normally unlocks
-with the login password. With automatic login there is none, so it
-unlocks with a random password instead, which systemd stores encrypted so
-that only this machine can read it. The keyring stays encrypted on disk,
-and nothing ever asks for its password. This needs a keyring created by
-these dotfiles: setup explains what to do if one already exists.
+`zed` opens Zed from a terminal on every platform. pixi provides it.
 
-**Layered packages on Fedora Atomic.** One package is layered onto the
-system image, because the COSMIC image does not ship it yet: `oo7-portal`,
-which lets flatpak apps like Proton Pass store passwords in the
-keyring. Once Fedora adds it to the image, it is no longer needed: setup
-then reminds you to remove it from `fedora.layered` and to run
-`rpm-ostree uninstall oo7-portal`.
+### Automatic login on Fedora Atomic
 
-**uutils on Windows** provides `ls`, `cp`, `cat` and the other coreutils.
-Windows' own `expand`, `hostname`, `more`, `sort`, `timeout` and `whoami`
-come first on the PATH, and in nushell its built-in commands like `ls` come
-first, so call those with a caret: `^ls`.
+The disk encryption password at boot is the only password I type. After
+that, COSMIC logs me in by itself. To turn this off, set `login.autologin`
+in [`.chezmoidata/desktop.toml`](.chezmoidata/desktop.toml). Changing it
+makes `chezmoi apply` ask for the sudo password.
+
+Normally the keyring, where apps like Zed and git store passwords, unlocks
+with the login password. With automatic login there isn't one, so instead it
+unlocks with a random password that systemd stores encrypted, readable only
+on this machine. The keyring stays encrypted on disk, and I never get asked
+for its password. This only works with a keyring that these dotfiles
+created. If one already exists, setup explains what to do.
+
+### Layered packages on Fedora Atomic
+
+One package gets layered onto the system image, because the COSMIC image
+doesn't ship it yet: `oo7-portal`. It lets flatpak apps like Proton Pass
+store passwords in the keyring. Once Fedora adds it to the image, it won't
+be needed anymore, and setup will remind me to remove it from
+`fedora.layered` and run `rpm-ostree uninstall oo7-portal`.
+
+### uutils on Windows
+
+uutils provides `ls`, `cp`, `cat` and the rest of the coreutils. Windows' own
+`expand`, `hostname`, `more`, `sort`, `timeout` and `whoami` come first on
+the PATH, though. In nushell, its built-in commands like `ls` also win, so
+call the uutils version with a caret, like `^ls`.
 
 ## secureblue
 
 [secureblue](https://secureblue.dev) is a hardened version of Fedora Atomic,
-and these dotfiles work on its COSMIC image (`cosmic-main-hardened`) too.
-Install Fedora Atomic first and rebase to secureblue as its guide explains,
-then use the usual install command. The differences:
+and these dotfiles also work on its COSMIC image (`cosmic-main-hardened`).
+Install Fedora Atomic first, rebase to secureblue following its guide, and
+then run the usual install command. A few things are different:
 
-- secureblue has no `sudo`. Setup uses `run0` instead, which asks for the
-  password again every time.
-- It is based on an older Fedora, with gnome-keyring instead of oo7. With
-  automatic login, gnome-keyring asks for the login password when an app
-  first needs it.
-- `oo7-portal` is not layered: gnome-keyring already is the Secret portal.
-- Its firewall blocks incoming connections and SSH is disabled, which
-  matters for remote access only.
+- There's no `sudo` on secureblue. Setup uses `run0` instead, which asks for
+  the password every single time.
+- It's based on an older Fedora that uses gnome-keyring instead of oo7. With
+  automatic login, gnome-keyring asks for the login password the first time
+  an app needs it.
+- `oo7-portal` doesn't get layered, because gnome-keyring already acts as
+  the Secret portal.
+- The firewall blocks incoming connections and SSH is turned off. That only
+  matters for remote access.
 
 ### Migrating to secureblue (planned)
 
-The plan is to move to secureblue once it is based on a Fedora that ships
-oo7-portal in the image: then nothing needs to be layered, and the keyring
-should unlock by itself after automatic login, like on Fedora 45 today. Setup
-tells you when Fedora's image includes oo7-portal ("Fedora's image now
-includes oo7-portal").
+I plan to move to secureblue once it's based on a Fedora that ships
+oo7-portal in the image. At that point nothing has to be layered anymore,
+and the keyring should unlock by itself after automatic login, like it does
+on Fedora 45 today. Setup will let me know when Fedora's image includes
+oo7-portal ("Fedora's image now includes oo7-portal").
 
-1. Undo what secureblue provides itself:
+1. Undo the things secureblue already provides:
    - `rpm-ostree uninstall oo7-portal`
-   - the NVIDIA driver from RPM Fusion, if installed: secureblue's
-     `cosmic-nvidia-open` image has it, signed for Secure Boot. Uninstall
-     the packages and remove the kernel arguments added in
+   - the NVIDIA driver from RPM Fusion, if it's installed. secureblue's
+     `cosmic-nvidia-open` image comes with it, signed for Secure Boot, so
+     uninstall the packages and remove the kernel arguments from
      [NVIDIA graphics](#nvidia-graphics).
-2. Switch, following [secureblue's guide](https://secureblue.dev/install),
-   then reboot:
+2. Switch over, as described in
+   [secureblue's guide](https://secureblue.dev/install), and reboot:
 
    ```sh
    sudo bootc switch ghcr.io/secureblue/cosmic-main-hardened:latest
    ```
 
-3. Do secureblue's [post-install steps](https://secureblue.dev/post-install).
-4. Run `chezmoi apply`, and check:
-   - Apps started from the desktop still find the pixi tools (Alacritty
-     starts nushell). secureblue's optional bash environment lockdown can
-     stop `~/.bashrc.d`, where that PATH comes from, from being loaded.
-   - With a separate admin account (`ujust create-admin`), setup's `run0`
-     asks for the admin password instead of yours.
+3. Go through secureblue's
+   [post-install steps](https://secureblue.dev/post-install).
+4. Run `chezmoi apply`, and then check two things:
+   - Apps started from the desktop can still find the pixi tools (Alacritty
+     should start nushell). secureblue has an optional bash environment
+     lockdown that can stop `~/.bashrc.d` from loading, and that's where
+     this PATH comes from.
+   - If I set up a separate admin account (`ujust create-admin`), setup's
+     `run0` will ask for the admin password instead of mine.
 
-Nothing in home changes, so the dotfiles, pixi, Rust and the keyring stay
-as they are.
+Nothing in the home directory changes, so the dotfiles, pixi, Rust and the
+keyring all stay as they are.
 
 ## Troubleshooting
 
-**A setup script failed.** Fix the cause and run `chezmoi apply` again:
-scripts that already succeeded are skipped.
+**A setup script failed.** Fix whatever caused it and run `chezmoi apply`
+again. Scripts that already succeeded get skipped.
 
-**Run all setup scripts again**, for example after deleting an
-environment:
+**Run all the setup scripts again**, e.g. after deleting an environment:
 
 ```sh
 chezmoi state delete-bucket --bucket=entryState
 chezmoi apply
 ```
 
-**A tool is missing** after installing: open a new terminal, so it picks up
-the PATH.
+**A tool is missing** right after installing it: open a new terminal so it
+picks up the new PATH.
 
 ## Layout
 
@@ -442,11 +468,11 @@ the PATH.
 | `dot_pixi/manifests/` | global CLI tools, for pixi |
 | `dot_local/share/rust-env/` | the Rust workspace, including cargo's config |
 | `dot_local/bin/` | `rust-analyzer` from the Rust workspace |
-| `.chezmoidata/packages.toml` | packages pixi does not provide |
+| `.chezmoidata/packages.toml` | packages pixi doesn't provide |
 | `.chezmoidata/desktop.toml` | desktop settings, like automatic login |
 | `.chezmoiscripts/` | setup scripts |
 | `.chezmoitemplates/` | pieces shared by templates and scripts |
-| `.chezmoiexternal.toml.tmpl` | downloaded files: fonts |
+| `.chezmoiexternal.toml.tmpl` | downloaded files, i.e. fonts |
 | `.chezmoiignore` | which files each platform gets |
 | `Library/` | macOS: links app config locations to `~/.config` |
 | `flatpaks.txt`, `sync-packages.sh` | Flathub apps, and a script to update the list |
