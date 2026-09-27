@@ -9,4 +9,9 @@ set -eu
 export PATH="$HOME/.local/bin:$HOME/.pixi/bin:/usr/local/bin:/usr/bin:/bin"
 
 "$HOME/.pixi/bin/pixi" global sync
+{{- if eq .chezmoi.os "linux" }}
+
+# Open zed:// links with ~/.local/share/applications/zed-url.desktop
+xdg-mime default zed-url.desktop x-scheme-handler/zed
+{{- end }}
 {{ end -}}

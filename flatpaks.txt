@@ -1,5 +1,4 @@
 com.obsproject.Studio
-dev.zed.Zed-Preview
 me.proton.Pass
 org.gimp.GIMP
 org.inkscape.Inkscape

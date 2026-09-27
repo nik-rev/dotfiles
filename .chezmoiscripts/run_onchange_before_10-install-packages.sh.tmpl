@@ -84,14 +84,6 @@ if ! xcode-select -p >/dev/null 2>&1; then
     done
 fi
 
-# -------------------------------
-# Zed
-# -------------------------------
-
-if [ ! -d "/Applications/Zed Preview.app" ]; then
-    curl -fsSL https://zed.dev/install.sh | ZED_CHANNEL=preview sh
-fi
-
 {{ end -}}
 # -------------------------------
 # pixi

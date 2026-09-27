@@ -1,13 +1,6 @@
 # Files downloaded by chezmoi. Like other files, they are skipped on
 # platforms where .chezmoiignore ignores their path
 
-# Runs commands on the host from inside the Zed flatpak, like
-# `flatpak-spawn --host`, but gives them a terminal. Interactive shells
-# need that. https://github.com/1player/host-spawn
-[".local/share/zed-flatpak/bin/host-spawn"]
-    type = "file"
-    url = "https://github.com/1player/host-spawn/releases/download/v1.6.2/host-spawn-{{ if eq .chezmoi.arch "arm64" }}aarch64{{ else }}x86_64{{ end }}"
-    executable = true
 
 # -------------------------------
 # Fonts

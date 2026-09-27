@@ -18,7 +18,7 @@
 # virtual machines itself, without libvirt installed on the system
 flatpak_extensions = ["org.virt_manager.virt_manager.Extension.Qemu"]
 
-# The Secret portal, so flatpak apps like Zed and Proton Pass can store
+# The Secret portal, so flatpak apps like Proton Pass can store
 # passwords in the keyring. COSMIC already expects it, but the image only
 # ships the keyring (oo7-daemon) without it. Images with gnome-keyring
 # instead, like secureblue, do not need it: gnome-keyring is the portal
@@ -26,9 +26,10 @@ flatpak_extensions = ["org.virt_manager.virt_manager.Extension.Qemu"]
 package = "oo7-portal"
 only_with = "oo7-daemon"
 
-# Windows applications, from winget. Zed on macOS comes from its installer
+# Windows applications, from winget. pixi's Zed has no app menu entry on
+# Windows, so Zed comes from here
 [windows]
-winget = ["Git.Git", "ZedIndustries.Zed.Preview"]
+winget = ["Git.Git", "ZedIndustries.Zed"]
 
 # Nightly Rust, installed with rustup into the rust-env pixi environment,
 # see dot_local/share/rust-env/pixi.toml. The cargo config needs these

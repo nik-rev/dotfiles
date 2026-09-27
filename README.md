@@ -93,20 +93,35 @@ keeps a cache of downloaded packages, which `pixi clean cache` empties.
 | | Fedora Atomic | macOS | Windows |
 |---|---|---|---|
 | CLI tools | pixi | pixi | pixi |
-| Apps (Zed, ...) | Flathub | Zed's installer | winget |
+| Zed | pixi | pixi | winget |
+| Alacritty | pixi | pixi | pixi |
+| Other apps | Flathub | | winget |
 | Rust | pixi workspace | pixi workspace + Xcode Command Line Tools | pixi workspace + Visual Studio Build Tools |
 | Fonts | `~/.local/share/fonts` | `~/Library/Fonts` | per-user fonts |
 
 conda-forge, where pixi's packages come from, has few graphical apps, and
 Apple's and Microsoft's compilers only come from them, so those stay per
-platform.
+platform. On Fedora Atomic, only what the COSMIC image lacks is layered
+with `rpm-ostree`. On other Linux distributions, only the config files are
+installed.
 
-The exception is Alacritty, which comes from pixi on every platform: it is
-not on Flathub (a terminal does not work well sandboxed, since its shell
-would be sandboxed too), and pixi also gives it an app menu entry. Its
-config is the same on every platform. On Fedora Atomic, only what the COSMIC image
-lacks is layered with `rpm-ostree`. On other Linux
-distributions, only the config files are installed.
+### Why Zed and Alacritty come from pixi
+
+Other graphical apps come from Flathub on Fedora Atomic, where each runs in
+a sandbox. That suits apps that only open your files, but not these two:
+
+- **Zed** runs language servers, `cargo`, and a terminal with your shell,
+  all of which are outside a flatpak's sandbox. As a flatpak it needed
+  workarounds to reach them. From pixi, it runs like any other desktop app
+  and finds all of them directly.
+- **Alacritty** is not on Flathub: a sandboxed terminal would also run its
+  shell in the sandbox.
+
+pixi also adds both to the app menu (`shortcuts` in the manifest), and the
+same pixi package works on Linux and macOS. On Windows, pixi's Zed has no
+app menu entry, so Zed comes from winget there.
+
+conda-forge only has Zed's stable releases, not Zed Preview.
 
 ### What happens during setup
 
@@ -116,7 +131,7 @@ distributions, only the config files are installed.
    ([`install-packages`](.chezmoiscripts)):
 
    - Flathub apps on Fedora Atomic
-   - Zed and the Xcode Command Line Tools on macOS
+   - the Xcode Command Line Tools on macOS
    - winget packages and the Visual Studio Build Tools on Windows
    - Then pixi itself.
 
@@ -302,6 +317,17 @@ chezmoi diff                              # what `chezmoi apply` would change
 chezmoi cd                                # open nushell in the repository
 ```
 
+### Updating
+
+```sh
+chezmoi update       # new dotfiles from GitHub, including new packages
+pixi global update   # newer versions of the pixi tools, like Zed
+rpm-ostree upgrade   # Fedora Atomic itself, then reboot
+```
+
+`chezmoi apply` only installs what is missing, it does not update what is
+already installed.
+
 ## Platform details
 
 **Config locations.** The config files live in `~/.config` on every
@@ -316,12 +342,8 @@ Support`) and Windows (`AppData`), so those locations are linked to
   creating junctions does not need administrator rights. Deleting a
   junction only removes the link, not the files.
 
-**Zed on Fedora Atomic** is a flatpak, so it runs in a sandbox. Its
-terminal runs nushell outside the sandbox through
-[host-spawn](https://github.com/1player/host-spawn), and rust-analyzer and
-the pixi tools run inside it. See
-[`dot_local/share/flatpak/overrides/`](dot_local/share/flatpak/overrides).
-`zed` opens it from a terminal on every platform.
+**`zed`** opens Zed from a terminal on every platform: pixi provides the
+command on Linux and macOS, and Zed's installer on Windows.
 
 **Automatic login on Fedora Atomic.** The disk encryption password at boot
 is the only password: COSMIC then logs in by itself. Set `login.autologin`
@@ -337,7 +359,7 @@ these dotfiles: setup explains what to do if one already exists.
 
 **Layered packages on Fedora Atomic.** One package is layered onto the
 system image, because the COSMIC image does not ship it yet: `oo7-portal`,
-which lets flatpak apps like Zed and Proton Pass store passwords in the
+which lets flatpak apps like Proton Pass store passwords in the
 keyring. Once Fedora adds it to the image, it is no longer needed: setup
 then reminds you to remove it from `fedora.layered` and to run
 `rpm-ostree uninstall oo7-portal`.
@@ -363,6 +385,38 @@ then use the usual install command. The differences:
 - Its firewall blocks incoming connections and SSH is disabled, which
   matters for remote access only.
 
+### Migrating to secureblue (planned)
+
+The plan is to move to secureblue once it is based on a Fedora that ships
+oo7-portal in the image: then nothing needs to be layered, and the keyring
+should unlock by itself after automatic login, like on Fedora 45 today. Setup
+tells you when Fedora's image includes oo7-portal ("Fedora's image now
+includes oo7-portal").
+
+1. Undo what secureblue provides itself:
+   - `rpm-ostree uninstall oo7-portal`
+   - the NVIDIA driver from RPM Fusion, if installed: secureblue's
+     `cosmic-nvidia-open` image has it, signed for Secure Boot. Uninstall
+     the packages and remove the kernel arguments added in
+     [NVIDIA graphics](#nvidia-graphics).
+2. Switch, following [secureblue's guide](https://secureblue.dev/install),
+   then reboot:
+
+   ```sh
+   sudo bootc switch ghcr.io/secureblue/cosmic-main-hardened:latest
+   ```
+
+3. Do secureblue's [post-install steps](https://secureblue.dev/post-install).
+4. Run `chezmoi apply`, and check:
+   - Apps started from the desktop still find the pixi tools (Alacritty
+     starts nushell). secureblue's optional bash environment lockdown can
+     stop `~/.bashrc.d`, where that PATH comes from, from being loaded.
+   - With a separate admin account (`ujust create-admin`), setup's `run0`
+     asks for the admin password instead of yours.
+
+Nothing in home changes, so the dotfiles, pixi, Rust and the keyring stay
+as they are.
+
 ## Troubleshooting
 
 **A setup script failed.** Fix the cause and run `chezmoi apply` again:
@@ -386,13 +440,12 @@ the PATH.
 | `dot_config/` | config files, installed to `~/.config` |
 | `dot_pixi/manifests/` | global CLI tools, for pixi |
 | `dot_local/share/rust-env/` | the Rust workspace, including cargo's config |
-| `dot_local/bin/` | `zed` on Linux, and `rust-analyzer` from the Rust workspace |
+| `dot_local/bin/` | `rust-analyzer` from the Rust workspace |
 | `.chezmoidata/packages.toml` | packages pixi does not provide |
 | `.chezmoidata/desktop.toml` | desktop settings, like automatic login |
 | `.chezmoiscripts/` | setup scripts |
 | `.chezmoitemplates/` | pieces shared by templates and scripts |
-| `.chezmoiexternal.toml.tmpl` | downloaded files: fonts, and `host-spawn` |
+| `.chezmoiexternal.toml.tmpl` | downloaded files: fonts |
 | `.chezmoiignore` | which files each platform gets |
 | `Library/` | macOS: links app config locations to `~/.config` |
-| `dot_local/share/zed-flatpak/`, `dot_local/share/flatpak/`, `dot_var/` | Fedora Atomic: Zed flatpak integration |
 | `flatpaks.txt`, `sync-packages.sh` | Flathub apps, and a script to update the list |
