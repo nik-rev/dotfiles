@@ -1,0 +1,8 @@
+# Desktop settings for Fedora Atomic. Editing this file makes
+# `chezmoi apply` apply them again
+
+[login]
+# Log in automatically after the disk is unlocked at boot. The keyring then
+# unlocks by itself too, without the login password. See "Automatic login"
+# in the README
+autologin = true

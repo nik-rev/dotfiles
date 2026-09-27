@@ -236,6 +236,18 @@ the pixi tools run inside it. See
 [`dot_local/share/flatpak/overrides/`](dot_local/share/flatpak/overrides).
 `zed` opens it from a terminal on every platform.
 
+**Automatic login on Fedora Atomic.** The disk encryption password at boot
+is the only password: COSMIC then logs in by itself. Set `login.autologin`
+in [`.chezmoidata/desktop.toml`](.chezmoidata/desktop.toml) to turn it off
+(`chezmoi apply` asks for the sudo password to change it).
+
+The keyring, where apps like Zed and git keep passwords, normally unlocks
+with the login password. With automatic login there is none, so it
+unlocks with a random password instead, which systemd stores encrypted so
+that only this machine can read it. The keyring stays encrypted on disk,
+and nothing ever asks for its password. This needs a keyring created by
+these dotfiles: setup explains what to do if one already exists.
+
 **uutils on Windows** provides `ls`, `cp`, `cat` and the other coreutils.
 Windows' own `expand`, `hostname`, `more`, `sort`, `timeout` and `whoami`
 come first on the PATH, and in nushell its built-in commands like `ls` come
@@ -266,6 +278,7 @@ the PATH.
 | `dot_local/share/rust-env/` | the Rust workspace, including cargo's config |
 | `dot_local/bin/` | `zed` on Linux, and `rust-analyzer` from the Rust workspace |
 | `.chezmoidata/packages.toml` | packages pixi does not provide |
+| `.chezmoidata/desktop.toml` | desktop settings, like automatic login |
 | `.chezmoiscripts/` | setup scripts |
 | `.chezmoitemplates/` | pieces shared by templates and scripts |
 | `.chezmoiexternal.toml.tmpl` | downloaded files: fonts, and `host-spawn` |

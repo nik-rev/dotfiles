@@ -24,6 +24,11 @@ old_dotfiles/
 .local/bin/rust-analyzer.cmd
 {{ end -}}
 
+{{ if not (and (includeTemplate "is-atomic" .) .login.autologin) -}}
+# Starts the keyring (oo7) with the session, for automatic login
+.config/systemd/user/default.target.wants/oo7-daemon.service
+{{ end -}}
+
 {{ if not (includeTemplate "is-atomic" .) -}}
 # Zed flatpak integration, only used on Fedora Atomic
 .local/share/flatpak

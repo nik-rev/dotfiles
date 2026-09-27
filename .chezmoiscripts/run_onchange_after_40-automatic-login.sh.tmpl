@@ -1,0 +1,64 @@
+{{- if includeTemplate "is-atomic" . -}}
+#!/bin/sh
+# Automatic login on Fedora Atomic, see login.autologin in
+# .chezmoidata/desktop.toml: {{ .login.autologin }}
+#
+# After the disk is unlocked at boot, COSMIC logs in without asking for a
+# password. The keyring (oo7) then unlocks with a random password that
+# systemd keeps encrypted, instead of with the login password
+set -eu
+
+# -------------------------------
+# Automatic login
+# -------------------------------
+
+config=/etc/greetd/cosmic-greeter.toml
+begin="# BEGIN dotfiles: automatic login"
+end="# END dotfiles: automatic login"
+block="$begin
+[initial_session]
+command = \"/usr/bin/start-cosmic\"
+user = \"{{ .chezmoi.username }}\"
+$end"
+
+current="$(sed -n "/^$begin\$/,/^$end\$/p" "$config")"
+wanted="{{ if .login.autologin }}$block{{ end }}"
+
+if [ "$current" != "$wanted" ]; then
+    if [ -z "$current" ] && grep -q '^\[initial_session\]' "$config"; then
+        printf '%s\n' "Not changing automatic login: $config already has an [initial_session] section" >&2
+    else
+        printf '%s\n' "Changing automatic login in $config"
+        sudo sed -i "/^$begin\$/,/^$end\$/d" "$config"
+        if [ -n "$wanted" ]; then
+            printf '\n%s\n' "$wanted" | sudo tee -a "$config" >/dev/null
+        fi
+    fi
+fi
+{{- if .login.autologin }}
+
+# -------------------------------
+# Keyring
+# -------------------------------
+
+# oo7 reads this credential to unlock the keyring (ImportCredential in its
+# systemd unit). Only systemd on this machine can decrypt it
+credential="$HOME/.config/credstore.encrypted/oo7.keyring-encryption-password"
+keyring="$HOME/.local/share/keyrings/v1/login.keyring"
+
+if [ ! -x /usr/libexec/oo7-daemon ]; then
+    printf '%s\n' "oo7 is not installed: the keyring asks for its password after automatic login" >&2
+elif [ ! -e "$credential" ]; then
+    if [ -e "$keyring" ]; then
+        # A keyring encrypted with the login password cannot be unlocked with
+        # a new random password
+        printf '%s\n' "The keyring uses the login password, so it cannot unlock by itself." \
+            "To start over with a new keyring, move $keyring away and run chezmoi apply again." >&2
+    else
+        mkdir -p "$(dirname "$credential")"
+        head -c 32 /dev/urandom | base64 | tr -d '\n' |
+            systemd-creds encrypt --user --name=oo7.keyring-encryption-password - "$credential"
+    fi
+fi
+{{- end }}
+{{ end -}}
