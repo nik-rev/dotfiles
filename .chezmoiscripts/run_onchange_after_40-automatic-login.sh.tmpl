@@ -44,21 +44,31 @@ fi
 # oo7 reads this credential to unlock the keyring (ImportCredential in its
 # systemd unit). Only systemd on this machine can decrypt it
 credential="$HOME/.config/credstore.encrypted/oo7.keyring-encryption-password"
-keyring="$HOME/.local/share/keyrings/v1/login.keyring"
+# oo7's keyring, and the one of gnome-keyring, which oo7 replaced
+keyrings="$HOME/.local/share/keyrings/v1/login.keyring $HOME/.local/share/keyrings/login.keyring"
+
+existing=""
+for keyring in $keyrings; do
+    [ -e "$keyring" ] && existing="$keyring"
+done
+
+if [ -e "$credential" ]; then
+    :
+elif [ -n "$existing" ]; then
+    # A keyring encrypted with the login password cannot be unlocked with
+    # a new random password
+    printf '%s\n' "The keyring uses the login password, so it cannot unlock by itself." \
+        "To start over with a new keyring, move $existing away and run:" \
+        "chezmoi state delete-bucket --bucket=entryState && chezmoi apply" >&2
+else
+    mkdir -p "$(dirname "$credential")"
+    head -c 32 /dev/urandom | base64 | tr -d '\n' |
+        systemd-creds encrypt --user --name=oo7.keyring-encryption-password - "$credential"
+fi
 
 if [ ! -x /usr/libexec/oo7-daemon ]; then
-    printf '%s\n' "oo7 is not installed: the keyring asks for its password after automatic login" >&2
-elif [ ! -e "$credential" ]; then
-    if [ -e "$keyring" ]; then
-        # A keyring encrypted with the login password cannot be unlocked with
-        # a new random password
-        printf '%s\n' "The keyring uses the login password, so it cannot unlock by itself." \
-            "To start over with a new keyring, move $keyring away and run chezmoi apply again." >&2
-    else
-        mkdir -p "$(dirname "$credential")"
-        head -c 32 /dev/urandom | base64 | tr -d '\n' |
-            systemd-creds encrypt --user --name=oo7.keyring-encryption-password - "$credential"
-    fi
+    printf '%s\n' "The keyring only unlocks by itself with oo7, which newer Fedora" \
+        "images have: update with rpm-ostree upgrade" >&2
 fi
 {{- end }}
 {{ end -}}
