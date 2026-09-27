@@ -57,7 +57,8 @@ exposed = { typst = "typst" }
 [envs.vim]
 channels = ["conda-forge"]
 dependencies = { vim = "*" }
-exposed = { vim = "vim", vimdiff = "vimdiff", xxd = "xxd" }
+# The Windows package has no vimdiff
+exposed = { vim = "vim", {{ if ne .chezmoi.os "windows" }}vimdiff = "vimdiff", {{ end }}xxd = "xxd" }
 
 [envs.vivid]
 channels = ["conda-forge"]
