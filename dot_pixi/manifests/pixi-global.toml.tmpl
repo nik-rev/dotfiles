@@ -18,6 +18,12 @@ exposed = { bat = "bat" }
 channels = ["conda-forge"]
 dependencies = { chezmoi = "*" }
 exposed = { chezmoi = "chezmoi" }
+
+# The package called "fd" is something else
+[envs.fd-find]
+channels = ["conda-forge"]
+dependencies = { fd-find = "*" }
+exposed = { fd = "fd" }
 {{- if ne .chezmoi.os "windows" }}
 
 # No Windows build
@@ -77,3 +83,107 @@ exposed = { ya = "ya", yazi = "yazi" }
 channels = ["conda-forge"]
 dependencies = { zoxide = "*" }
 exposed = { zoxide = "zoxide" }
+{{- if eq .chezmoi.os "windows" }}
+
+# GNU coreutils rewritten in Rust (ls, cp, cat, ...), as separate commands.
+# Windows' own expand, hostname, more, sort, timeout and whoami come first
+# on the PATH. In nushell, its built-in commands like ls come first, so call
+# these with a caret: ^ls
+[envs.uutils-coreutils]
+channels = ["conda-forge"]
+dependencies = { uutils-coreutils = "*" }
+
+[envs.uutils-coreutils.exposed]
+"[" = "["
+arch = "arch"
+b2sum = "b2sum"
+base32 = "base32"
+base64 = "base64"
+basename = "basename"
+basenc = "basenc"
+cat = "cat"
+cksum = "cksum"
+comm = "comm"
+coreutils = "coreutils"
+cp = "cp"
+csplit = "csplit"
+cut = "cut"
+date = "date"
+dd = "dd"
+df = "df"
+dir = "dir"
+dircolors = "dircolors"
+dirname = "dirname"
+du = "du"
+echo = "echo"
+env = "env"
+expand = "expand"
+expr = "expr"
+factor = "factor"
+false = "false"
+fmt = "fmt"
+fold = "fold"
+head = "head"
+hostid = "hostid"
+hostname = "hostname"
+join = "join"
+kill = "kill"
+ln = "ln"
+ls = "ls"
+md5sum = "md5sum"
+mkdir = "mkdir"
+mktemp = "mktemp"
+more = "more"
+mv = "mv"
+nice = "nice"
+nl = "nl"
+nohup = "nohup"
+nproc = "nproc"
+numfmt = "numfmt"
+od = "od"
+paste = "paste"
+pathchk = "pathchk"
+pr = "pr"
+printenv = "printenv"
+printf = "printf"
+ptx = "ptx"
+pwd = "pwd"
+readlink = "readlink"
+realpath = "realpath"
+rm = "rm"
+rmdir = "rmdir"
+seq = "seq"
+sha1sum = "sha1sum"
+sha224sum = "sha224sum"
+sha256sum = "sha256sum"
+sha384sum = "sha384sum"
+sha512sum = "sha512sum"
+shred = "shred"
+shuf = "shuf"
+sleep = "sleep"
+sort = "sort"
+split = "split"
+stdbuf = "stdbuf"
+sum = "sum"
+sync = "sync"
+tac = "tac"
+tail = "tail"
+tee = "tee"
+test = "test"
+timeout = "timeout"
+touch = "touch"
+tr = "tr"
+true = "true"
+truncate = "truncate"
+tsort = "tsort"
+tty = "tty"
+uname = "uname"
+unexpand = "unexpand"
+uniq = "uniq"
+unlink = "unlink"
+uptime = "uptime"
+vdir = "vdir"
+wc = "wc"
+whoami = "whoami"
+yes = "yes"
+{{- end }}

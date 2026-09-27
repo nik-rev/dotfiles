@@ -1,13 +1,10 @@
 # dotfiles
 
-My config for Fedora Atomic (COSMIC), macOS and Windows, managed with
-[chezmoi](https://chezmoi.io). CLI tools come from [pixi](https://pixi.sh)
-on every platform.
+My config for Fedora Atomic (COSMIC), macOS and Windows. One command sets
+up a fresh machine: it installs the programs and puts the config files in
+place.
 
 ## Install
-
-On a fresh machine, run one command. It installs all packages and puts the
-config files in place.
 
 **Fedora Atomic, macOS**
 
@@ -21,30 +18,198 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /tmp init --apply --use-builtin-git=t
 iex "&{$(irm 'https://get.chezmoi.io/ps1')} -b '$env:TEMP' init --apply nik-rev"
 ```
 
-Windows may show UAC prompts.
+Windows may show UAC prompts. On macOS, click "Install" when asked to
+install the Command Line Tools.
 
 <details>
 <summary>What the command does</summary>
 
 It downloads chezmoi to a temporary directory, clones this repository to
-`~/.local/share/chezmoi` and runs `chezmoi apply`. That runs the setup
-scripts, which also install chezmoi itself with pixi.
+`~/.local/share/chezmoi` and runs `chezmoi apply`, which does everything
+described in [What happens during setup](#what-happens-during-setup).
 
 `--use-builtin-git` lets chezmoi clone before git is installed. macOS has a
 placeholder `git` that only offers to install the developer tools.
 
 </details>
 
-## What gets installed
+## How it works
+
+Two tools do the work: **chezmoi** puts files in place, and **pixi**
+installs programs.
+
+### chezmoi: the config files
+
+[chezmoi](https://chezmoi.io) copies the files in this repository to your
+home directory. The repository lives in `~/.local/share/chezmoi`, and file
+names say where each file goes:
+
+- `dot_config/nushell/config.nu` becomes `~/.config/nushell/config.nu`
+  (`dot_` means a leading `.`).
+- Files ending in `.tmpl` are templates: they can differ per platform, for
+  example `{{ if eq .chezmoi.os "windows" }}…{{ end }}`.
+- `executable_`, `symlink_` and similar prefixes set file attributes.
+- [`.chezmoiignore`](.chezmoiignore) decides which files a platform does
+  not get, like the COSMIC config on macOS.
+- [`.chezmoiscripts/`](.chezmoiscripts) contains setup scripts that
+  install programs. A script named `run_onchange_…` only runs again when
+  its content changes, for example when a package list it includes changes.
+- [`.chezmoidata/`](.chezmoidata) holds data the templates use, like
+  package lists.
+- [`.chezmoiexternal.toml.tmpl`](.chezmoiexternal.toml.tmpl) lists files
+  chezmoi downloads, like fonts.
+
+`chezmoi apply` makes your home directory match the repository.
+
+### pixi: the programs
+
+[pixi](https://pixi.sh) is a package manager that works the same on Linux,
+macOS and Windows. It installs packages from
+[conda-forge](https://conda-forge.org), a large collection of prebuilt
+programs and libraries for all three, into your home directory. It needs
+no administrator rights and never touches the system.
+
+pixi keeps every set of packages in its own **environment**, a directory
+with those packages and nothing else. These dotfiles use two kinds:
+
+- **Global tools**: one environment per CLI tool (nushell, ripgrep, bat,
+  …). pixi puts the commands of each in `~/.pixi/bin`, which is on the
+  PATH, so they work everywhere. All of them are listed in pixi's own file,
+  `~/.pixi/manifests/pixi-global.toml`, and `pixi global sync` installs
+  exactly what it lists.
+- **Workspaces**: an environment described by a `pixi.toml`, whose
+  commands are only available after entering it with `pixi shell`. Rust
+  lives in one, see [Rust](#rust).
+
+Deleting an environment's directory removes it completely. pixi also
+keeps a cache of downloaded packages, which `pixi clean cache` empties.
+
+### What each platform gets
 
 | | Fedora Atomic | macOS | Windows |
 |---|---|---|---|
 | CLI tools | pixi | pixi | pixi |
-| Apps | Flathub | Zed installer | winget |
-| Rust (nightly) | rust-env | rust-env + Xcode Command Line Tools | rust-env + VS C++ build tools |
+| Apps (Zed, …) | Flathub | Zed's installer | winget |
+| Rust | pixi workspace | pixi workspace + Xcode Command Line Tools | pixi workspace + Visual Studio Build Tools |
+| Fonts | `~/.local/share/fonts` | `~/Library/Fonts` | per-user fonts |
 
-Nothing is layered with `rpm-ostree` on Fedora Atomic, and no toolbox is
-needed. On other Linux distributions, only the config files are installed.
+pixi cannot provide graphical apps, and Apple's and Microsoft's compilers
+only come from them, so those stay per platform. On Fedora Atomic nothing
+is layered with `rpm-ostree` and no toolbox is needed. On other Linux
+distributions, only the config files are installed.
+
+### What happens during setup
+
+`chezmoi apply` runs, in this order:
+
+1. **Installs what pixi cannot**
+   ([`install-packages`](.chezmoiscripts)): Flathub apps on Fedora Atomic,
+   Zed and the Xcode Command Line Tools on macOS, winget packages and the
+   Visual Studio Build Tools on Windows. Then pixi itself.
+2. **Puts the config files in place**, and downloads fonts.
+3. **Installs the global tools** (`pixi-global-sync`): `pixi global sync`.
+4. **Installs Rust** (`install-rust`) into its pixi workspace.
+
+Running it again only does what changed.
+
+## Installing packages
+
+### CLI tools, on every platform
+
+1. Find the package on conda-forge, with `pixi search <name>` or on
+   [prefix.dev](https://prefix.dev/channels/conda-forge). The package name
+   can differ from the command: fd is `fd-find`, delta is `git-delta`.
+
+2. Open the list:
+
+   ```sh
+   chezmoi edit ~/.pixi/manifests/pixi-global.toml
+   ```
+
+   This edits the template in the repository,
+   [`dot_pixi/manifests/pixi-global.toml.tmpl`](dot_pixi/manifests/pixi-global.toml.tmpl).
+
+3. Add an environment for it. `exposed` maps each command to put on the
+   PATH to the command in the package:
+
+   ```toml
+   [envs.fd-find]
+   channels = ["conda-forge"]
+   dependencies = { fd-find = "*" }
+   exposed = { fd = "fd" }
+   ```
+
+   Every exposed command must exist in the package on every platform that
+   gets it, otherwise `pixi global sync` fails. To see what a package
+   provides, install it once with `pixi global install <package>`: it
+   prints the commands it exposes, and adds a ready-made entry to
+   `~/.pixi/manifests/pixi-global.toml` to copy from.
+
+4. For a single platform, wrap the entry in a template condition, like
+   the uutils entry for Windows:
+
+   ```toml
+   {{- if eq .chezmoi.os "windows" }}
+   [envs.uutils-coreutils]
+   …
+   {{- end }}
+   ```
+
+   `.chezmoi.os` is `linux`, `darwin` or `windows`.
+
+5. Run `chezmoi apply`. It notices the list changed and runs
+   `pixi global sync`.
+
+6. Commit and push. Other machines get it with `chezmoi update`.
+
+To remove a tool, delete its entry and run `chezmoi apply`.
+
+Do not use `pixi global install` for tools you want to keep: the next
+`chezmoi apply` restores the list from the repository, which removes them.
+
+### Apps and other packages
+
+| What | Where |
+|---|---|
+| Flathub apps (Fedora Atomic) | [`flatpaks.txt`](flatpaks.txt). Install one with `flatpak --user install flathub <app>`, then `sh sync-packages.sh` updates the list |
+| winget packages (Windows) | `windows.winget` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) |
+| Rust components, `cargo install` tools | `rust` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) |
+| Libraries and tools for compiling Rust | [`dot_local/share/rust-env/pixi.toml`](dot_local/share/rust-env/pixi.toml) |
+
+`chezmoi apply` installs changes to any of these.
+
+## Rust
+
+Everything needed to compile Rust is in one pixi workspace,
+`~/.local/share/rust-env`:
+
+- nightly Rust, installed with rustup, including toolchains that projects
+  pin in `rust-toolchain.toml`
+- cargo's [config](dot_local/share/rust-env/cargo/config.toml), its
+  downloads, and tools installed with `cargo install`
+- sccache, and its cache
+- on Linux, the C compiler, linker and libraries (like OpenSSL) that
+  crates with C code need
+
+Nothing outside that directory is changed: `cargo` does not exist outside
+the environment. Enter it to compile:
+
+```sh
+rust    # nushell. Elsewhere: pixi shell --manifest-path ~/.local/share/rust-env/pixi.toml
+cargo build
+```
+
+Zed does not need it entered: `~/.local/bin/rust-analyzer` runs
+rust-analyzer from the environment.
+
+To remove Rust, set `rust.enabled = false` in
+[`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) and delete
+`~/.local/share/rust-env`.
+
+Projects that pin a toolchain need the cranelift component added to it,
+since the cargo config uses cranelift for debug builds. Inside the
+project, in the environment:
+`rustup component add rustc-codegen-cranelift-preview`
 
 ## Everyday use
 
@@ -53,75 +218,58 @@ chezmoi edit ~/.config/nushell/config.nu  # edit a config file
 chezmoi apply                             # apply changes from the repository
 chezmoi update                            # pull from GitHub, then apply
 chezmoi add ~/.config/some/file           # start managing a new file
-chezmoi cd                                # open a shell in the repository
+chezmoi diff                              # what `chezmoi apply` would change
+chezmoi cd                                # open nushell in the repository
 ```
 
-### Packages
+## Platform details
 
-CLI tools are listed in pixi's own format in
-[`dot_pixi/manifests/pixi-global.toml.tmpl`](dot_pixi/manifests/pixi-global.toml.tmpl).
-Add one there, not with `pixi global install`, then run `chezmoi apply`:
+**Config locations.** The config files live in `~/.config` on every
+platform. Some apps read theirs elsewhere on macOS (`~/Library/Application
+Support`) and Windows (`AppData`), so those locations are linked to
+`~/.config`: symlinks on macOS, junctions on Windows.
 
-```sh
-chezmoi edit ~/.pixi/manifests/pixi-global.toml
-```
+**Zed on Fedora Atomic** is a flatpak, so it runs in a sandbox. Its
+terminal runs nushell outside the sandbox through
+[host-spawn](https://github.com/1player/host-spawn), and rust-analyzer and
+the pixi tools run inside it. See
+[`dot_local/share/flatpak/overrides/`](dot_local/share/flatpak/overrides).
+`zed` opens it from a terminal on every platform.
 
-Find package names with `pixi search <name>`, or on
-[prefix.dev](https://prefix.dev/channels/conda-forge).
+**uutils on Windows** provides `ls`, `cp`, `cat` and the other coreutils.
+Windows' own `expand`, `hostname`, `more`, `sort`, `timeout` and `whoami`
+come first on the PATH, and in nushell its built-in commands like `ls` come
+first, so call those with a caret: `^ls`.
 
-Everything pixi does not provide, like Windows apps and Rust components, is
-in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml). Flathub apps
-on Fedora Atomic are listed in `flatpaks.txt`. After installing one with
-`flatpak --user install flathub <app>`, run `sh sync-packages.sh`.
+## Troubleshooting
 
-### Rust
+**A setup script failed.** Fix the cause and run `chezmoi apply` again:
+scripts that already succeeded are skipped.
 
-Rust lives in its own pixi environment, `~/.local/share/rust-env`, with
-everything needed to compile it: nightly Rust (rustup), cargo's config and
-downloads, sccache, and on Linux the C compiler and libraries that `-sys`
-crates need. Nothing outside that directory is changed, and `cargo` only
-exists inside the environment. Enter it to compile:
-
-```sh
-rust    # nushell. Elsewhere: pixi shell --manifest-path ~/.local/share/rust-env/pixi.toml
-```
-
-Zed does not need it entered: `~/.local/bin/rust-analyzer` runs
-rust-analyzer from the environment.
-
-To remove Rust, set `rust.enabled = false` in `.chezmoidata/packages.toml`
-and delete `~/.local/share/rust-env`. `pixi clean cache` also removes the
-packages pixi downloaded.
-
-Projects that pin a toolchain in `rust-toolchain.toml` need the cranelift
-component added to it, since the cargo config uses cranelift for debug
-builds: `rustup component add rustc-codegen-cranelift-preview`
-
-### Re-running the setup
-
-The setup scripts only run when they, or the package lists, change. To run
-them anyway:
+**Run all setup scripts again**, for example after deleting an
+environment:
 
 ```sh
 chezmoi state delete-bucket --bucket=entryState
 chezmoi apply
 ```
 
+**A tool is missing** after installing: open a new terminal, so it picks up
+the PATH.
+
 ## Layout
 
 | Path | Contents |
 |---|---|
 | `dot_config/` | config files, installed to `~/.config` |
-| `dot_pixi/manifests/` | CLI tools for every platform, installed with pixi |
-| `dot_local/share/rust-env/` | the Rust environment, including cargo's config |
+| `dot_pixi/manifests/` | global CLI tools, for pixi |
+| `dot_local/share/rust-env/` | the Rust workspace, including cargo's config |
+| `dot_local/bin/` | `zed` on Linux, and `rust-analyzer` from the Rust workspace |
 | `.chezmoidata/packages.toml` | packages pixi does not provide |
-| `.chezmoiscripts/` | setup scripts, one set per platform |
-| `.chezmoitemplates/` | pieces shared by the scripts |
-| `.chezmoiexternal.toml.tmpl` | files chezmoi downloads: fonts, and `host-spawn` for the Zed flatpak |
-| `dot_local/bin/` | `zed` on Linux, whatever Zed's own command is called, and `rust-analyzer` from the Rust environment |
-| `Library/` | macOS: links app config locations to `~/.config` |
-| `dot_local/share/zed-flatpak/`, `dot_var/` | Fedora Atomic: Zed flatpak integration |
+| `.chezmoiscripts/` | setup scripts |
+| `.chezmoitemplates/` | pieces shared by templates and scripts |
+| `.chezmoiexternal.toml.tmpl` | downloaded files: fonts, and `host-spawn` |
 | `.chezmoiignore` | which files each platform gets |
-
-On Windows, a setup script links the `AppData` config locations to
-`~/.config` instead.
+| `Library/` | macOS: links app config locations to `~/.config` |
+| `dot_local/share/zed-flatpak/`, `dot_local/share/flatpak/`, `dot_var/` | Fedora Atomic: Zed flatpak integration |
+| `flatpaks.txt`, `sync-packages.sh` | Flathub apps, and a script to update the list |
