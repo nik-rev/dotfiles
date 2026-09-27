@@ -74,4 +74,7 @@ codegen-backend = "llvm"
 CC = "clang"
 CXX = "clang++"
 AR = "llvm-ar"
+# pkg-config from pixi knows the C libraries in the rust-dev environment,
+# like OpenSSL. The system one, which comes first on the PATH, does not
+PKG_CONFIG = "{{ .chezmoi.homeDir }}/.pixi/bin/pkg-config"
 {{- end }}
