@@ -5,6 +5,17 @@
 # dot_pixi/manifests/pixi-global.toml.tmpl. Graphical applications on
 # Fedora Atomic come from Flathub, see flatpaks.txt
 
+# Fedora Atomic only: packages layered onto the system image with
+# rpm-ostree, because the COSMIC image does not ship them yet. Layering
+# takes effect after a reboot. Setup reminds you when Fedora includes one in
+# the image: then remove it here and run `rpm-ostree uninstall <package>`.
+#
+# oo7-portal: the Secret portal, so flatpak apps like Zed and Proton Pass can
+# store passwords in the keyring. COSMIC already expects it, but the image
+# only ships the keyring (oo7-daemon) without it
+[fedora]
+layered = ["oo7-portal"]
+
 # Windows applications, from winget. Zed on macOS comes from its installer
 [windows]
 winget = ["Git.Git", "ZedIndustries.Zed.Preview"]

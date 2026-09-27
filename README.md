@@ -94,8 +94,8 @@ keeps a cache of downloaded packages, which `pixi clean cache` empties.
 | Fonts | `~/.local/share/fonts` | `~/Library/Fonts` | per-user fonts |
 
 pixi cannot provide graphical apps, and Apple's and Microsoft's compilers
-only come from them, so those stay per platform. On Fedora Atomic nothing
-is layered with `rpm-ostree` and no toolbox is needed. On other Linux
+only come from them, so those stay per platform. On Fedora Atomic, only what the COSMIC image
+lacks is layered with `rpm-ostree`, and no toolbox is needed. On other Linux
 distributions, only the config files are installed.
 
 ### What happens during setup
@@ -172,6 +172,7 @@ Do not use `pixi global install` for tools you want to keep: the next
 | What | Where |
 |---|---|
 | Flathub apps (Fedora Atomic) | [`flatpaks.txt`](flatpaks.txt). Install one with `flatpak --user install flathub <app>`, then `sh sync-packages.sh` updates the list |
+| Layered packages (Fedora Atomic) | `fedora.layered` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml). Only for what the COSMIC image does not ship yet: setup reminds you to remove one once Fedora includes it |
 | winget packages (Windows) | `windows.winget` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) |
 | Rust components, `cargo install` tools | `rust` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) |
 | Libraries and tools for compiling Rust | [`dot_local/share/rust-env/pixi.toml`](dot_local/share/rust-env/pixi.toml) |
@@ -254,6 +255,13 @@ unlocks with a random password instead, which systemd stores encrypted so
 that only this machine can read it. The keyring stays encrypted on disk,
 and nothing ever asks for its password. This needs a keyring created by
 these dotfiles: setup explains what to do if one already exists.
+
+**Layered packages on Fedora Atomic.** One package is layered onto the
+system image, because the COSMIC image does not ship it yet: `oo7-portal`,
+which lets flatpak apps like Zed and Proton Pass store passwords in the
+keyring. Once Fedora adds it to the image, it is no longer needed: setup
+then reminds you to remove it from `fedora.layered` and to run
+`rpm-ostree uninstall oo7-portal`.
 
 **uutils on Windows** provides `ls`, `cp`, `cat` and the other coreutils.
 Windows' own `expand`, `hostname`, `more`, `sort`, `timeout` and `whoami`

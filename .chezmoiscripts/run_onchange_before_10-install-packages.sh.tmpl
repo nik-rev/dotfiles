@@ -16,6 +16,42 @@ flatpak --user remote-add --if-not-exists flathub \
 flatpak --user install --noninteractive flathub
 {{- range (include "flatpaks.txt" | splitList "\n") }}{{ if and . (not (hasPrefix "#" .)) }} {{ . | quote }}{{ end }}{{ end }}
 
+# -------------------------------
+# Layered packages
+# -------------------------------
+
+# Packages the COSMIC image does not ship yet, see fedora.layered in
+# .chezmoidata/packages.toml
+status="$(rpm-ostree status --json)"
+missing=""
+
+for package in{{ range .fedora.layered }} {{ . | quote }}{{ end }}; do
+    # Requested, and in the booted or staged system: "requested" for layered
+    # packages, "active" unless Fedora's image already includes it
+    state="$(printf '%s' "$status" | python3 -c '
+import json, sys
+package = sys.argv[1]
+deployments = [d for d in json.load(sys.stdin)["deployments"] if d.get("booted") or d.get("staged")]
+requested = any(package in d.get("requested-packages", []) for d in deployments)
+active = any(package in d.get("packages", []) for d in deployments)
+print("inactive" if requested and not active else "requested" if requested else "none")
+' "$package")"
+
+    if [ "$state" = inactive ]; then
+        printf '%s\n' "Fedora's image now includes $package: remove it from fedora.layered" \
+            "in .chezmoidata/packages.toml, and run: rpm-ostree uninstall $package" >&2
+    elif [ "$state" = none ] && ! rpm -q "$package" >/dev/null 2>&1; then
+        missing="$missing $package"
+    fi
+done
+
+if [ -n "$missing" ]; then
+    printf '%s\n' "Layering$missing onto the system image"
+    # shellcheck disable=SC2086
+    sudo rpm-ostree install --idempotent $missing
+    printf '%s\n' "Reboot to start using$missing"
+fi
+
 {{ else -}}
 # -------------------------------
 # Xcode Command Line Tools
