@@ -91,12 +91,13 @@ exposed = { cargo-nextest = "cargo-nextest" }
 
 # C toolchain and libraries for -sys crates, like openssl-sys.
 {{- if eq .chezmoi.os "linux" }}
-# On Linux, clang also links, see ~/.cargo/config.toml. openssl 3, because
-# openssl-sys does not support openssl 4 yet
+# On Linux, clang also links, see ~/.cargo/config.toml, and llvm-tools
+# provides llvm-ar. Fedora Atomic has neither a C compiler nor binutils.
+# openssl 3, because openssl-sys does not support openssl 4 yet
 [envs.rust-dev]
 channels = ["conda-forge"]
-dependencies = { clang = "*", clangxx = "*", pkg-config = "*", openssl = "3.*", cmake = "*" }
-exposed = { clang = "clang", "clang++" = "clang++", pkg-config = "pkg-config", cmake = "cmake" }
+dependencies = { clang = "*", clangxx = "*", llvm-tools = "*", pkg-config = "*", openssl = "3.*", cmake = "*" }
+exposed = { clang = "clang", "clang++" = "clang++", llvm-ar = "llvm-ar", llvm-ranlib = "llvm-ranlib", pkg-config = "pkg-config", cmake = "cmake" }
 {{- else }}
 # macOS and Windows use the system C compiler (Xcode, Visual Studio)
 [envs.rust-dev]

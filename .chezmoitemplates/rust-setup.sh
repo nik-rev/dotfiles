@@ -19,7 +19,7 @@ trap 'rm -rf "$temporary_dir"' EXIT
 # Own CARGO_HOME so ~/.cargo/config.toml is not used: it links with wild,
 # which is one of the packages installed here. Compile and link with clang
 # from pixi, because Fedora Atomic has no C compiler
-CARGO_HOME="$temporary_dir" CC=clang CXX=clang++ RUSTFLAGS="-C linker=clang" \
+CARGO_HOME="$temporary_dir" CC=clang CXX=clang++ AR=llvm-ar RUSTFLAGS="-C linker=clang" \
     cargo install --locked --root "$HOME/.cargo"
 {{- range .rust.cargo_linux }} {{ . | quote }}{{ end }}
 {{- end }}
