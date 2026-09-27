@@ -1,12 +1,35 @@
 {{- if includeTemplate "is-atomic" . -}}
 #!/bin/sh
-# Automatic login on Fedora Atomic, see login.autologin in
-# .chezmoidata/desktop.toml: {{ .login.autologin }}
+# Login on Fedora Atomic: makes the login screen work, and sets up automatic
+# login, see login.autologin in .chezmoidata/desktop.toml: {{ .login.autologin }}
 #
-# After the disk is unlocked at boot, COSMIC logs in without asking for a
-# password. The keyring (oo7) then unlocks with a random password that
-# systemd keeps encrypted, instead of with the login password
+# With automatic login, COSMIC logs in without asking for a password after
+# the disk is unlocked at boot. The keyring (oo7) then unlocks with a random
+# password that systemd keeps encrypted, instead of with the login password
 set -eu
+
+# -------------------------------
+# Login screen
+# -------------------------------
+
+# Fedora replaced getty with kmscon as the text console, but cosmic-greeter
+# only conflicts with getty: kmscon keeps the display on tty1, and neither
+# the login screen nor COSMIC can start. Make it conflict with kmscon too
+dropin=/etc/systemd/system/cosmic-greeter.service.d/10-kmscon.conf
+dropin_content="# Fedora replaced getty with kmscon as the text console, but cosmic-greeter
+# only conflicts with getty: kmscon then keeps the display on tty1, and
+# COSMIC cannot start. Added by the dotfiles
+[Unit]
+Conflicts=kmsconvt@tty1.service
+After=kmsconvt@tty1.service"
+
+if [ -e /usr/lib/systemd/system/kmsconvt@.service ] &&
+    [ "$(cat "$dropin" 2>/dev/null)" != "$dropin_content" ]; then
+    printf '%s\n' "Making the login screen start instead of the kmscon text console"
+    sudo mkdir -p "$(dirname "$dropin")"
+    printf '%s\n' "$dropin_content" | sudo tee "$dropin" >/dev/null
+    sudo systemctl daemon-reload
+fi
 
 # -------------------------------
 # Automatic login
