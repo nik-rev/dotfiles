@@ -227,7 +227,14 @@ chezmoi cd                                # open nushell in the repository
 **Config locations.** The config files live in `~/.config` on every
 platform. Some apps read theirs elsewhere on macOS (`~/Library/Application
 Support`) and Windows (`AppData`), so those locations are linked to
-`~/.config`: symlinks on macOS, junctions on Windows.
+`~/.config`, and the app finds its config there:
+
+- On macOS with symlinks, like on Linux.
+- On Windows with junctions. A junction is Windows' kind of link for
+  folders: `AppData\Roaming\Zed` is then another name for `~\.config\zed`,
+  and programs see the same files through both paths. Unlike symlinks,
+  creating junctions does not need administrator rights. Deleting a
+  junction only removes the link, not the files.
 
 **Zed on Fedora Atomic** is a flatpak, so it runs in a sandbox. Its
 terminal runs nushell outside the sandbox through
