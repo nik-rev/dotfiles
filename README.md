@@ -101,7 +101,7 @@ of downloaded packages, and `pixi clean cache` empties it.
 | CLI tools | pixi | pixi | pixi |
 | Zed | pixi | pixi | pixi |
 | Alacritty | pixi | pixi | pixi |
-| Other apps | Flathub | | winget |
+| Other apps | Flathub | downloaded from the developers | winget |
 | Rust | pixi workspace | pixi workspace + Xcode Command Line Tools | pixi workspace + Visual Studio Build Tools |
 | Fonts | `~/.local/share/fonts` | `~/Library/Fonts` | per-user fonts |
 
@@ -142,7 +142,7 @@ Note that conda-forge only has Zed's stable releases, not Zed Preview.
    ([`install-packages`](.chezmoiscripts)):
 
    - Flathub apps on Fedora Atomic
-   - the Xcode Command Line Tools on macOS
+   - the Xcode Command Line Tools and apps like Blender on macOS
    - winget packages and the Visual Studio Build Tools on Windows
    - and finally pixi itself
 
@@ -216,7 +216,8 @@ removes them again.
 | Flathub apps (Fedora Atomic) | [`flatpaks.txt`](flatpaks.txt). Install the app with `flatpak --user install flathub <app>`, then run `sh sync-packages.sh` to update the list |
 | Flathub extensions (Fedora Atomic) | `fedora.flatpak_extensions` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml). `sync-packages.sh` only picks up apps, so these go here |
 | Layered packages (Fedora Atomic) | `fedora.layered` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml). Only for things the COSMIC image doesn't ship yet. Setup reminds me to remove one once Fedora includes it |
-| winget packages (Windows) | `windows.winget` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) |
+| winget packages (Windows) | `windows.winget` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml). Apps that are only in the Microsoft Store, like Lockbook, go in `windows.msstore` with their Store ID |
+| Apps (macOS) | The "macOS applications" part of [`install-packages`](.chezmoiscripts/run_onchange_before_10-install-packages.sh.tmpl), which downloads them from their developers. There's no package manager for these, so each app is a line in the script |
 | Rust components, `cargo install` tools | `rust` in [`.chezmoidata/packages.toml`](.chezmoidata/packages.toml) |
 | Libraries and tools for compiling Rust | [`dot_local/share/rust-env/pixi.toml`](dot_local/share/rust-env/pixi.toml) |
 
@@ -344,6 +345,17 @@ rpm-ostree upgrade   # Fedora Atomic itself, then reboot
 
 `chezmoi apply` installs things that are missing, but it never updates what's
 already installed.
+
+`flatpak update` updates the Flathub apps on Fedora, and on Windows,
+`winget upgrade --all` updates everything from winget and the Microsoft
+Store. The apps I download on macOS (Blender and Lockbook) don't
+update themselves. To update one, I delete it from `/Applications` and run
+the setup scripts again:
+
+```sh
+chezmoi state delete-bucket --bucket=entryState
+chezmoi apply
+```
 
 ## Platform details
 

@@ -12,7 +12,7 @@ function Invoke-Checked {
 }
 
 function Install-WingetPackage {
-    param([string]$Id, [string[]]$Arguments = @())
+    param([string]$Id, [string[]]$Arguments = @(), [string]$Source = "winget")
 
     winget list --exact --id $Id --accept-source-agreements *> $null
     if ($LASTEXITCODE -eq 0) {
@@ -20,7 +20,7 @@ function Install-WingetPackage {
         return
     }
 
-    Invoke-Checked winget install --exact --id $Id --source winget --silent `
+    Invoke-Checked winget install --exact --id $Id --source $Source --silent `
         --accept-package-agreements --accept-source-agreements @Arguments
 }
 
@@ -30,6 +30,24 @@ function Install-WingetPackage {
 
 {{ range .windows.winget -}}
 Install-WingetPackage {{ . | squote }}
+{{ end -}}
+{{ if .windows.msstore }}
+# Old versions of winget can't reach the Microsoft Store any more, because
+# its certificate changed. Windows 11's own winget can be that old until the
+# Store gets around to updating it, so update it here if the Store doesn't
+# answer
+winget show --exact --id {{ first .windows.msstore | squote }} --source msstore `
+    --accept-source-agreements *> $null
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Updating winget, so it can reach the Microsoft Store"
+    Install-PackageProvider -Name NuGet -Force -Scope CurrentUser | Out-Null
+    Install-Module Microsoft.WinGet.Client -Force -Scope CurrentUser -Repository PSGallery
+    Repair-WinGetPackageManager -Latest -Force
+}
+
+{{ range .windows.msstore -}}
+Install-WingetPackage {{ . | squote }} -Source msstore
+{{ end -}}
 {{ end }}
 # The C++ build tools and the Windows SDK, which Rust needs for linking
 Install-WingetPackage "Microsoft.VisualStudio.2022.BuildTools" @(

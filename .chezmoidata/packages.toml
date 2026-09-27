@@ -28,7 +28,11 @@ only_with = "oo7-daemon"
 
 # Windows applications, from winget
 [windows]
-winget = ["Git.Git"]
+winget = ["Git.Git", "BlenderFoundation.Blender"]
+# Apps that are only in the Microsoft Store, which winget can install from too
+msstore = [
+    "9P5BJXV6044Z", # Lockbook
+]
 
 # Nightly Rust, installed with rustup into the rust-env pixi environment (see
 # dot_local/share/rust-env/pixi.toml). My cargo config needs these

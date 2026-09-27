@@ -86,6 +86,69 @@ if ! xcode-select -p >/dev/null 2>&1; then
     done
 fi
 
+# -------------------------------
+# macOS applications
+# -------------------------------
+
+# Apps that pixi doesn't have get downloaded straight from their developers.
+# Nothing updates them afterwards. To update one, delete it from
+# /Applications and run this script again (see "Updating" in the README)
+
+# Copies <name>.app out of a .dmg or .zip into /Applications, unless it's
+# already there
+install_app() {
+    name="$1"
+    url="$2"
+    if [ -d "/Applications/$name.app" ]; then
+        return
+    fi
+    printf '%s\n' "Installing $name from $url"
+    tmp="$(mktemp -d)"
+    curl -fL --progress-bar -o "$tmp/download" "$url"
+    case "$url" in
+    *.dmg)
+        hdiutil attach -quiet -nobrowse -readonly -mountpoint "$tmp/mount" "$tmp/download"
+        cp -R "$tmp/mount/$name.app" /Applications/
+        hdiutil detach -quiet "$tmp/mount"
+        ;;
+    *.zip)
+        ditto -x -k "$tmp/download" "$tmp/unzipped"
+        cp -R "$tmp/unzipped/$name.app" /Applications/
+        ;;
+    esac
+    rm -rf "$tmp"
+}
+
+# Sorts version numbers like 5.2.10 from oldest to newest. macOS's sort
+# can't be trusted to have -V
+sort_versions() {
+    sort -u -t. -k1,1n -k2,2n -k3,3n
+}
+
+# Blender has no "latest" link, so this looks for the newest release that
+# has a macOS build. Since Blender 5.2 there are only Apple Silicon (arm64)
+# builds
+blender_url() {
+    releases=https://download.blender.org/release
+    for series in $(curl -fsSL "$releases/" | sed -n 's|.*"Blender\([0-9]*\.[0-9]*\)/".*|\1|p' | sort_versions | sed -n '1!G;h;$p'); do
+        version="$(curl -fsSL "$releases/Blender$series/" |
+            sed -n 's|.*"blender-\([0-9.]*\)-macos-arm64\.dmg".*|\1|p' | sort_versions | tail -n 1)"
+        if [ -n "$version" ]; then
+            printf '%s\n' "$releases/Blender$series/blender-$version-macos-arm64.dmg"
+            return
+        fi
+    done
+    return 1
+}
+
+if [ ! -d /Applications/Blender.app ]; then
+    install_app Blender "$(blender_url)"
+fi
+
+# Needs macOS 26 or newer
+install_app Lockbook \
+    https://github.com/lockbook/lockbook/releases/latest/download/lockbook-macos.app.zip
+
 {{ end -}}
 # -------------------------------
 # pixi

@@ -1,5 +1,7 @@
 com.obsproject.Studio
 me.proton.Pass
+net.lockbook.Lockbook
+org.blender.Blender
 org.gimp.GIMP
 org.inkscape.Inkscape
 org.kde.kdenlive
