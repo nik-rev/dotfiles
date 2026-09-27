@@ -1,8 +1,9 @@
-# Installs nightly Rust into the rust-env pixi environment, with the
-# components in rust.components and, on Linux, the tools in
-# rust.cargo_linux from .chezmoidata/packages.toml.
+# Installs nightly Rust into the rust-env pixi environment, along with the
+# components from rust.components and, on Linux, the tools from
+# rust.cargo_linux (both in .chezmoidata/packages.toml).
 #
-# Runs inside the environment, so RUSTUP_HOME and CARGO_HOME point into it
+# This runs inside the environment, so RUSTUP_HOME and CARGO_HOME already
+# point into it
 set -eu
 
 if [ ! -x "$CARGO_HOME/bin/rustup" ]; then
@@ -18,9 +19,9 @@ cargo_home="$CARGO_HOME"
 temporary_dir="$(mktemp -d)"
 trap 'rm -rf "$temporary_dir"' EXIT
 
-# Own CARGO_HOME for the build, so the cargo config is not used: it links
-# with wild, which is one of the packages installed here. Link with clang
-# from the environment instead
+# The build gets its own CARGO_HOME so that my cargo config isn't used. That
+# config links with wild, which is one of the things being installed here,
+# so this links with clang from the environment instead
 CARGO_HOME="$temporary_dir" RUSTFLAGS="-C linker=clang" \
     cargo install --locked --root "$cargo_home"
 {{- range .rust.cargo_linux }} {{ . | quote }}{{ end }}

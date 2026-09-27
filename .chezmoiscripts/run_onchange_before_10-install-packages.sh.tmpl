@@ -1,8 +1,8 @@
 {{- $atomic := includeTemplate "is-atomic" . -}}
 {{- if or $atomic (eq .chezmoi.os "darwin") -}}
 #!/bin/bash
-# Installs pixi, and the applications it does not provide, on Fedora Atomic
-# and macOS
+# Installs pixi on Fedora Atomic and macOS, plus the apps that pixi doesn't
+# have
 set -euo pipefail
 
 {{ if $atomic -}}
@@ -23,12 +23,13 @@ flatpak --user install --noninteractive flathub
 # Layered packages
 # -------------------------------
 
-# Packages the COSMIC image does not ship yet, see fedora.layered in
+# Packages the COSMIC image doesn't ship yet. The list is fedora.layered in
 # .chezmoidata/packages.toml
 status="$(rpm-ostree status --json)"
 missing=""
 
-# "package:only_with": skip the package unless only_with is installed
+# Each entry is "package:only_with". A package is skipped unless its
+# only_with package is installed
 for entry in{{ range .fedora.layered }} {{ printf "%s:%s" .package (get . "only_with") | quote }}{{ end }}; do
     package="${entry%%:*}"
     only_with="${entry#*:}"
@@ -36,8 +37,8 @@ for entry in{{ range .fedora.layered }} {{ printf "%s:%s" .package (get . "only_
         continue
     fi
 
-    # Requested, and in the booted or staged system: "requested" for layered
-    # packages, "active" unless Fedora's image already includes it
+    # Looks at the booted and the staged system. A layered package counts as
+    # "requested", and it's "active" unless Fedora's image already has it
     state="$(printf '%s' "$status" | python3 -c '
 import json, sys
 package = sys.argv[1]
@@ -57,7 +58,7 @@ done
 
 if [ -n "$missing" ]; then
     printf '%s\n' "Layering$missing onto the system image"
-    # secureblue has no sudo, only run0
+    # secureblue doesn't have sudo, only run0
     if [ -x /usr/bin/sudo ]; then
         root=sudo
     else
@@ -73,10 +74,11 @@ fi
 # Xcode Command Line Tools
 # -------------------------------
 
-# Apple's compiler, linker and SDK, which Rust needs to link, and git. Only
-# Apple provides them, so they cannot come from pixi
+# Apple's compiler, linker and SDK, which Rust needs for linking, and git.
+# Only Apple distributes these, so pixi can't provide them
 if ! xcode-select -p >/dev/null 2>&1; then
-    # Fails if an installation was already requested, the loop waits either way
+    # This fails if an install was already requested, but the loop below waits
+    # either way
     xcode-select --install || true
     printf '%s\n' 'Waiting for the Command Line Tools: click "Install" in the dialog'
     until xcode-select -p >/dev/null 2>&1; do
@@ -89,7 +91,7 @@ fi
 # pixi
 # -------------------------------
 
-# The PATH is set up by these dotfiles instead of the installer
+# The dotfiles set up the PATH themselves, so the installer shouldn't
 if [ ! -x "$HOME/.pixi/bin/pixi" ]; then
     curl -fsSL https://pixi.sh/install.sh | PIXI_NO_PATH_UPDATE=1 bash
 fi

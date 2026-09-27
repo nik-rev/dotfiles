@@ -1,6 +1,7 @@
 {{- if eq .chezmoi.os "windows" -}}
-# Installs the tools in ~/.pixi/manifests/pixi-global.toml. Runs again when
-# it changes: {{ include "dot_pixi/manifests/pixi-global.toml.tmpl" | sha256sum }}
+# Installs the tools from ~/.pixi/manifests/pixi-global.toml, and runs again
+# whenever that file changes:
+# {{ include "dot_pixi/manifests/pixi-global.toml.tmpl" | sha256sum }}
 $ErrorActionPreference = "Stop"
 
 & "$HOME\.pixi\bin\pixi.exe" global sync

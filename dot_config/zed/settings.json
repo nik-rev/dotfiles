@@ -322,8 +322,8 @@
   // Disable automatic updates
   "auto_update": false,
 
-  // Highlight chezmoi templates like the file they produce, for example
-  // foo.toml.tmpl like foo.toml
+  // Highlight chezmoi templates as the kind of file they produce, so
+  // foo.toml.tmpl gets highlighted like foo.toml
   "file_types": {
     "JSON": ["*.json.tmpl"],
     "JSONC": ["*.jsonc.tmpl"],

@@ -1,10 +1,10 @@
 {{- if eq .chezmoi.os "windows" -}}
-# Adds Zed from pixi to the Start menu, and opens zed:// links in it, like
-# Zed's own installer would. pixi's Zed package only has app menu entries
-# for Linux and macOS.
+# Adds pixi's Zed to the Start menu and makes zed:// links open in it, the
+# way Zed's own installer would. pixi's Zed package only comes with app menu
+# entries for Linux and macOS.
 #
-# Both point at Zed itself: pixi's `zed` command in ~/.pixi/bin is a console
-# program, which would open a console window next to Zed
+# Both point at Zed itself rather than pixi's `zed` command in ~/.pixi/bin,
+# which is a console program and would open a console window next to Zed
 $ErrorActionPreference = "Stop"
 
 $zed = "$HOME\.pixi\envs\zed\bin\zed.exe"
@@ -15,7 +15,7 @@ $shortcut.TargetPath = $zed
 $shortcut.IconLocation = $zed
 $shortcut.Save()
 
-# zed:// links, like the file links from `rg` in nushell. For this user only
+# zed:// links, like the file links from `rg` in nushell. Only for this user
 $key = "HKCU:\Software\Classes\zed"
 New-Item -Path "$key\shell\open\command" -Force | Out-Null
 Set-Item -Path $key -Value "URL:zed Protocol"

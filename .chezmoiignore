@@ -1,11 +1,11 @@
-# Files in this repository that are not dotfiles
+# Files in the repo that aren't dotfiles
 README.md
 flatpaks.txt
 sync-packages.sh
 old_dotfiles/
 
 {{ if ne .chezmoi.os "linux" -}}
-# Linux desktop: COSMIC, fonts, session PATH, and zed:// links
+# Linux desktop stuff: COSMIC, fonts, the session PATH and zed:// links
 .config/cosmic
 .config/fontconfig
 .bashrc.d
@@ -13,7 +13,7 @@ old_dotfiles/
 {{ end -}}
 
 {{ if not (includeTemplate "rust-enabled" .) -}}
-# Rust, in its own pixi environment
+# Rust, which lives in its own pixi environment
 .local/share/rust-env
 .local/bin/rust-analyzer
 .local/bin/rust-analyzer.cmd
@@ -24,12 +24,12 @@ old_dotfiles/
 {{ end -}}
 
 {{ if not (and (includeTemplate "is-atomic" .) .login.autologin) -}}
-# Starts the keyring (oo7) with the session, for automatic login
+# Starts the keyring (oo7) along with the session, for automatic login
 .config/systemd/user/default.target.wants/oo7-daemon.service
 {{ end -}}
 
 {{ if ne .chezmoi.os "darwin" -}}
-# Links from macOS config locations to ~/.config, and PATH setup
+# macOS only: links from macOS config locations to ~/.config, and the PATH
 Library
 .zprofile
 {{ end -}}

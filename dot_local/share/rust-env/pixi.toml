@@ -1,13 +1,13 @@
-# Everything needed to compile Rust, in one self-contained pixi environment.
+# Everything I need to compile Rust, in one self-contained pixi environment.
 # Enter it with `rust` in nushell, or with:
 #
 #     pixi shell --manifest-path ~/.local/share/rust-env/pixi.toml
 #
-# The toolchains (rustup), cargo's downloads, tools installed with
-# `cargo install` and the sccache cache all live in this directory, and
-# nothing outside of it is changed. Deleting the directory removes Rust
-# completely. To keep it deleted, set rust.enabled = false in
-# .chezmoidata/packages.toml of the dotfiles.
+# The toolchains (rustup), cargo's downloads, anything installed with
+# `cargo install` and sccache's cache all live in this directory, and nothing
+# outside of it gets touched. Deleting the directory removes Rust completely.
+# To keep it that way, set rust.enabled = false in the dotfiles'
+# .chezmoidata/packages.toml.
 [workspace]
 name = "rust"
 channels = ["conda-forge"]
@@ -18,14 +18,15 @@ sccache = "*"
 cargo-nextest = "*"
 cmake = "*"
 
-# C libraries for -sys crates. openssl 3, because openssl-sys does not
-# support openssl 4 yet. On Windows, openssl-sys finds OpenSSL differently
+# C libraries for -sys crates. This is openssl 3 because openssl-sys doesn't
+# support openssl 4 yet. On Windows, openssl-sys finds OpenSSL another way
 [target.unix.dependencies]
 pkg-config = "*"
 openssl = "3.*"
 
-# On Linux, the C compiler, linker and ar come from here too, because
-# Fedora Atomic has none. macOS uses Xcode's, and Windows Visual Studio's
+# On Linux the C compiler, linker and ar come from here as well, because
+# Fedora Atomic doesn't have any. macOS uses Xcode's, and Windows uses
+# Visual Studio's
 [target.linux.dependencies]
 clang = "*"
 clangxx = "*"
@@ -33,7 +34,7 @@ llvm-tools = "*"
 
 [target.unix.activation.env]
 RUSTUP_HOME = "$PIXI_PROJECT_ROOT/rustup"
-# cargo also reads its config from here: cargo/config.toml
+# cargo also reads its config from here, in cargo/config.toml
 CARGO_HOME = "$PIXI_PROJECT_ROOT/cargo"
 SCCACHE_DIR = "$PIXI_PROJECT_ROOT/sccache"
 PATH = "$PIXI_PROJECT_ROOT/cargo/bin:$PATH"
@@ -44,8 +45,8 @@ CARGO_HOME = "%PIXI_PROJECT_ROOT%\\cargo"
 SCCACHE_DIR = "%PIXI_PROJECT_ROOT%\\sccache"
 PATH = "%PIXI_PROJECT_ROOT%\\cargo\\bin;%PATH%"
 
-# Compile C code from -sys crates with the clang above, which also links
-# (see cargo/config.toml), so everything uses the same C library
+# Compile C code from -sys crates with the clang above. It does the linking
+# too (see cargo/config.toml), so everything ends up using the same C library
 [target.linux.activation.env]
 CC = "clang"
 CXX = "clang++"

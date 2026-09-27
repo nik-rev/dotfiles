@@ -1,7 +1,8 @@
 {{- if and (includeTemplate "rust-enabled" .) (ne .chezmoi.os "windows") -}}
 #!/bin/sh
-# Installs Rust into the rust-env pixi environment. Runs again when the
-# environment changes: {{ include "dot_local/share/rust-env/pixi.toml" | sha256sum }}
+# Installs Rust into the rust-env pixi environment, and runs again whenever
+# the environment changes:
+# {{ include "dot_local/share/rust-env/pixi.toml" | sha256sum }}
 set -eu
 
 setup="$(mktemp)"

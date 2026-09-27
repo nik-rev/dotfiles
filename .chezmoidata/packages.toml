@@ -1,27 +1,27 @@
-# Packages that pixi does not provide, installed by the scripts in
-# .chezmoiscripts. Editing this file makes `chezmoi apply` run them again.
+# Packages that pixi doesn't have. The scripts in .chezmoiscripts install
+# them, and they run again whenever this file changes.
 #
-# CLI tools on every platform come from pixi instead, see
-# dot_pixi/manifests/pixi-global.toml.tmpl. Graphical applications on
-# Fedora Atomic come from Flathub, see flatpaks.txt
+# CLI tools come from pixi on every platform instead (see
+# dot_pixi/manifests/pixi-global.toml.tmpl), and graphical apps on Fedora
+# Atomic come from Flathub (see flatpaks.txt)
 
-# Fedora Atomic only: packages layered onto the system image with
-# rpm-ostree, because the COSMIC image does not ship them yet. Layering
-# takes effect after a reboot. Setup reminds you when Fedora includes one in
-# the image: then remove it here and run `rpm-ostree uninstall <package>`.
+# Fedora Atomic only. Layered packages get added to the system image with
+# rpm-ostree, because the COSMIC image doesn't ship them yet, and they take
+# effect after a reboot. Once Fedora includes one in the image, setup tells
+# me, and then I remove it here and run `rpm-ostree uninstall <package>`.
 #
-# `only_with` skips a package unless another one is installed.
+# With `only_with`, a package is skipped unless that other one is installed.
 [fedora]
 
-# Flathub extensions, which `flatpak list --app` (and so
-# sync-packages.sh) does not list. The QEMU extension lets virt-manager run
-# virtual machines itself, without libvirt installed on the system
+# Flathub extensions. `flatpak list --app` doesn't show these, so
+# sync-packages.sh doesn't either. The QEMU extension lets virt-manager run
+# virtual machines on its own, without libvirt on the system
 flatpak_extensions = ["org.virt_manager.virt_manager.Extension.Qemu"]
 
-# The Secret portal, so flatpak apps like Proton Pass can store
+# The Secret portal, which lets flatpak apps like Proton Pass store
 # passwords in the keyring. COSMIC already expects it, but the image only
-# ships the keyring (oo7-daemon) without it. Images with gnome-keyring
-# instead, like secureblue, do not need it: gnome-keyring is the portal
+# ships the keyring itself (oo7-daemon). Images with gnome-keyring instead,
+# like secureblue, don't need it, because gnome-keyring is the portal there
 [[fedora.layered]]
 package = "oo7-portal"
 only_with = "oo7-daemon"
@@ -30,12 +30,12 @@ only_with = "oo7-daemon"
 [windows]
 winget = ["Git.Git"]
 
-# Nightly Rust, installed with rustup into the rust-env pixi environment,
-# see dot_local/share/rust-env/pixi.toml. The cargo config needs these
-# components. `enabled = false` stops installing Rust; the environment in
-# ~/.local/share/rust-env can then be deleted
+# Nightly Rust, installed with rustup into the rust-env pixi environment (see
+# dot_local/share/rust-env/pixi.toml). My cargo config needs these
+# components. Setting `enabled = false` stops Rust from being installed, and
+# then ~/.local/share/rust-env can be deleted
 [rust]
 enabled = true
 components = ["rust-src", "rust-analyzer", "rustc-codegen-cranelift-preview"]
-# Installed with `cargo install`. wild only supports Linux
+# Installed with `cargo install`. wild is Linux-only
 cargo_linux = ["wild-linker"]

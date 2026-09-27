@@ -1,3 +1,3 @@
-# PATH on macOS. Apps like Zed read the environment from the login shell,
-# so this makes these available to them too
+# The PATH on macOS. Apps like Zed take their environment from the login
+# shell, so this makes these commands available to them too
 export PATH="$PATH:$HOME/.local/bin:$HOME/.pixi/bin"

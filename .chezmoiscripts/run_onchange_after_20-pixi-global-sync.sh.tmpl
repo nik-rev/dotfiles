@@ -1,17 +1,18 @@
 {{- if or (includeTemplate "is-atomic" .) (eq .chezmoi.os "darwin") -}}
 #!/bin/sh
-# Installs the tools in ~/.pixi/manifests/pixi-global.toml. Runs again when
-# it changes: {{ include "dot_pixi/manifests/pixi-global.toml.tmpl" | sha256sum }}
+# Installs the tools from ~/.pixi/manifests/pixi-global.toml, and runs again
+# whenever that file changes:
+# {{ include "dot_pixi/manifests/pixi-global.toml.tmpl" | sha256sum }}
 set -eu
 
-# App-menu entries (`shortcuts`) keep the PATH that pixi runs with, and
-# apps started from them need the tools from pixi, like Alacritty needs nu
+# App menu entries (`shortcuts`) remember the PATH pixi was run with, and
+# the apps they start need the pixi tools on it (Alacritty needs nu, say)
 export PATH="$HOME/.local/bin:$HOME/.pixi/bin:/usr/local/bin:/usr/bin:/bin"
 
 "$HOME/.pixi/bin/pixi" global sync
 {{- if eq .chezmoi.os "linux" }}
 
-# Open zed:// links with ~/.local/share/applications/zed-url.desktop
+# Let ~/.local/share/applications/zed-url.desktop handle zed:// links
 xdg-mime default zed-url.desktop x-scheme-handler/zed
 {{- end }}
 {{ end -}}

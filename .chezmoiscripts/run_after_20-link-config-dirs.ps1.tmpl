@@ -1,7 +1,7 @@
 {{- if eq .chezmoi.os "windows" -}}
-# Programs on Windows read their config from AppData instead of ~/.config.
-# Link those directories to ~/.config, where chezmoi puts the config.
-# Junctions work without administrator rights, unlike symlinks
+# On Windows, programs look for their config in AppData instead of
+# ~/.config, where chezmoi puts it, so those folders get linked to ~/.config.
+# This uses junctions, since they don't need admin rights like symlinks do
 $ErrorActionPreference = "Stop"
 
 $links = [ordered]@{
@@ -19,7 +19,7 @@ foreach ($link in $links.GetEnumerator()) {
         continue
     }
 
-    # Keep config the program created before chezmoi ran
+    # Keep any config the program created before chezmoi ran
     if ($item) {
         Move-Item -LiteralPath $link.Key -Destination "$($link.Key).backup"
     }

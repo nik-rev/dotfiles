@@ -1,15 +1,16 @@
-# CLI tools on every platform, installed from conda-forge with pixi. Each
-# tool gets its own environment, and `exposed` lists the commands it puts
-# in ~/.pixi/bin. `chezmoi apply` runs `pixi global sync` after changes.
+# My CLI tools for every platform, installed from conda-forge with pixi.
+# Each tool gets its own environment, and `exposed` lists the commands it
+# puts in ~/.pixi/bin. After a change, `chezmoi apply` runs `pixi global sync`.
 #
-# Edit with `chezmoi edit ~/.pixi/manifests/pixi-global.toml`. Tools added
-# with `pixi global install` are overwritten by the next `chezmoi apply`.
+# Edit this with `chezmoi edit ~/.pixi/manifests/pixi-global.toml`. Anything
+# added with `pixi global install` gets overwritten on the next
+# `chezmoi apply`.
 #
-# Rust and everything needed to compile it is in its own environment
-# instead, see ~/.local/share/rust-env/pixi.toml
+# Rust, and everything I need to compile it, lives in its own environment
+# instead (see ~/.local/share/rust-env/pixi.toml)
 version = 1
 
-# Terminal. `shortcuts` adds it to the app menu on every platform
+# Terminal. `shortcuts` puts it in the app menu on every platform
 [envs.alacritty]
 channels = ["conda-forge"]
 dependencies = { alacritty = "*" }
@@ -17,8 +18,8 @@ exposed = { alacritty = "alacritty" }
 shortcuts = ["alacritty"]
 
 
-# Editor. The Windows package has no app menu entry: setup adds a Start
-# menu entry there instead
+# Editor. The Windows package doesn't come with an app menu entry, so setup
+# adds one to the Start menu there
 [envs.zed]
 channels = ["conda-forge"]
 dependencies = { zed = "*" }
@@ -35,14 +36,14 @@ channels = ["conda-forge"]
 dependencies = { chezmoi = "*" }
 exposed = { chezmoi = "chezmoi" }
 
-# The package called "fd" is something else
+# Not "fd": the package with that name is something else
 [envs.fd-find]
 channels = ["conda-forge"]
 dependencies = { fd-find = "*" }
 exposed = { fd = "fd" }
 {{- if ne .chezmoi.os "windows" }}
 
-# No Windows build
+# There's no Windows build
 [envs.fish]
 channels = ["conda-forge"]
 dependencies = { fish = "*" }
@@ -82,7 +83,7 @@ exposed = { typst = "typst" }
 [envs.vim]
 channels = ["conda-forge"]
 dependencies = { vim = "*" }
-# The Windows package has no vimdiff
+# The Windows package doesn't include vimdiff
 exposed = { vim = "vim", {{ if ne .chezmoi.os "windows" }}vimdiff = "vimdiff", {{ end }}xxd = "xxd" }
 
 [envs.vivid]
@@ -101,10 +102,10 @@ dependencies = { zoxide = "*" }
 exposed = { zoxide = "zoxide" }
 {{- if eq .chezmoi.os "windows" }}
 
-# GNU coreutils rewritten in Rust (ls, cp, cat, ...), as separate commands.
-# Windows' own expand, hostname, more, sort, timeout and whoami come first
-# on the PATH. In nushell, its built-in commands like ls come first, so call
-# these with a caret: ^ls
+# GNU coreutils rewritten in Rust (ls, cp, cat and so on), as separate
+# commands. Windows' own expand, hostname, more, sort, timeout and whoami win
+# on the PATH, though, and nushell's built-in commands like ls win in
+# nushell, so call these with a caret there (^ls)
 [envs.uutils-coreutils]
 channels = ["conda-forge"]
 dependencies = { uutils-coreutils = "*" }

@@ -1,10 +1,10 @@
-# `chezmoi cd` opens nushell, like the terminal, instead of $SHELL
+# Make `chezmoi cd` open nushell, like my terminal does, instead of $SHELL
 [cd]
     command = "nu"
 {{- if eq .chezmoi.os "windows" }}
 
-# Windows blocks running .ps1 files by default, which the setup scripts in
-# .chezmoiscripts are
+# Windows won't run .ps1 files by default, and the setup scripts in
+# .chezmoiscripts are .ps1 files
 [interpreters.ps1]
     command = "powershell"
     args = ["-NoLogo", "-ExecutionPolicy", "Bypass"]

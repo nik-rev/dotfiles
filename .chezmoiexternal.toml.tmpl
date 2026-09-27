@@ -1,4 +1,4 @@
-# Files downloaded by chezmoi. Like other files, they are skipped on
+# Files for chezmoi to download. Just like other files, they're skipped on
 # platforms where .chezmoiignore ignores their path
 
 
@@ -6,7 +6,7 @@
 # Fonts
 # -------------------------------
 
-# Installed per user. On other Linux distributions, fonts come from the
+# These get installed per user. On other Linux distros, I get fonts from the
 # system package manager instead
 {{- $fonts := "" }}
 {{- if includeTemplate "is-atomic" . }}
@@ -18,20 +18,21 @@
 {{- end }}
 {{- if $fonts }}
 
-# Terminal, and the default font for everything, see fontconfig/fonts.conf
+# For the terminal, and the default font for everything else (see
+# fontconfig/fonts.conf)
 ["{{ $fonts }}/JetBrainsMono"]
     type = "archive"
     url = "https://github.com/JetBrains/JetBrainsMono/releases/download/v2.304/JetBrainsMono-2.304.zip"
     stripComponents = 2
     include = ["fonts", "fonts/ttf", "fonts/ttf/JetBrainsMono-*.ttf"]
 
-# Icons in the terminal, used as a fallback for all fonts
+# Icons in the terminal. Used as a fallback for every font
 ["{{ $fonts }}/SymbolsNerdFont"]
     type = "archive"
     url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/NerdFontsSymbolsOnly.tar.xz"
     include = ["*.ttf"]
 
-# Zed
+# For Zed
 {{- range list "Regular" "Medium" "Bold" }}
 ["{{ $fonts }}/FiraMono/FiraMono-{{ . }}.ttf"]
     type = "file"

@@ -1,6 +1,6 @@
 {{- if eq .chezmoi.os "windows" -}}
-# Windows only uses the per-user fonts that chezmoi puts in AppData once
-# they are registered
+# Windows ignores the per-user fonts that chezmoi puts in AppData until
+# they're registered
 $ErrorActionPreference = "Stop"
 
 $fonts = "$env:LOCALAPPDATA\Microsoft\Windows\Fonts"

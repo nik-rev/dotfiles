@@ -1,16 +1,18 @@
 {{- if includeTemplate "is-atomic" . -}}
 #!/bin/sh
-# Login on Fedora Atomic: makes the login screen work, and sets up automatic
-# login, see login.autologin in .chezmoidata/desktop.toml: {{ .login.autologin }}
+# Login on Fedora Atomic. Makes sure the login screen works, and sets up
+# automatic login (login.autologin in .chezmoidata/desktop.toml, currently
+# {{ .login.autologin }}).
 #
-# With automatic login, COSMIC logs in without asking for a password after
-# the disk is unlocked at boot. The keyring (oo7) then unlocks with a random
-# password that systemd keeps encrypted, instead of with the login password
+# With automatic login, COSMIC logs in without asking for a password once the
+# disk is unlocked at boot. Since there's no login password to unlock the
+# keyring (oo7) with, it unlocks with a random password that systemd keeps
+# encrypted
 set -eu
 
-# Changes to system files are collected in this script, and run as root at
-# the end, so there is at most one password prompt. In the home directory,
-# since run0 gives root its own /tmp
+# Changes to system files get collected in this script and run as root at
+# the end, so there's at most one password prompt. It lives in the home
+# directory because run0 gives root its own /tmp
 root_script="$(mktemp -p "$HOME" .dotfiles-root.XXXXXX)"
 trap 'rm -f "$root_script"' EXIT
 printf '%s\n' "set -eu" >"$root_script"
@@ -19,13 +21,14 @@ printf '%s\n' "set -eu" >"$root_script"
 # Login screen
 # -------------------------------
 
-# Fedora replaced getty with kmscon as the text console, but cosmic-greeter
-# only conflicts with getty: kmscon keeps the display on tty1, and neither
-# the login screen nor COSMIC can start. Make it conflict with kmscon too
+# Fedora switched its text console from getty to kmscon, but cosmic-greeter
+# only knows to push getty out of the way. kmscon then holds on to the
+# display on tty1, and neither the login screen nor COSMIC can start. This
+# makes cosmic-greeter push kmscon out of the way too
 dropin=/etc/systemd/system/cosmic-greeter.service.d/10-kmscon.conf
-dropin_content="# Fedora replaced getty with kmscon as the text console, but cosmic-greeter
-# only conflicts with getty: kmscon then keeps the display on tty1, and
-# COSMIC cannot start. Added by the dotfiles
+dropin_content="# Fedora switched its text console from getty to kmscon, but cosmic-greeter
+# only knows to push getty out of the way. kmscon then holds on to the
+# display on tty1 and COSMIC can't start. Added by my dotfiles
 [Unit]
 Conflicts=kmsconvt@tty1.service
 After=kmsconvt@tty1.service"
@@ -76,7 +79,7 @@ EOF
 fi
 
 if [ "$(wc -l <"$root_script")" -gt 1 ]; then
-    # secureblue has no sudo, only run0
+    # secureblue doesn't have sudo, only run0
     if [ -x /usr/bin/sudo ]; then
         sudo sh "$root_script"
     else
@@ -89,10 +92,10 @@ fi
 # Keyring
 # -------------------------------
 
-# oo7 reads this credential to unlock the keyring (ImportCredential in its
+# oo7 unlocks the keyring with this credential (see ImportCredential in its
 # systemd unit). Only systemd on this machine can decrypt it
 credential="$HOME/.config/credstore.encrypted/oo7.keyring-encryption-password"
-# oo7's keyring, and the one of gnome-keyring, which oo7 replaced
+# oo7's keyring, and gnome-keyring's, which oo7 replaced
 keyrings="$HOME/.local/share/keyrings/v1/login.keyring $HOME/.local/share/keyrings/login.keyring"
 
 existing=""
@@ -103,8 +106,8 @@ done
 if [ -e "$credential" ]; then
     :
 elif [ -n "$existing" ]; then
-    # A keyring encrypted with the login password cannot be unlocked with
-    # a new random password
+    # A keyring that's encrypted with the login password can't be unlocked
+    # with a new random one
     printf '%s\n' "The keyring uses the login password, so it cannot unlock by itself." \
         "To start over with a new keyring, move $existing away and run:" \
         "chezmoi state delete-bucket --bucket=entryState && chezmoi apply" >&2
