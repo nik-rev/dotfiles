@@ -1,18 +1,23 @@
 # dotfiles
 
-My config for Fedora Atomic (COSMIC), macOS and Windows. One command sets
-up a fresh machine: it installs the programs and puts the config files in
-place.
+My cross-platform system config for:
+
+- Linux (Fedora COSMIC Atomic)
+- macOS
+- Windows
+
+A single command sets up a fresh machine: it installs the programs and puts the config files in place.
 
 ## Install
 
-**Fedora Atomic, macOS**
+- Linux (Fedora COSMIC Atomic)
+- macOS
 
 ```sh
 sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /tmp init --apply --use-builtin-git=true nik-rev
 ```
 
-**Windows** (PowerShell)
+- Windows
 
 ```powershell
 iex "&{$(irm 'https://get.chezmoi.io/ps1')} -b '$env:TEMP' init --apply nik-rev"
@@ -24,9 +29,9 @@ install the Command Line Tools.
 <details>
 <summary>What the command does</summary>
 
-It downloads chezmoi to a temporary directory, clones this repository to
-`~/.local/share/chezmoi` and runs `chezmoi apply`, which does everything
-described in [What happens during setup](#what-happens-during-setup).
+1. Downloads chezmoi to a temporary directory
+2. Clones this repository to `~/.local/share/chezmoi`
+3. Runs `chezmoi apply`, which does everything described in [What happens during setup](#what-happens-during-setup).
 
 `--use-builtin-git` lets chezmoi clone before git is installed. macOS has a
 placeholder `git` that only offers to install the developer tools.
@@ -102,9 +107,13 @@ distributions, only the config files are installed.
 `chezmoi apply` runs, in this order:
 
 1. **Installs what pixi cannot**
-   ([`install-packages`](.chezmoiscripts)): Flathub apps on Fedora Atomic,
-   Zed and the Xcode Command Line Tools on macOS, winget packages and the
-   Visual Studio Build Tools on Windows. Then pixi itself.
+   ([`install-packages`](.chezmoiscripts)):
+
+   - Flathub apps on Fedora Atomic
+   - Zed and the Xcode Command Line Tools on macOS
+   - winget packages and the Visual Studio Build Tools on Windows
+   - Then pixi itself.
+
 2. **Puts the config files in place**, and downloads fonts.
 3. **Installs the global tools** (`pixi-global-sync`): `pixi global sync`.
 4. **Installs Rust** (`install-rust`) into its pixi workspace.
