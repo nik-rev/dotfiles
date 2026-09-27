@@ -26,10 +26,9 @@ flatpak_extensions = ["org.virt_manager.virt_manager.Extension.Qemu"]
 package = "oo7-portal"
 only_with = "oo7-daemon"
 
-# Windows applications, from winget. pixi's Zed has no app menu entry on
-# Windows, so Zed comes from here
+# Windows applications, from winget
 [windows]
-winget = ["Git.Git", "ZedIndustries.Zed"]
+winget = ["Git.Git"]
 
 # Nightly Rust, installed with rustup into the rust-env pixi environment,
 # see dot_local/share/rust-env/pixi.toml. The cargo config needs these

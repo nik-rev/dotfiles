@@ -16,16 +16,14 @@ dependencies = { alacritty = "*" }
 exposed = { alacritty = "alacritty" }
 shortcuts = ["alacritty"]
 
-{{- if ne .chezmoi.os "windows" }}
 
-# Editor. The Windows package has no app menu entry, so Windows gets Zed
-# from winget instead, see .chezmoidata/packages.toml
+# Editor. The Windows package has no app menu entry: setup adds a Start
+# menu entry there instead
 [envs.zed]
 channels = ["conda-forge"]
 dependencies = { zed = "*" }
 exposed = { zed = "zed" }
 shortcuts = ["zed"]
-{{- end }}
 
 [envs.bat]
 channels = ["conda-forge"]

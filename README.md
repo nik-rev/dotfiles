@@ -93,7 +93,7 @@ keeps a cache of downloaded packages, which `pixi clean cache` empties.
 | | Fedora Atomic | macOS | Windows |
 |---|---|---|---|
 | CLI tools | pixi | pixi | pixi |
-| Zed | pixi | pixi | winget |
+| Zed | pixi | pixi | pixi |
 | Alacritty | pixi | pixi | pixi |
 | Other apps | Flathub | | winget |
 | Rust | pixi workspace | pixi workspace + Xcode Command Line Tools | pixi workspace + Visual Studio Build Tools |
@@ -118,8 +118,9 @@ a sandbox. That suits apps that only open your files, but not these two:
   shell in the sandbox.
 
 pixi also adds both to the app menu (`shortcuts` in the manifest), and the
-same pixi package works on Linux and macOS. On Windows, pixi's Zed has no
-app menu entry, so Zed comes from winget there.
+same pixi package works on every platform. Only on Windows, pixi's Zed has
+no Start menu entry, so setup adds one, and makes `zed://` links open in
+it, which Zed's own installer would do.
 
 conda-forge only has Zed's stable releases, not Zed Preview.
 
@@ -342,8 +343,7 @@ Support`) and Windows (`AppData`), so those locations are linked to
   creating junctions does not need administrator rights. Deleting a
   junction only removes the link, not the files.
 
-**`zed`** opens Zed from a terminal on every platform: pixi provides the
-command on Linux and macOS, and Zed's installer on Windows.
+**`zed`** opens Zed from a terminal on every platform, provided by pixi.
 
 **Automatic login on Fedora Atomic.** The disk encryption password at boot
 is the only password: COSMIC then logs in by itself. Set `login.autologin`
