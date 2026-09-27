@@ -97,8 +97,14 @@ keeps a cache of downloaded packages, which `pixi clean cache` empties.
 | Rust | pixi workspace | pixi workspace + Xcode Command Line Tools | pixi workspace + Visual Studio Build Tools |
 | Fonts | `~/.local/share/fonts` | `~/Library/Fonts` | per-user fonts |
 
-pixi cannot provide graphical apps, and Apple's and Microsoft's compilers
-only come from them, so those stay per platform. On Fedora Atomic, only what the COSMIC image
+conda-forge, where pixi's packages come from, has few graphical apps, and
+Apple's and Microsoft's compilers only come from them, so those stay per
+platform.
+
+The exception is Alacritty, which comes from pixi on every platform: it is
+not on Flathub (a terminal does not work well sandboxed, since its shell
+would be sandboxed too), and pixi also gives it an app menu entry. Its
+config is the same on every platform. On Fedora Atomic, only what the COSMIC image
 lacks is layered with `rpm-ostree`. On other Linux
 distributions, only the config files are installed.
 
@@ -246,6 +252,44 @@ as usual thanks to KVM.
   virt-manager can open ISOs in `~/Downloads` and the other home folders.
 - `virsh` works with
   `flatpak run --command=virsh org.virt_manager.virt-manager --connect qemu:///session`.
+
+## NVIDIA graphics
+
+Not part of the setup, since it depends on the hardware. On Fedora Atomic,
+NVIDIA's driver comes from [RPM Fusion](https://rpmfusion.org/Howto/NVIDIA)
+(for GeForce RTX 20 and newer, it uses NVIDIA's open kernel module):
+
+1. Add RPM Fusion, then reboot:
+
+   ```sh
+   sudo rpm-ostree install \
+       https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+       https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+   systemctl reboot
+   ```
+
+2. Install the driver, and turn off the drivers that come with Fedora, then
+   reboot:
+
+   ```sh
+   sudo rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
+   sudo rpm-ostree kargs --append=rd.driver.blacklist=nouveau,nova_core \
+       --append=modprobe.blacklist=nouveau,nova_core
+   systemctl reboot
+   ```
+
+   Add `xorg-x11-drv-nvidia-cuda` to the first command for CUDA and
+   `nvidia-smi`.
+
+3. Check that it is in use: `cat /proc/driver/nvidia/version`
+
+With Secure Boot enabled, the driver must be signed first, see RPM Fusion's
+[Secure Boot guide](https://rpmfusion.org/Howto/Secure%20Boot). On laptops
+with GeForce RTX 30 or newer, the NVIDIA GPU turns itself off when idle.
+The driver is rebuilt at every system update, which makes updates slower.
+
+secureblue has images with NVIDIA's driver built in (`cosmic-nvidia-open`),
+which make these steps unnecessary.
 
 ## Everyday use
 
