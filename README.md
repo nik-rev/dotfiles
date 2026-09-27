@@ -120,7 +120,8 @@ a sandbox. That suits apps that only open your files, but not these two:
 pixi also adds both to the app menu (`shortcuts` in the manifest), and the
 same pixi package works on every platform. Only on Windows, pixi's Zed has
 no Start menu entry, so setup adds one, and makes `zed://` links open in
-it, which Zed's own installer would do.
+it, which Zed's own installer would do. (Zed 1.21 itself does not open
+`zed://file` links on Windows yet, whichever way it is installed.)
 
 conda-forge only has Zed's stable releases, not Zed Preview.
 
