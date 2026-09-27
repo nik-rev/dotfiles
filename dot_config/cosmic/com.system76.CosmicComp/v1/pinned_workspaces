@@ -1,0 +1,38 @@
+[
+    (
+        output: (
+            name: "",
+            edid: None,
+        ),
+        tiling_enabled: true,
+        id: Some("1"),
+        name: None,
+    ),
+    (
+        output: (
+            name: "",
+            edid: None,
+        ),
+        tiling_enabled: true,
+        id: Some("2"),
+        name: None,
+    ),
+    (
+        output: (
+            name: "",
+            edid: None,
+        ),
+        tiling_enabled: true,
+        id: Some("3"),
+        name: None,
+    ),
+    (
+        output: (
+            name: "",
+            edid: None,
+        ),
+        tiling_enabled: true,
+        id: Some("4"),
+        name: None,
+    ),
+]
