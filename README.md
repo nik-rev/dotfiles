@@ -372,6 +372,37 @@ lockbook sync                         # get the latest notes
 lockbook export <folder> <backup-dir> # copy them to the backup
 ```
 
+### SSH keys
+
+My SSH keys have a passphrase, so the key files are useless to anyone who
+copies them. To avoid typing it all the time, ssh hands the key to
+ssh-agent the first time I use it, and the agent keeps it for a day
+(`AddKeysToAgent 24h` in [`~/.ssh/config`](private_dot_ssh/config)).
+Logging out or rebooting clears it sooner.
+
+In practice, I type the passphrase once a day:
+
+- `git` in a terminal asks for it directly.
+- lazygit shows a popup for it when pushing or pulling. Its automatic
+  background fetch never asks, it just skips fetching until the key is
+  loaded.
+- Zed asks in a window of its own.
+
+On Fedora, the dotfiles turn on the ssh-agent that Fedora ships but leaves
+off, and point `SSH_AUTH_SOCK` at it in `~/.bashrc.d`, so apps started from
+the desktop find it too (log out and back in after the first setup). macOS
+has an agent running already. On Windows it isn't set up yet.
+
+```sh
+ssh-keygen -t ed25519               # new key; it asks for a passphrase
+ssh-keygen -p -f ~/.ssh/id_ed25519  # add or change the passphrase of a key
+ssh-add -l                          # which keys the agent has right now
+ssh-add -D                          # forget them now
+```
+
+While a key is loaded, a program running as me could ask the agent to use
+it, but it can't copy the key out of the agent.
+
 ## Platform details
 
 ### Config locations
@@ -495,6 +526,8 @@ picks up the new PATH.
 | `dot_pixi/manifests/` | global CLI tools, for pixi |
 | `dot_local/share/rust-env/` | the Rust workspace, including cargo's config |
 | `dot_local/bin/` | `rust-analyzer` from the Rust workspace |
+| `dot_bashrc.d/` | Linux: the PATH and the SSH agent for the desktop session |
+| `private_dot_ssh/config` | keeps SSH keys in the agent for a day |
 | `.chezmoidata/packages.toml` | packages pixi doesn't provide |
 | `.chezmoidata/desktop.toml` | desktop settings, like automatic login |
 | `.chezmoiscripts/` | setup scripts |

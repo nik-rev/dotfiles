@@ -5,11 +5,13 @@ sync-packages.sh
 old_dotfiles/
 
 {{ if ne .chezmoi.os "linux" -}}
-# Linux desktop stuff: COSMIC, fonts, the session PATH and zed:// links
+# Linux desktop stuff: COSMIC, fonts, the session PATH and zed:// links,
+# and the SSH agent
 .config/cosmic
 .config/fontconfig
 .bashrc.d
 .local/share/applications
+.config/systemd/user/sockets.target.wants/ssh-agent.socket
 {{ end -}}
 
 {{ if not (includeTemplate "rust-enabled" .) -}}
@@ -26,6 +28,11 @@ old_dotfiles/
 {{ if not (and (includeTemplate "is-atomic" .) .login.autologin) -}}
 # Starts the keyring (oo7) along with the session, for automatic login
 .config/systemd/user/default.target.wants/oo7-daemon.service
+{{ end -}}
+
+{{ if eq .chezmoi.os "windows" -}}
+# Windows' SSH agent works differently, and isn't set up yet
+.ssh
 {{ end -}}
 
 {{ if ne .chezmoi.os "darwin" -}}

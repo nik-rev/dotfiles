@@ -1,0 +1,4 @@
+# The first time a key is used, ssh asks for its passphrase and hands the
+# key to ssh-agent, which keeps it for a day. After that, git, lazygit and
+# Zed use it without asking. Logging out or rebooting also clears it
+AddKeysToAgent 24h
