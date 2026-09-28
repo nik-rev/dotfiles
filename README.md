@@ -409,8 +409,8 @@ created. If one already exists, setup explains what to do.
 ### Layered packages on Fedora Atomic
 
 One package gets layered onto the system image, because the COSMIC image
-doesn't ship it yet: `oo7-portal`. It lets flatpak apps like Proton Pass
-store passwords in the keyring. Once Fedora adds it to the image, it won't
+doesn't ship it yet: `oo7-portal`. It lets flatpak apps store passwords
+in the keyring. Once Fedora adds it to the image, it won't
 be needed anymore, and setup will remind me to remove it from
 `fedora.layered` and run `rpm-ostree uninstall oo7-portal`.
 

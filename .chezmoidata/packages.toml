@@ -18,8 +18,8 @@
 # virtual machines on its own, without libvirt on the system
 flatpak_extensions = ["org.virt_manager.virt_manager.Extension.Qemu"]
 
-# The Secret portal, which lets flatpak apps like Proton Pass store
-# passwords in the keyring. COSMIC already expects it, but the image only
+# The Secret portal, which lets flatpak apps store passwords in the
+# keyring. COSMIC already expects it, but the image only
 # ships the keyring itself (oo7-daemon). Images with gnome-keyring instead,
 # like secureblue, don't need it, because gnome-keyring is the portal there
 [[fedora.layered]]
