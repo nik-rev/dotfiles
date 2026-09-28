@@ -39,3 +39,38 @@
     url = "https://raw.githubusercontent.com/mozilla/Fira/4.202/ttf/FiraMono-{{ . }}.ttf"
 {{- end }}
 {{- end }}
+
+
+# -------------------------------
+# Lockbook CLI
+# -------------------------------
+
+# For backing up my notes. It isn't in any package manager, so it comes
+# from Lockbook's GitHub releases, and `chezmoi apply` downloads the newest
+# release again once a week. It keeps its own copy of the notes in
+# ~/.lockbook, separate from the desktop app's
+{{- $releases := "https://github.com/lockbook/lockbook/releases/latest/download" }}
+{{- if and (eq .chezmoi.os "linux") (eq .chezmoi.arch "amd64") }}
+
+[".local/bin/lockbook"]
+    type = "file"
+    url = "{{ $releases }}/lockbook-cli-linux"
+    executable = true
+    refreshPeriod = "168h"
+{{- else if eq .chezmoi.os "darwin" }}
+
+# Works on both Apple Silicon and Intel Macs
+[".local/bin/lockbook"]
+    type = "archive-file"
+    url = "{{ $releases }}/lockbook-cli-macos.tar.gz"
+    path = "lockbook"
+    executable = true
+    refreshPeriod = "168h"
+{{- else if eq .chezmoi.os "windows" }}
+
+[".local/bin/lockbook.exe"]
+    type = "archive-file"
+    url = "{{ $releases }}/lockbook-windows-cli{{ if eq .chezmoi.arch "arm64" }}-arm{{ end }}.zip"
+    path = "lockbook.exe"
+    refreshPeriod = "168h"
+{{- end }}

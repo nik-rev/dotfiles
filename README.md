@@ -66,7 +66,7 @@ names tell chezmoi where everything goes:
 - [`.chezmoidata/`](.chezmoidata) holds data for the templates, such as
   package lists.
 - [`.chezmoiexternal.toml.tmpl`](.chezmoiexternal.toml.tmpl) lists files for
-  chezmoi to download, such as fonts.
+  chezmoi to download, such as fonts and the Lockbook CLI.
 
 Running `chezmoi apply` makes the home directory match the repository.
 
@@ -344,7 +344,8 @@ rpm-ostree upgrade   # Fedora Atomic itself, then reboot
 ```
 
 `chezmoi apply` installs things that are missing, but it never updates what's
-already installed.
+already installed. The one exception is the Lockbook CLI, which it
+downloads again once a week.
 
 `flatpak update` updates the Flathub apps on Fedora, and on Windows,
 `winget upgrade --all` updates everything from winget and the Microsoft
@@ -355,6 +356,20 @@ the setup scripts again:
 ```sh
 chezmoi state delete-bucket --bucket=entryState
 chezmoi apply
+```
+
+### Backing up Lockbook
+
+The `lockbook` CLI gets installed on every platform (on Linux, only on
+x86_64, since there's no ARM build). I use it to back up my notes. It
+keeps its own copy of them in `~/.lockbook`, separate from the desktop
+app's, so it needs to be logged in once on each machine with
+`lockbook account import`, using my account key or 24-word phrase. After
+that, a backup is:
+
+```sh
+lockbook sync                         # get the latest notes
+lockbook export <folder> <backup-dir> # copy them to the backup
 ```
 
 ## Platform details
@@ -484,7 +499,7 @@ picks up the new PATH.
 | `.chezmoidata/desktop.toml` | desktop settings, like automatic login |
 | `.chezmoiscripts/` | setup scripts |
 | `.chezmoitemplates/` | pieces shared by templates and scripts |
-| `.chezmoiexternal.toml.tmpl` | downloaded files, i.e. fonts |
+| `.chezmoiexternal.toml.tmpl` | downloaded files: fonts and the Lockbook CLI |
 | `.chezmoiignore` | which files each platform gets |
 | `Library/` | macOS: links app config locations to `~/.config` |
 | `flatpaks.txt`, `sync-packages.sh` | Flathub apps, and a script to update the list |
