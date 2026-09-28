@@ -65,6 +65,20 @@ if (-not (Test-Path "$HOME\.pixi\bin\pixi.exe")) {
 }
 
 # -------------------------------
+# SSH agent
+# -------------------------------
+
+# Windows comes with an SSH agent, but it's turned off, and turning it on
+# needs admin rights
+$agent = Get-Service ssh-agent
+if ($agent.StartType -ne "Automatic" -or $agent.Status -ne "Running") {
+    Start-Process powershell -Verb RunAs -Wait -WindowStyle Hidden -ArgumentList @(
+        "-NoProfile", "-Command",
+        "Set-Service ssh-agent -StartupType Automatic; Start-Service ssh-agent"
+    )
+}
+
+# -------------------------------
 # PATH
 # -------------------------------
 

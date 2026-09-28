@@ -30,11 +30,6 @@ old_dotfiles/
 .config/systemd/user/default.target.wants/oo7-daemon.service
 {{ end -}}
 
-{{ if eq .chezmoi.os "windows" -}}
-# Windows' SSH agent works differently, and isn't set up yet
-.ssh
-{{ end -}}
-
 {{ if ne .chezmoi.os "darwin" -}}
 # macOS only: links from macOS config locations to ~/.config, and the PATH
 Library

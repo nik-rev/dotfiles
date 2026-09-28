@@ -1,0 +1,11 @@
+# The first time a key is used, ssh asks for its passphrase and hands the
+# key to ssh-agent. After that, git, lazygit and Zed use it without asking.
+{{- if eq .chezmoi.os "windows" }}
+# Windows' agent refuses keys with a time limit, so there it keeps the key
+# for good (encrypted with my Windows login), until `ssh-add -D`
+AddKeysToAgent yes
+{{- else }}
+# The agent keeps it for a day, and logging out or rebooting clears it
+# sooner
+AddKeysToAgent 24h
+{{- end }}

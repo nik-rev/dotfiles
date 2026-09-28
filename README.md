@@ -391,7 +391,12 @@ In practice, I type the passphrase once a day:
 On Fedora, the dotfiles turn on the ssh-agent that Fedora ships but leaves
 off, and point `SSH_AUTH_SOCK` at it in `~/.bashrc.d`, so apps started from
 the desktop find it too (log out and back in after the first setup). macOS
-has an agent running already. On Windows it isn't set up yet.
+has an agent running already. On Windows, setup turns on the agent that
+comes with Windows, and git uses Windows' own `ssh` so it can reach it.
+
+Windows' agent is different: it refuses keys with a time limit, so it
+keeps the key for good, saved encrypted with my Windows login, until I
+remove it with `ssh-add -D`. I type the passphrase once, not once a day.
 
 ```sh
 ssh-keygen -t ed25519               # new key; it asks for a passphrase
@@ -527,7 +532,7 @@ picks up the new PATH.
 | `dot_local/share/rust-env/` | the Rust workspace, including cargo's config |
 | `dot_local/bin/` | `rust-analyzer` from the Rust workspace |
 | `dot_bashrc.d/` | Linux: the PATH and the SSH agent for the desktop session |
-| `private_dot_ssh/config` | keeps SSH keys in the agent for a day |
+| `private_dot_ssh/config.tmpl` | keeps SSH keys in the agent (for a day, except on Windows) |
 | `.chezmoidata/packages.toml` | packages pixi doesn't provide |
 | `.chezmoidata/desktop.toml` | desktop settings, like automatic login |
 | `.chezmoiscripts/` | setup scripts |

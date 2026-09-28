@@ -85,6 +85,10 @@
 
 [core]
 	pager = delta
+{{- if eq .chezmoi.os "windows" }}
+	# Git's own ssh can't use Windows' SSH agent, Windows' ssh can
+	sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+{{- end }}
 
 [interactive]
     diffFilter = delta --color-only
