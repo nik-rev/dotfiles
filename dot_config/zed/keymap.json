@@ -5,6 +5,8 @@
       // this keybind will work
       "ctrl-6": "pane::AlternateFile",
 
+      "ctrl-j": "workspace::ToggleZoom",
+
       // By default it just quits. But we have window manager commands for that
       "ctrl-q": null,
 

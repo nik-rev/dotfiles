@@ -133,7 +133,7 @@
   // Hide the status bar. The only reason why I'd need it is to check status of the language server,
   // because the editor otherwise doesn't provide that capability
   "status_bar": {
-    "experimental.show": true,
+    "experimental.show": false,
   },
 
   "git_panel": {
@@ -390,6 +390,8 @@
     "uiua": true,
     "lean4": true,
   },
+
+  "zoomed_padding": false,
 
   "session": {
     "trust_all_worktrees": true,
