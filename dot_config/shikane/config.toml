@@ -1,0 +1,22 @@
+# to find output names (monitor, screens, etc), run `cosmic-randr list`
+
+# Laptop screen only
+[[profile]]
+name = "laptop"
+
+[[profile.output]]
+search = "n=eDP-1"
+enable = true
+
+# External monitor connected:
+# enable HDMI and disable laptop screen
+[[profile]]
+name = "external"
+
+[[profile.output]]
+search = "n=HDMI-A-2"
+enable = true
+
+[[profile.output]]
+search = "n=eDP-1"
+enable = false

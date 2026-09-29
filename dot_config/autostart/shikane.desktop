@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Shikane
+Comment=Automatically configure Wayland displays
+Exec=/home/e/.local/bin/shikane
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
