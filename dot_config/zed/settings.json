@@ -4,6 +4,7 @@
 {
   "cli_default_open_behavior": "existing_window",
   "inlay_hints": { "enabled": true },
+  "cursor_animation": { "enabled": true },
   "languages": {
     "Rust": {
       "enable_language_server": true,
@@ -65,13 +66,13 @@
         },
       }
     },
-    "cargo-ls": {
-      "binary": {
-        // Resolved from PATH, so this works on every OS.
-        // Install with: cargo install --path ~/p/cargo-ls
-        "path": "cargo-ls",
-      }
-    }
+    // "cargo-ls": {
+    //   "binary": {
+    //     // Resolved from PATH, so this works on every OS.
+    //     // Install with: cargo install --path ~/p/cargo-ls
+    //     "path": "cargo-ls",
+    //   }
+    // }
     // "tombi": {
     //   "settings": {
     //     "lsp.diagnostic.enabled": false,
@@ -384,6 +385,7 @@
     "v": true,
     "fortran": true,
     "tree-sitter-query": true,
+    "typst": true,
     "tera": true,
     "uiua": true,
     "lean4": true,

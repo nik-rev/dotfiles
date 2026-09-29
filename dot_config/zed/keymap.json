@@ -157,6 +157,8 @@
       // Jump to file in multibuffers
       "g o": "editor::OpenExcerpts",
 
+      "backspace": "vim::HelixJumpToWord",
+
       // Commands under "g" mode prefixed with "ctrl-w" will open
       // in a split
       "ctrl-w g d": "editor::GoToDefinitionSplit",
