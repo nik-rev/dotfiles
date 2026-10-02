@@ -26,6 +26,12 @@ flatpak_extensions = ["org.virt_manager.virt_manager.Extension.Qemu"]
 package = "oo7-portal"
 only_with = "oo7-daemon"
 
+# Turns displays off and on without disconnecting them (Super+F12). The
+# monitor's power button also cuts the Thunderbolt dock built into it, and
+# its firmware can get stuck when it comes back
+[[fedora.layered]]
+package = "wlopm"
+
 # Windows applications, from winget
 [windows]
 winget = ["Git.Git", "BlenderFoundation.Blender"]

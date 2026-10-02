@@ -734,4 +734,10 @@
         ],
         key: "h",
     ): Disable,
+    (
+        modifiers: [
+            Super,
+        ],
+        key: "F12",
+    ): Spawn("wlopm --toggle DP-2"),
 }
