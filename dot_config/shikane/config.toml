@@ -1,22 +1,30 @@
 # to find output names (monitor, screens, etc), run `cosmic-randr list`
+#
+# Outputs are matched by name pattern (the part after "n/" is a regex), so these
+# profiles keep working when names change: the laptop panel is eDP-1 on the Intel
+# GPU but eDP-2 on the NVIDIA GPU (depends on GPU MUX mode), and the external
+# monitor is DP-2 over Thunderbolt but HDMI-A-2 over HDMI.
+#
+# A profile only applies when every connected display matches exactly one
+# output below, so "external" is used when there are exactly 2 displays.
 
 # Laptop screen only
 [[profile]]
 name = "laptop"
 
 [[profile.output]]
-search = "n=eDP-1"
+search = "n/^eDP-"
 enable = true
 
-# External monitor connected:
-# enable HDMI and disable laptop screen
+# External monitor connected (Thunderbolt, USB-C or HDMI):
+# enable the external monitor and disable laptop screen
 [[profile]]
 name = "external"
 
 [[profile.output]]
-search = "n=HDMI-A-2"
+search = "n/^(DP|HDMI|DVI|VGA)-"
 enable = true
 
 [[profile.output]]
-search = "n=eDP-1"
+search = "n/^eDP-"
 enable = false
