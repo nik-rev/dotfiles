@@ -17,6 +17,9 @@ platforms = ["linux-64", "linux-aarch64", "osx-arm64", "osx-64", "win-64"]
 sccache = "*"
 cargo-nextest = "*"
 cmake = "*"
+# Builds and serves Rust WASM apps. It downloads the wasm-bindgen and wasm-opt
+# versions each project needs on its own
+trunk = "*"
 
 # C libraries for -sys crates. This is openssl 3 because openssl-sys doesn't
 # support openssl 4 yet. On Windows, openssl-sys finds OpenSSL another way

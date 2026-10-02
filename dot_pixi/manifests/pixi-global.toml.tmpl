@@ -102,6 +102,11 @@ version = 1
     dependencies = { zoxide = "*" }
     exposed = { zoxide = "zoxide" }
 
+[envs.nodejs]
+    channels = ["conda-forge"]
+    dependencies = { nodejs = "*" }
+    exposed = { node = "node", npm = "npm", npx = "npx" }
+
 {{- if eq .chezmoi.os "windows" }}
     # GNU coreutils rewritten in Rust (ls, cp, cat and so on), as separate
     # commands. Windows' own expand, hostname, more, sort, timeout and whoami win
